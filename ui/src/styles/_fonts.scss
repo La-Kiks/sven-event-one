@@ -1,0 +1,80 @@
+@font-face {
+  font-family: "Lemon";
+  src: url("../../public/fonts/Lemon/LEMONMILK-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Regular */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Italic */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Medium */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Medium Italic */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* SemiBold */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SemiBold Italic */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-SemiBoldItalic.ttf")
+    format("truetype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: "Cabin";
+  src: url("../../public/fonts/Cabin/Cabin-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}

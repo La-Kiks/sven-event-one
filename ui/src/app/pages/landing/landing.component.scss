@@ -1,0 +1,30 @@
+.landing {
+  padding: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.cta {
+  margin: 10px 0 30px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  app-card {
+    width: calc(50% - 20px);
+  }
+}
