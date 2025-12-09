@@ -1,15 +1,46 @@
+@use "variables" as *;
+
 .landing {
-  padding: 20px;
+  background-color: pink;
+}
+
+.part-one {
+  margin: 0px;
+  padding: 0px;
+  background-image: url("/images/Horizontal gym placeholder.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .title {
-  font-size: 2rem;
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
   text-align: center;
+  margin: 20px 20px;
+  font-family: $font-title;
+  font-size: $text-sm;
+  background-color: $main-color;
+  color: $text-color;
+  border-radius: 6px;
+  padding: 0.5rem;
+  width: 80%;
+  max-width: 900px;
 }
 
 .cta {
-  margin: 10px 0 30px;
+  display: flex;
+  margin: auto;
+  width: auto;
+  justify-content: center;
 }
 
 .cards {
@@ -19,6 +50,12 @@
 }
 
 @media (min-width: 768px) {
+  .part-one {
+    background-size: cover;
+
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 60%, #000 95%)
+      url("/images/Horizontal gym placeholder.jpg");
+  }
   .cards {
     flex-direction: row;
     flex-wrap: wrap;
