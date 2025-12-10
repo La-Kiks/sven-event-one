@@ -1,19 +1,39 @@
+@use "variables" as *;
+
 .card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 16px;
+  position: relative;
+  background: $background-bright-color;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-top: 1rem;
+}
+
+.number {
+  position: absolute;
+  padding: 0.5rem;
+  background-color: $main-color;
+  color: $background-color;
+  font-family: $font-title;
+  font-size: $text-2xl;
 }
 
 .card img {
   width: 100%;
   height: auto; /* keeps aspect ratio */
-  border-radius: 12px;
+  border-radius: 0.5rem;
 }
 
-.card p {
+.description {
+  color: white;
   margin-top: 12px;
-  font-size: 1rem;
+  font-size: $text-sm;
   line-height: 1.4;
+  font-family: $font-body;
+}
+
+@media (min-width: 768px) {
+  .number {
+    font-size: $text-base;
+  }
 }

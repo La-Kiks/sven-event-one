@@ -1,20 +1,52 @@
 <section class="landing">
     <div class="part-one">
-
         <div class="title">
             <h1>Compétition sportive au Gym de Nancy</h1>
             <h1>Rendez-vous le 11/03</h1>
         </div>
-
         <div class="cta">
             <app-button>INSCRIPTION</app-button>
         </div>
-
+        <button (click)="scrollTo('part-two')" class="down-arrow" aria-label="Scroll down">
+            <svg class="down-arrow" viewBox="0 0 24 24" width="32" height="32">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="black" stroke-width="4" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
     </div>
-    <div class="cards">
-        <app-card image="assets/project1.jpg" description="My first project about..."></app-card>
-
-        <app-card image="assets/project2.jpg" description="Another cool project..."></app-card>
+    <div id="part-two" class="part-two">
+        <div class="description">
+            <p>Cette compétition est l'enchainement d'épreuves combinant course à pied et ateliers fonctionnels pour
+                tester l'endurance, la force et la polyvalence des participants.</p>
+        </div>
+        <div class="cards">
+            <h1>Format de la course</h1>
+            <p><strong>1 km RUN&nbsp;</strong>avant chaque épreuve</p>
+            <app-card number="01" image="/images/bodybuilder-vertical.jpg" description="1000m SkiErg"></app-card>
+            <app-card number="02" image="/images/bodybuilder-vertical.jpg" description="50m SLED PUSH"></app-card>
+            <app-card number="03" image="/images/bodybuilder-vertical.jpg" description="50m SLED PULL"></app-card>
+            <app-card number="04" image="/images/bodybuilder-vertical.jpg"
+                description="80m BURPEE BROAD JUMPS"></app-card>
+            <app-card number="05" image="/images/bodybuilder-vertical.jpg" description="1000m ROWING"></app-card>
+            <app-card number="06" image="/images/bodybuilder-vertical.jpg" description="200m FARMERS CARRY"></app-card>
+            <app-card number="07" image="/images/bodybuilder-vertical.jpg" description="100m SANDBAG LUNGES"></app-card>
+            <app-card number="08" image="/images/bodybuilder-vertical.jpg" description="100x WALL BALLS"></app-card>
+        </div>
     </div>
-
+    <div id="part-three" class="part-three">
+        <h1>Localisation</h1>
+        <div class="localisation">
+            <div class="maps"><iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10536.43915553758!2d6.176768!3d48.68426555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4794986e66bdd009%3A0x3dc634d62634b590!2sCentre%20Commercial%20Saint%20S%C3%A9bastien!5e0!3m2!1sfr!2sfr!4v1765365859024!5m2!1sfr!2sfr"
+                    style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <p>Adresse : <br> 12 aeae aeae aeaaea aeaeae aeaeae</p>
+            </div>
+        </div>
+        <h2>Contact</h2>
+        <p>Tel : 0000000000</p>
+        <p>mail: aaaaaaaaaa</p>
+    </div>
 </section>

@@ -1,13 +1,17 @@
 @use "variables" as *;
 
 .landing {
-  background-color: pink;
+  background-color: $background-color;
+  scroll-behavior: smooth;
+  overflow: scroll;
+  scroll-snap-type: y proximity;
+  height: 100vh;
 }
 
 .part-one {
   margin: 0px;
   padding: 0px;
-  background-image: url("/images/Horizontal gym placeholder.jpg");
+  background-image: url("/images/gym-competitors-large.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -18,6 +22,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  scroll-snap-align: start;
 }
 
 .title {
@@ -25,28 +30,146 @@
   flex-direction: column;
   overflow: auto;
   text-align: center;
-  margin: 20px 20px;
+  margin: 2rem 2rem;
   font-family: $font-title;
-  font-size: $text-sm;
+  font-size: $text-xs;
   background-color: $main-color;
   color: $text-color;
-  border-radius: 6px;
+  border-radius: 0.5rem;
   padding: 0.5rem;
   width: 80%;
   max-width: 900px;
 }
 
 .cta {
+  position: relative;
   display: flex;
   margin: auto;
   width: auto;
   justify-content: center;
 }
+// cursor if needed on button
+// .cta::after {
+//   content: "➤";
+//   position: absolute;
+//   bottom: -1.5rem;
+//   right: -1rem;
+//   font-size: 2rem;
+//   color: whitesmoke;
+//   transform: rotate(-120deg);
+// }
 
-.cards {
+.down-arrow {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  color: $main-color;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.down-arrow:hover {
+  transform: translateY(2px);
+}
+.down-arrow svg {
+  transition: transform 0.18s ease;
+}
+.down-arrow:active svg {
+  transform: translateY(1px) scale(0.98);
+}
+
+.part-two {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  background-color: $background-color;
+  padding: 1rem;
+  scroll-snap-align: start;
+}
+
+.description {
+  background-color: $background-color;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border-radius: 0.5rem;
+  color: whitesmoke;
+  font-family: $font-body;
+  width: 100%;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.cards {
+  background-color: $background-bright-color;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.cards h1 {
+  background-color: $main-color;
+  color: $text-color;
+  font-family: $font-title;
+  grid-column: span 2;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.cards p {
+  color: white;
+  font-family: $font-body;
+  font-size: $text-lg;
+  grid-column: span 2;
+  padding: 0.5rem;
+  margin: 0;
+}
+
+.part-three {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+  background-color: $background-bright-color;
+  color: white;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 0.5rem;
+  scroll-snap-align: start;
+  font-family: $font-body;
+  font-size: $text-base;
+}
+
+.part-three h1,
+.part-three h2 {
+  grid-column: span 2;
+  margin: 0.5rem 0;
+}
+.localisation {
+  grid-column: span 2;
+}
+
+.maps {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+
+.maps iframe {
+  grid-column: span 2;
+  min-width: 300px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.maps p {
+  grid-column: span 1;
 }
 
 @media (min-width: 768px) {
@@ -54,14 +177,17 @@
     background-size: cover;
 
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 60%, #000 95%)
-      url("/images/Horizontal gym placeholder.jpg");
-  }
-  .cards {
-    flex-direction: row;
-    flex-wrap: wrap;
+      url("/images/gym-competitors-large.jpg");
   }
 
-  app-card {
-    width: calc(50% - 20px);
+  .cards {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .cards > h1,
+  .cards p {
+    display: flex;
+    justify-content: center;
+    grid-column: span 4;
   }
 }

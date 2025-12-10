@@ -11,4 +11,8 @@ import { CardComponent } from '../../components/ui/card/card.component';
 })
 export class LandingComponent {
 
+  scrollTo(id: string) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }
+
 }
