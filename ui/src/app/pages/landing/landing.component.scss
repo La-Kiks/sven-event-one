@@ -156,15 +156,14 @@ strong {
 
 .maps {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   gap: 1rem;
 }
 
 .maps iframe {
-  grid-column: span 2;
-  min-width: 300px;
-  max-width: 600px;
+  grid-column: span 1;
+  min-width: 100px;
   width: 100%;
 }
 
@@ -189,5 +188,13 @@ strong {
     display: flex;
     justify-content: center;
     grid-column: span 4;
+  }
+
+  .maps {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .maps iframe {
+    grid-column: span 2;
   }
 }
