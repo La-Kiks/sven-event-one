@@ -1,0 +1,61 @@
+<section class="inscription">
+    <form class="form" action="/submit" method="POST">
+        <div class="name">
+            <label class="label" for="name">Nom</label>
+            <input class="input" id="name" name="name" required>
+            <label class="label" for="firstname">Prénom</label>
+            <input class="input" id="firstname" name="firstname" required>
+        </div>
+        <div class="mail">
+            <label class="label" for="email">Mail</label>
+            <input class="input" id="email" name="email" required>
+        </div>
+        <div class="team">
+            <label class="label" for="team">Nom d'équipe</label>
+            <input class="input" id="team" name="team" required>
+        </div>
+
+        <fieldset>
+            <legend>A quelle version veux-tu t'inscrire ?</legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="courte" value="courte"> Courte
+                </label>
+                <label>
+                    <input type="radio" name="longue" value="longue"> Longue
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>As-tu déjà ton partenaire ?</legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="solo" value="solo"> Solo
+                </label>
+                <label>
+                    <input type="radio" name="duo" value="duo"> Duo
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>As-tu déjà ta tenue ?</legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="oui" value="oui"> Oui
+                </label>
+                <label>
+                    <input type="radio" name="non" value="non"> Non
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="gdpr">
+            <input class="checkbox" type="checkbox" name="subscribe" value="yes" required> Accepter de recevoir le mail
+            de
+            confirmation
+        </div>
+        <button class="button" type="submit"></button>
+    </form>
+</section>
