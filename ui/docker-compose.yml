@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        BASE_HREF: /sven-event/
     ports:
       - "4280:80"
     container_name: angular-sven
