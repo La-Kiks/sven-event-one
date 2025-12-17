@@ -5,10 +5,21 @@
   color: white;
   background-color: $background-bright-color;
   padding: 1em;
-  margin: 1em;
+  margin: 2em 1em;
   border-radius: 0.5em;
   border: solid 0.2em;
   border-color: $main-color;
+}
+
+.title {
+  margin: 0.5em 0em;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  background-color: $main-color;
+  color: $text-color;
+  font-family: $font-title;
+  font-size: $text-xl;
 }
 
 .label {
