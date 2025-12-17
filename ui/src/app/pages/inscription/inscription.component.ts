@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
+import { InscriptionFormComponent } from "../../forms/inscription-form/inscription-form.component";
 
 @Component({
   selector: 'app-inscription',
-  imports: [],
+  imports: [InscriptionFormComponent],
   templateUrl: './inscription.component.html',
   styleUrl: './inscription.component.scss'
 })
 export class InscriptionComponent {
-  // document.querySelector('form').addEventListenner('submit', function(e) {
-  //   e.preventDefault();
-  //   alert('Form submitted successfully! (This is a demo - no data was actually sent)');
-  // });
 
 }

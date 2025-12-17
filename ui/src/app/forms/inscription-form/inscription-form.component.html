@@ -1,0 +1,63 @@
+<form class="form" [formGroup]="form" (ngSubmit)="submit()">
+    <h1 class="row title" style="align-items: center;">Inscription</h1>
+    <div class="row">
+        <label class="label" for="name">Nom : <span class="required">*</span></label>
+        <input class="input" id="name" formControlName="name" required>
+    </div>
+    <div class="row">
+        <label class="label" for="firstname">Prénom : <span class="required">*</span></label>
+        <input class="input" id="firstname" formControlName="firstname" required>
+    </div>
+    <div class="row">
+        <label class="label" for="email">Mail : <span class="required">*</span></label>
+        <input class="input" id="email" formControlName="email" required>
+    </div>
+    <div class="row">
+        <label class="label" for="team">Nom d'équipe : <span class="required">*</span></label>
+        <input class="input" id="team" formControlName="team" required>
+    </div>
+
+    <fieldset>
+        <legend>A quelle version veux-tu t'inscrire ? <span class="required">*</span></legend>
+        <div class="radio-group">
+            <label>
+                <input type="radio" value="courte" formControlName="version"> Courte
+            </label>
+            <label>
+                <input type="radio" value="longue" formControlName="version"> Longue
+            </label>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>As-tu déjà ton partenaire ? <span class="required">*</span></legend>
+        <div class="radio-group">
+            <label>
+                <input type="radio" value="solo" formControlName="soloduo"> Je suis solo.
+            </label>
+            <label>
+                <input type="radio" value="duo" formControlName="soloduo"> J'ai déjà mon duo.
+            </label>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>As-tu déjà ta tenue ? <span class="required">*</span></legend>
+        <div class="radio-group">
+            <label>
+                <input type="radio" value="oui" formControlName="outfit"> Oui
+            </label>
+            <label>
+                <input type="radio" value="non" formControlName="outfit"> Non (je suis nu).
+            </label>
+        </div>
+    </fieldset>
+
+    <div class="gdpr">
+        <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required> Accepter de recevoir
+        le mail
+        de
+        confirmation.<span class="required">*</span>
+    </div>
+    <button class="button" type="submit" [disabled]="form.invalid">Confirmer</button>
+</form>
