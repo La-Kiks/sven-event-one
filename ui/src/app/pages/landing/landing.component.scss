@@ -9,8 +9,8 @@
 }
 
 .part-one {
-  margin: 0px;
-  padding: 0px;
+  padding-top: 1em;
+  gap: 1em;
   background-image: url("/sven-event/images/gym-competitors-large.jpg"),
     url("/images/gym-competitors-large.jpg");
   background-size: cover;
@@ -21,46 +21,48 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   scroll-snap-align: start;
 }
 
 .title {
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
-  overflow: auto;
   text-align: center;
-  margin: 2rem 2rem;
   font-family: $font-title;
   font-size: $text-xs;
   background-color: $main-color;
   color: $text-color;
   border-radius: 0.5rem;
-  padding: 0.5rem;
   width: 80%;
   max-width: 900px;
 }
 
+.video-wrapper {
+  flex: 1 1 auto;
+  width: 90%;
+  max-width: 900px;
+  max-height: 60vh;
+  aspect-ratio: 16 / 9;
+}
+
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5em;
+}
+
 .cta {
-  position: relative;
-  display: flex;
+  flex: 0 0 auto;
   margin: auto;
   width: auto;
   justify-content: center;
 }
-// cursor if needed on button
-// .cta::after {
-//   content: "➤";
-//   position: absolute;
-//   bottom: -1.5rem;
-//   right: -1rem;
-//   font-size: 2rem;
-//   color: whitesmoke;
-//   transform: rotate(-120deg);
-// }
 
 .down-arrow {
+  flex: 0 0 auto;
   background: transparent;
   border: none;
   padding: 8px;
