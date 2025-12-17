@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-button',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss'
 })
