@@ -1,61 +1,63 @@
 <section class="inscription">
     <form class="form" action="/submit" method="POST">
-        <div class="name">
-            <label class="label" for="name">Nom</label>
+        <div class="row">
+            <label class="label" for="name">Nom : <span class="required">*</span></label>
             <input class="input" id="name" name="name" required>
-            <label class="label" for="firstname">Prénom</label>
+        </div>
+        <div class="row">
+            <label class="label" for="firstname">Prénom : <span class="required">*</span></label>
             <input class="input" id="firstname" name="firstname" required>
         </div>
-        <div class="mail">
-            <label class="label" for="email">Mail</label>
+        <div class="row">
+            <label class="label" for="email">Mail : <span class="required">*</span></label>
             <input class="input" id="email" name="email" required>
         </div>
-        <div class="team">
-            <label class="label" for="team">Nom d'équipe</label>
+        <div class="row">
+            <label class="label" for="team">Nom d'équipe : <span class="required">*</span></label>
             <input class="input" id="team" name="team" required>
         </div>
 
         <fieldset>
-            <legend>A quelle version veux-tu t'inscrire ?</legend>
+            <legend>A quelle version veux-tu t'inscrire ? <span class="required">*</span></legend>
             <div class="radio-group">
                 <label>
-                    <input type="radio" name="courte" value="courte"> Courte
+                    <input type="radio" name="version" value="courte"> Courte
                 </label>
                 <label>
-                    <input type="radio" name="longue" value="longue"> Longue
+                    <input type="radio" name="version" value="longue"> Longue
                 </label>
             </div>
         </fieldset>
 
         <fieldset>
-            <legend>As-tu déjà ton partenaire ?</legend>
+            <legend>As-tu déjà ton partenaire ? <span class="required">*</span></legend>
             <div class="radio-group">
                 <label>
-                    <input type="radio" name="solo" value="solo"> Solo
+                    <input type="radio" name="soloduo" value="solo"> Je suis solo.
                 </label>
                 <label>
-                    <input type="radio" name="duo" value="duo"> Duo
+                    <input type="radio" name="soloduo" value="duo"> J'ai déjà mon duo.
                 </label>
             </div>
         </fieldset>
 
         <fieldset>
-            <legend>As-tu déjà ta tenue ?</legend>
+            <legend>As-tu déjà ta tenue ? <span class="required">*</span></legend>
             <div class="radio-group">
                 <label>
-                    <input type="radio" name="oui" value="oui"> Oui
+                    <input type="radio" name="outfit" value="oui"> Oui
                 </label>
                 <label>
-                    <input type="radio" name="non" value="non"> Non
+                    <input type="radio" name="outfit" value="non"> Non (je suis nu).
                 </label>
             </div>
         </fieldset>
 
         <div class="gdpr">
-            <input class="checkbox" type="checkbox" name="subscribe" value="yes" required> Accepter de recevoir le mail
+            <input type="checkbox" name="subscribe" value="yes" required> Accepter de recevoir le mail
             de
-            confirmation
+            confirmation.<span class="required">*</span>
         </div>
-        <button class="button" type="submit"></button>
+        <button class="button" type="submit">Confirmer</button>
     </form>
 </section>
