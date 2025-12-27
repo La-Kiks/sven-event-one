@@ -134,6 +134,24 @@ strong {
 }
 
 .part-three {
+  display: flex;
+  flex-direction: column;
+  background-color: $background-bright-color;
+  color: white;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 0.5rem;
+  font-family: $font-body;
+  font-size: $text-base;
+}
+
+.partenaires {
+  // TODO : del height width
+  min-height: 200px;
+  min-width: 200px;
+}
+
+.part-four {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
@@ -148,8 +166,8 @@ strong {
   font-size: $text-base;
 }
 
-.part-three h1,
-.part-three h2 {
+.part-four h1,
+.part-four h2 {
   grid-column: span 2;
   margin: 0.5rem 0;
 }
@@ -194,7 +212,7 @@ strong {
   }
 
   .maps {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 2fr;
   }
 
   .maps iframe {
