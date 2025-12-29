@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Validators, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-inscription-form',
   imports: [ReactiveFormsModule],
@@ -7,18 +7,47 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './inscription-form.component.scss'
 })
 export class InscriptionFormComponent {
-  fb = new FormBuilder();
 
-  form = this.fb.group({
-    name: ['', Validators.required],
-    firstname: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    team: ['', Validators.required],
-    version: ['', Validators.required],
-    soloduo: ['', Validators.required],
-    outfit: ['', Validators.required],
-    subscribe: ['', Validators.required],
+  form = new FormGroup({
+    step1: new FormGroup({
+      name_a: new FormControl('', Validators.required),
+      firstname_a: new FormControl('', Validators.required),
+      email_a: new FormControl('', [Validators.required, Validators.email]),
+      phone_a: new FormControl('', [Validators.required]),
+      outfit_a: new FormControl('', Validators.required),
+      volounteer_a: new FormControl(''),
+    }),
+    step2: new FormGroup({
+      name_b: new FormControl('', Validators.required),
+      firstname_b: new FormControl('', Validators.required),
+      email_b: new FormControl('', [Validators.required, Validators.email]),
+      phone_b: new FormControl('', [Validators.required]),
+      outfit_b: new FormControl('', Validators.required),
+      volounteer_b: new FormControl(''),
+    }),
+    step3: new FormGroup({
+      version: new FormControl('', Validators.required),
+      administration: new FormControl('', Validators.required),
+      team_name: new FormControl('', Validators.required),
+      subscribe: new FormControl('', Validators.required),
+    }),
   });
+
+  currentStep = 1;
+
+
+  next() {
+    const stepGroup = this.form.get(`step${this.currentStep}`);
+    if (stepGroup?.valid) {
+      this.currentStep++;
+    } else {
+      stepGroup?.markAllAsTouched();
+    }
+  }
+
+  prev() {
+    this.currentStep--;
+  }
 
   submit() {
     if (this.form.invalid) {

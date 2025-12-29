@@ -1,7 +1,6 @@
 @use "variables" as *;
 
 .form {
-  font-family: $font-body;
   color: white;
   background-color: $background-bright-color;
   padding: 1em;
@@ -9,6 +8,8 @@
   border-radius: 0.5em;
   border: solid 0.2em;
   border-color: $main-color;
+  font-family: $font-body;
+  font-size: $text-base;
 }
 
 .title {
@@ -57,7 +58,8 @@
   cursor: pointer;
 }
 
-fieldset {
+fieldset,
+.form-group {
   border: 0.2em solid $main-color;
   border-radius: 0.5em;
   padding: 0.5em;
@@ -89,6 +91,7 @@ input[type="checkbox"] {
   place-items: center;
   width: 1.5em;
   height: 1.5em;
+  min-width: 1.5em;
   border: 0.1em solid $main-color;
   border-radius: 0.2em;
   cursor: pointer;
@@ -107,11 +110,23 @@ input[type="checkbox"]:checked::before {
   color: $text-color;
 }
 
-.gdpr {
+.infoline {
   display: flex;
   align-items: center;
   font-size: $text-sm;
   margin-top: 1em;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.5em 0em;
+  border: 0.1em solid $main-color;
+  border-radius: 0.5em;
+  background-color: white;
+  color: $text-color;
+  font-family: $font-body;
+  font-size: $text-sm;
 }
 
 .button {
@@ -124,6 +139,11 @@ input[type="checkbox"]:checked::before {
   width: 100%;
   cursor: pointer;
   margin-top: 1em;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
 }
 
 .button:hover {

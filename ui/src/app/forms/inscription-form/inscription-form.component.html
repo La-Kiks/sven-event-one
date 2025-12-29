@@ -1,63 +1,160 @@
-<form class="form" [formGroup]="form" (ngSubmit)="submit()">
+<form class="form" [formGroup]="form">
     <h1 class="row title" style="align-items: center;">Inscription</h1>
-    <div class="row">
-        <label class="label" for="name">Nom : <span class="required">*</span></label>
-        <input class="input" id="name" formControlName="name" required>
-    </div>
-    <div class="row">
-        <label class="label" for="firstname">Prénom : <span class="required">*</span></label>
-        <input class="input" id="firstname" formControlName="firstname" required>
-    </div>
-    <div class="row">
-        <label class="label" for="email">Mail : <span class="required">*</span></label>
-        <input class="input" id="email" formControlName="email" required>
-    </div>
-    <div class="row">
-        <label class="label" for="team">Nom d'équipe : <span class="required">*</span></label>
-        <input class="input" id="team" formControlName="team" required>
-    </div>
 
-    <fieldset>
-        <legend>A quelle version veux-tu t'inscrire ? <span class="required">*</span></legend>
-        <div class="radio-group">
-            <label>
-                <input type="radio" value="courte" formControlName="version"> Courte
-            </label>
-            <label>
-                <input type="radio" value="longue" formControlName="version"> Longue
-            </label>
+    <!-- Step 1 -->
+    @if (currentStep === 1) {
+    <div formGroupName="step1">
+        <div class="row">
+            <label class="label" for="name_a">Nom : <span class="required">*</span></label>
+            <input class="input" id="name_a" formControlName="name_a" required>
         </div>
-    </fieldset>
 
-    <fieldset>
-        <legend>As-tu déjà ton partenaire ? <span class="required">*</span></legend>
-        <div class="radio-group">
-            <label>
-                <input type="radio" value="solo" formControlName="soloduo"> Je suis solo.
-            </label>
-            <label>
-                <input type="radio" value="duo" formControlName="soloduo"> J'ai déjà mon duo.
-            </label>
+        <div class="row">
+            <label class="label" for="firstname_a">Prénom : <span class="required">*</span></label>
+            <input class="input" id="firstname_a" formControlName="firstname_a" required>
         </div>
-    </fieldset>
 
-    <fieldset>
-        <legend>As-tu déjà ta tenue ? <span class="required">*</span></legend>
-        <div class="radio-group">
-            <label>
-                <input type="radio" value="oui" formControlName="outfit"> Oui
-            </label>
-            <label>
-                <input type="radio" value="non" formControlName="outfit"> Non (je suis nu).
-            </label>
+        <div class="row">
+            <label class="label" for="email_a">Mail : <span class="required">*</span></label>
+            <input class="input" id="email_a" formControlName="email_a" required>
         </div>
-    </fieldset>
 
-    <div class="gdpr">
-        <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required> Accepter de recevoir
-        le mail
-        de
-        confirmation.<span class="required">*</span>
+        <div class="row">
+            <label class="label" for="phone_a">Téléphone : <span class="required">*</span></label>
+            <input class="input" id="phone_a" formControlName="phone_a" required>
+        </div>
+
+        <fieldset>
+            <legend>Veux-tu participer en tenue d'intervention ?<span class="required">*</span></legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" value="yes" formControlName="outfit_a"> Oui, j'ai ma tenue.
+                </label>
+                <label>
+                    <input type="radio" value="lend" formControlName="outfit_a"> Oui, j'ai besoin qu'on m'en prette une.
+                </label>
+                <label>
+                    <input type="radio" value="no" formControlName="outfit_a"> Non.
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="infoline">
+            <input type="checkbox" name="subscribe" value="yes" formControlName="volounteer_a">
+            Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres paricipants le jour J.
+        </div>
+
+        <button class="button" type="button" (click)="next()" [disabled]="form.get('step1')?.invalid">Suivant</button>
     </div>
-    <button class="button" type="submit" [disabled]="form.invalid">Confirmer</button>
+    }
+
+    <!-- Step 2 -->
+    @if (currentStep === 2) {
+    <div formGroupName="step2">
+
+        <div class="row">
+            <label class="label" for="name_b">Nom : <span class="required">*</span></label>
+            <input class="input" id="name_b" formControlName="name_b" required>
+        </div>
+
+        <div class="row">
+            <label class="label" for="firstname_b">Prénom : <span class="required">*</span></label>
+            <input class="input" id="firstname_b" formControlName="firstname_b" required>
+        </div>
+
+        <div class="row">
+            <label class="label" for="email_b">Mail : <span class="required">*</span></label>
+            <input class="input" id="email_b" formControlName="email_b" required>
+        </div>
+
+        <div class="row">
+            <label class="label" for="phone_b">Téléphone : <span class="required">*</span></label>
+            <input class="input" id="phone_b" type="tel" formControlName="phone_b" required>
+        </div>
+
+        <fieldset>
+            <legend>Veux-tu participer en tenue d'intervention ?<span class="required">*</span></legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" value="yes" formControlName="outfit_b"> Oui, j'ai ma tenue.
+                </label>
+                <label>
+                    <input type="radio" value="lend" formControlName="outfit_b"> Oui, j'ai besoin qu'on m'en prette une.
+                </label>
+                <label>
+                    <input type="radio" value="no" formControlName="outfit_b"> Non.
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="infoline">
+            <input type="checkbox" name="subscribe" value="yes" formControlName="volounteer_b">
+            Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres paricipants le jour J.
+        </div>
+
+        <div class="button-group">
+            <button class="button" type="button" (click)="prev()">Retour</button>
+            <button class="button" type="button" (click)="next()"
+                [disabled]="form.get('step2')?.invalid">Suivant</button>
+        </div>
+
+    </div>
+    }
+
+    <!-- Step 3 -->
+    @if (currentStep === 3) {
+
+    <div formGroupName="step3">
+        <div class="row">
+            <label class="label" for="team_name">Nom d'équipe : <span class="required">*</span></label>
+            <input class="input" id="team_name" formControlName="team_name" required>
+        </div>
+
+        <fieldset>
+            <legend>A quelle version veux-tu t'inscrire ? <span class="required">*</span></legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" value="courte" formControlName="version"> Courte
+                </label>
+                <label>
+                    <input type="radio" value="longue" formControlName="version"> Longue
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <label class="label" for="administration">Selectionne ton administration : <span
+                    class="required">*</span></label>
+            <select id="administration" name="administration" formControlName="administration">
+                <option value="">-- Choisir son administration --</option>
+                <option value="none">Autre</option>
+                <option value="gendarmerie">Gendarmerie</option>
+                <option value="militaire">Militaire</option>
+                <option value="penitancier">Pénitancier</option>
+                <option value="municipale">Polie Municipale</option>
+                <option value="nationale">Police Nationale</option>
+                <option value="pompier">Pompier</option>
+            </select>
+        </div>
+
+        <div class="infoline">
+            <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required> Accepter de
+            recevoir
+            le mail
+            de
+            confirmation. Les informations de contact présentes dans ce formulaire ne seront utilisées que dans la cadre
+            de
+            cet événement ou
+            événement similaire.<span class="required">*</span>
+        </div>
+
+        <div class="button-group">
+            <button class="button" type="button" (click)="prev()">Retour</button>
+            <button class="button" type="submit" (click)="submit()" [disabled]="form.invalid">Confirmer</button>
+        </div>
+
+    </div>
+
+    }
+
 </form>
