@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Validators, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ModalComponent, StatusType } from '../modal/modal.component';
+
 @Component({
   selector: 'app-inscription-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ModalComponent],
   templateUrl: './inscription-form.component.html',
   styleUrl: './inscription-form.component.scss'
 })
@@ -51,9 +53,34 @@ export class InscriptionFormComponent {
 
   submit() {
     if (this.form.invalid) {
+      this.onError();
       return;
     }
     console.log(this.form.value);
-    // Send this to API 
+    this.onSuccess();
+    // Send this to API & redirect to inscription/success - maybe with call back
+  }
+
+  transactionStatus: StatusType = 'none';
+  showModal = false;
+  modalMessage = "";
+
+  openModal(params: { message: string, status: StatusType }): void {
+    const { message, status } = params;
+    this.transactionStatus = status;
+    this.modalMessage = message;
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  onSuccess(): void {
+    this.openModal({ message: 'Forumlaire envoyé !', status: 'success' });
+  }
+
+  onError(): void {
+    this.openModal({ message: 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.', status: 'error' });
   }
 }

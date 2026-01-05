@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SuccessComponent } from "../success/success.component";
 import { ErrorComponent } from "../error/error.component";
 
-type StatusType = 'none' | 'success' | 'error';
+export type StatusType = 'none' | 'success' | 'error';
 
 @Component({
   selector: 'app-modal',
