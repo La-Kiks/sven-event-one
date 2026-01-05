@@ -4,7 +4,6 @@
   background-color: $background-color;
   scroll-behavior: smooth;
   overflow: scroll;
-  scroll-snap-type: y proximity;
   height: 100vh;
 }
 
@@ -23,7 +22,6 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  scroll-snap-align: start;
 }
 
 .title {
@@ -88,7 +86,6 @@
   flex-direction: column;
   background-color: $background-color;
   padding: 1rem;
-  scroll-snap-align: start;
 }
 
 .description {
@@ -161,7 +158,6 @@ strong {
   padding: 1rem;
   margin: 1rem;
   border-radius: 0.5rem;
-  scroll-snap-align: start;
   font-family: $font-body;
   font-size: $text-base;
 }

@@ -39,9 +39,11 @@
             </div>
         </fieldset>
 
-        <div class="infoline">
-            <input type="checkbox" name="subscribe" value="yes" formControlName="volounteer_a">
-            Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres paricipants le jour J.
+        <div>
+            <label class="infoline">
+                <input type="checkbox" name="subscribe" value="yes" formControlName="volounteer_a">
+                Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres paricipants le jour J.
+            </label>
         </div>
 
         <button class="button" type="button" (click)="next()" [disabled]="form.get('step1')?.invalid">Suivant</button>
