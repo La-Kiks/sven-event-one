@@ -1,0 +1,10 @@
+<div class="modal-overlay" *ngIf="isVisible" (click)="onBackgroundClick($event)">
+    <div class="modal-box">
+        <div *ngIf="status !== 'none'" [ngSwitch]="status" class="status-container">
+            <app-success *ngSwitchCase="'success'"></app-success>
+            <app-error *ngSwitchCase="'error'"></app-error>
+        </div>
+        <p class="modal-message">{{ message }}</p>
+        <button class="modal-close-btn" (click)="onClose()">Fermer</button>
+    </div>
+</div>
