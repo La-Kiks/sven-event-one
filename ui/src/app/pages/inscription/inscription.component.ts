@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { InscriptionFormComponent } from "../../forms/inscription-form/inscription-form.component";
-
+import { InscriptionFormComponent } from '../../components/ui/inscription-form/inscription-form.component';
 @Component({
   selector: 'app-inscription',
   imports: [InscriptionFormComponent],
