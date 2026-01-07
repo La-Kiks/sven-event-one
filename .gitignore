@@ -1,0 +1,29 @@
+# Angular (ui folder)
+/ui/node_modules
+/ui/dist
+/ui/.angular
+/ui/.env
+
+# .NET (backend folder)
+/backend/**/bin
+/backend/**/obj
+/backend/**/*.user
+/backend/**/*.suo
+/backend/.vs
+/backend/**/.vscode
+/backend/**/appsettings.Development.json
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# IDE
+.vscode/
+.vs/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
