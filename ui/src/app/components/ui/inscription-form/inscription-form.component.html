@@ -25,6 +25,21 @@
         </div>
 
         <fieldset>
+            <legend>Catégorie<span class="required">*</span></legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" value="yes" formControlName="category_a"> Homme
+                </label>
+                <label>
+                    <input type="radio" value="lend" formControlName="category_a"> Femme
+                </label>
+                <label>
+                    <input type="radio" value="no" formControlName="category_a"> Mixte
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset>
             <legend>Veux-tu participer en tenue d'intervention ?<span class="required">*</span></legend>
             <div class="radio-group">
                 <label>
@@ -73,6 +88,21 @@
             <label class="label" for="phone_b">Téléphone : <span class="required">*</span></label>
             <input class="input" id="phone_b" type="tel" formControlName="phone_b" required>
         </div>
+
+        <fieldset>
+            <legend>Catégorie<span class="required">*</span></legend>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" value="yes" formControlName="category_b"> Homme
+                </label>
+                <label>
+                    <input type="radio" value="lend" formControlName="category_b"> Femme
+                </label>
+                <label>
+                    <input type="radio" value="no" formControlName="category_b"> Mixte
+                </label>
+            </div>
+        </fieldset>
 
         <fieldset>
             <legend>Veux-tu participer en tenue d'intervention ?<span class="required">*</span></legend>
