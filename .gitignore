@@ -14,7 +14,7 @@
 /backend/.vs
 /backend/**/.vscode
 /backend/**/appsettings.Development.json
-/backend/.env
+/backend/**/.env
 
 # Database
 *.db
