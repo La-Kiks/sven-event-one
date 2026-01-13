@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
 using SportsReservationAPI.Models;
 
 
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ReservationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReservationDatabase")));
+
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 
