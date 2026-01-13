@@ -20,7 +20,6 @@ builder.Services.AddDbContext<ReservationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReservationDatabase")));
 
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<CreatePlayerDtoValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateTeamDtoValidator>();
 
 builder.Services.AddScoped<PlayerService>();
