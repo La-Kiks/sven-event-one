@@ -21,12 +21,15 @@ namespace SportsReservationAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTeamWithPlayers([FromBody] CreateTeamWithPlayersDto dto)
         {
+            // Fluent validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var teamId = await _teamService.CreateTeamWithPlayersAsync(dto.TeamDto, dto.PlayerDtos);
-                return CreatedAtAction(
-                    nameof(CreateTeamWithPlayers),
-                    new { id = teamId }, 
+                return Ok( 
                     new CreateTeamResponseDto
                     { 
                         TeamId = teamId, 
