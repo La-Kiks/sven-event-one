@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using SportsReservationAPI.Models;
+using SportsReservationAPI.Models.Player;
+using SportsReservationAPI.Models.Team;
+using SportsReservationAPI.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +20,12 @@ builder.Services.AddDbContext<ReservationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReservationDatabase")));
 
 builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreatePlayerDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTeamDtoValidator>();
+
+builder.Services.AddScoped<PlayerService>();
+builder.Services.AddScoped<TeamService>();
+builder.Services.AddScoped<StripeService>();
 
 var app = builder.Build();
 
