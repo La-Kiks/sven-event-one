@@ -29,7 +29,7 @@ namespace SportsReservationAPI.Controllers
         public IActionResult CreateCheckoutSession(int teamId)
         {
 
-            StripeConfiguration.ApiKey = _apiSettings.Stripe.SecretKey;
+            StripeConfiguration.ApiKey = _apiSettings.Stripe.SecretKey; 
 
             var options = new Stripe.Checkout.SessionCreateOptions
             {

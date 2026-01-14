@@ -14,7 +14,7 @@ export class StripeService {
     async redirectToCheckout(): Promise<void> {
         const session = await firstValueFrom(
             this.http.post<{ url: string }>(
-                `${environment.apiUrl}/create-checkout-session`,
+                `${environment.apiUrl}/stripe/create-checkout-session`,
                 'body'
             )
         );

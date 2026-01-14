@@ -16,7 +16,10 @@ namespace SportsReservationAPI.Configuration
                 { "API_BASE_URL", "ApiKeys:ApiBaseUrl" },
                 { "FRONTEND_BASE_URL", "ApiKeys:FrontendBaseUrl" },
                 { "ENVIRONMENT", "ApiKeys:Environment" },
-                { "RESERVATION_DB_CONNECTION_STRING", "ConnectionStrings:ReservationDatabase" }
+                { "RESERVATION_DB_SERVER", "ConnectionStrings:ReservationDatabase:Server" },
+                { "RESERVATION_DB_NAME", "ConnectionStrings:ReservationDatabase:Database" },
+                { "DB_USER", "ConnectionStrings:ReservationDatabase:User" },
+                { "DB_PASSWORD", "ConnectionStrings:ReservationDatabase:Password" }
             };
 
             var configurationDict = new Dictionary<string, string>();

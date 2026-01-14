@@ -18,7 +18,7 @@ namespace SportsReservationAPI.Controllers
             _teamService = teamService;
         }
 
-        [HttpPost]
+        [HttpPost("create-team")]
         public async Task<IActionResult> CreateTeamWithPlayers([FromBody] CreateTeamWithPlayersDto dto)
         {
             // Fluent validation

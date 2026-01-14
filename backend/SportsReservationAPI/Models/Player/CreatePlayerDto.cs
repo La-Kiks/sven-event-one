@@ -11,6 +11,5 @@
         public bool Volunteer { get; set; } = false;
         public bool AcceptMails { get; set; } = false;
 
-        public int TeamId { get; set; }
     }
 }

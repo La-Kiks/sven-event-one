@@ -52,7 +52,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "FrontendPolicy",
         policy =>
         {
-            policy.WithOrigins(frontendBaseUrl)
+            policy.WithOrigins(frontendBaseUrl!)
             .AllowAnyHeader()
             .AllowAnyMethod();
         });

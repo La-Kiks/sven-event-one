@@ -35,8 +35,6 @@ namespace SportsReservationAPI.Models.Player
             RuleFor(p => p.AcceptMails).NotNull()
                 .WithMessage("AcceptMails field must be specified.");
 
-            RuleFor(p => p.TeamId)
-                .GreaterThan(0).WithMessage("TeamId must be a positive integer.");
         }
     }
 }
