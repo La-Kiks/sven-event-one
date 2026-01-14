@@ -1,14 +1,21 @@
 import { Component } from '@angular/core';
 import { Validators, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { ModalComponent, StatusType } from '../modal/modal.component';
+import { CreateTeamWithPlayersRequest } from '../../../models/create-team-request';
+import { TeamService } from '../../../services/team.service';
+import { StripeService } from '../../../services/stripe.service';
+
 
 @Component({
   selector: 'app-inscription-form',
+  standalone: true,
   imports: [ReactiveFormsModule, ModalComponent],
   templateUrl: './inscription-form.component.html',
-  styleUrl: './inscription-form.component.scss'
+  styleUrls: ['./inscription-form.component.scss']
 })
 export class InscriptionFormComponent {
+
+  constructor(private teamService: TeamService, private stripeService: StripeService) { }
 
   form = new FormGroup({
     step1: new FormGroup({
@@ -58,9 +65,51 @@ export class InscriptionFormComponent {
       this.onError();
       return;
     }
-    console.log(this.form.value);
-    this.onSuccess();
-    // Send this to API & redirect to inscription/success - maybe with call back
+
+    const step1 = this.form.get('step1')!.value;
+    const step2 = this.form.get('step2')!.value;
+    const step3 = this.form.get('step3')!.value;
+
+    const payload: CreateTeamWithPlayersRequest = {
+      teamDto: {
+        teamName: step3.team_name!,
+        version: step3.version!,
+        administration: step3.administration!
+      },
+      playerDtos: [
+        {
+          firstName: step1.firstname_a!,
+          lastName: step1.name_a!,
+          email: step1.email_a!,
+          phoneNumber: step1.phone_a!,
+          category: step1.category_a!,
+          outfit: step1.outfit_a!,
+          volunteer: !!step1.volounteer_a,
+          acceptMails: !!step3.subscribe,
+        },
+        {
+          firstName: step2.firstname_b!,
+          lastName: step2.name_b!,
+          email: step2.email_b!,
+          phoneNumber: step2.phone_b!,
+          category: step2.category_b!,
+          outfit: step2.outfit_b!,
+          volunteer: !!step2.volounteer_b,
+          acceptMails: !!step3.subscribe
+        }
+      ]
+    };
+
+    this.teamService.createTeam(payload).subscribe({
+      next: (response) => {
+        console.log('Team created:', response.teamId);
+        // NEXT STEP:
+        // → call StripeService.redirectToCheckout()
+        this.onSuccess();
+      },
+      error: () => this.onError()
+    });
+
   }
 
   transactionStatus: StatusType = 'none';
@@ -85,4 +134,34 @@ export class InscriptionFormComponent {
   onError(): void {
     this.openModal({ message: 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.', status: 'error' });
   }
+
+  fillWithTestData(): void {
+    this.form.patchValue({
+      step1: {
+        name_a: 'Doe',
+        firstname_a: 'John',
+        email_a: 'john.doe@test.com',
+        phone_a: '0600000001',
+        category_a: 'Senior',
+        outfit_a: 'Red',
+        volounteer_a: "true"
+      },
+      step2: {
+        name_b: 'Smith',
+        firstname_b: 'Jane',
+        email_b: 'jane.smith@test.com',
+        phone_b: '0600000002',
+        category_b: 'Senior',
+        outfit_b: 'Blue',
+        volounteer_b: "false"
+      },
+      step3: {
+        version: '2025',
+        administration: 'Club XYZ',
+        team_name: 'Dev Team',
+        subscribe: "true"
+      }
+    });
+  }
+
 }

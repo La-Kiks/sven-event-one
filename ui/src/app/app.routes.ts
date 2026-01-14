@@ -6,5 +6,8 @@ import { InscriptionSuccessComponent } from './pages/inscription-success/inscrip
 export const routes: Routes = [
     { path: "", component: LandingComponent },
     { path: "inscription", component: InscriptionComponent },
-    { path: "inscription/success", component: InscriptionSuccessComponent },
+    { path: "inscription/success", component: InscriptionSuccessComponent }
 ];
+
+// { path: "payment-success", component: PaymentSuccessComponent},
+// { path: "payment-cancel", component: PaymentCancelComponent}
