@@ -12,7 +12,7 @@ namespace SportsReservationAPI.Configuration
             {
                 { "STRIPE_SECRET_KEY", "ApiKeys:Stripe:SecretKey" },
                 { "STRIPE_PUBLISHABLE_KEY", "ApiKeys:Stripe:PublishableKey" },
-                { "WEBHOOK_SECRET", "ApiKeys:Stripe:WebhookSecret" },
+                { "STRIPE_WEBHOOK_SECRET", "ApiKeys:Stripe:WebhookSecret" },
                 { "API_BASE_URL", "ApiKeys:ApiBaseUrl" },
                 { "FRONTEND_BASE_URL", "ApiKeys:FrontendBaseUrl" },
                 { "ENVIRONMENT", "ApiKeys:Environment" },

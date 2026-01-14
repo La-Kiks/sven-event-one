@@ -14,6 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Loading ENV variables using Configuration/EnvLoader.cs
 builder.Configuration.LoadToConfiguration();
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiKeys"));
+builder.Services.AddOptions<ApiSettings>()
+    .Bind(builder.Configuration.GetSection("ApiKeys"))
+    .Validate(x =>
+    !string.IsNullOrWhiteSpace(x.Stripe.WebhookSecret),
+    "Stripe Webhok Secret is Missing"
+    )
+    .ValidateOnStart();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -15,7 +15,6 @@ namespace SportsReservationAPI.Controllers
         private readonly TeamService _teamService;
         private readonly StripeService _stripeService;
         private readonly ApiSettings _apiSettings;
-
         public StripeController(
             TeamService teamService,
             StripeService stripeService,
@@ -72,10 +71,11 @@ namespace SportsReservationAPI.Controllers
                 if (stripeEvent.Type == EventTypes.PaymentIntentSucceeded)
                 {
                     //TODO:
-                    Console.WriteLine("PaymentIntent Success");
+                    Console.WriteLine("PaymentIntent Success", stripeEvent);
 
                     var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
                     //handlePaymentIntentSucceeded(paymentIntent);
+                    // var teamHasPaid = await _teamService.MarkTeamAsPaidAsync(int teamId);
                 }
                 else
                 {
@@ -86,7 +86,7 @@ namespace SportsReservationAPI.Controllers
             catch (StripeException e)
             {
                 //TODO:
-                Console.WriteLine("StripeException ",e);
+                Console.WriteLine("StripeException ", e);
 
                 return BadRequest();
             }

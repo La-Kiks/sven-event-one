@@ -24,7 +24,7 @@ namespace SportsReservationAPI.Models.Player
                 .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("A valid phone number is required.");
 
             RuleFor(p => p.Category)
-                .NotEmpty().WithMessage("Category is required.")
+                .NotEmpty().WithMessage("Category is required.");
 
             RuleFor(p => p.Outfit)
                 .NotEmpty().WithMessage("Outfit is required.");
