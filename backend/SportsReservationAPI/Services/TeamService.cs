@@ -1,7 +1,8 @@
-﻿using SportsReservationAPI.Models;
-using SportsReservationAPI.Models.Team;
-using SportsReservationAPI.Models.Player;
+﻿using Microsoft.EntityFrameworkCore;
 using SportsReservationAPI.Exceptions;
+using SportsReservationAPI.Models;
+using SportsReservationAPI.Models.Player;
+using SportsReservationAPI.Models.Team;
 
 namespace SportsReservationAPI.Services
 {
@@ -47,7 +48,14 @@ namespace SportsReservationAPI.Services
             return team.Id;
             
         }
-    
+
+        public async Task<Team?> GetTeamWithPlayersAsync(int teamId)
+        {
+            return await _context.Teams
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(t => t.Id == teamId);
+        }
+
         public async Task MarkTeamAsPaidAsync(int teamId)
         {
             var team = await _context.Teams.FindAsync(teamId);
