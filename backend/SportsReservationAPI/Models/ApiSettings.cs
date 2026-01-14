@@ -3,6 +3,7 @@
     public class ApiSettings
     {
         public StripeSettings Stripe { get; set; } = new();
+        public DbSettings Db { get; set; } = new();
         public string ApiBaseUrl { get; set; } = "";
         public string FrontendBaseUrl { get; set; } = "";
         public string Environment { get; set; } = "";
@@ -13,5 +14,13 @@
         public string SecretKey { get; set; } = "";
         public string PublishableKey { get; set; } = "";
         public string WebhookSecret { get; set; } = "";
+    }
+
+    public class DbSettings
+    {
+        public string? Server { get; set; }
+        public string? Database { get; set; }
+        public string? User { get; set; }
+        public string? Password { get; set; }
     }
 }

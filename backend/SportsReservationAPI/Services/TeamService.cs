@@ -21,49 +21,31 @@ namespace SportsReservationAPI.Services
             if (playerDtos.Count != 2)
             {
                 throw new ValidationException("Exactly two players are required to create a team.");
-            }
-
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            try
+            }            
+            var team = new Team
             {
-                var team = new Team
+                Name = teamDto.TeamName,
+                Version = teamDto.Version,
+                Administration = teamDto.Administration,
+                Players = playerDtos.Select(dto => new Player
                 {
-                    Name = teamDto.TeamName,
-                    Version = teamDto.Version,
-                    Administration = teamDto.Administration
-                };
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Email = dto.Email,
+                    PhoneNumber = dto.PhoneNumber,
+                    Category = dto.Category,
+                    Outfit = dto.Outfit,
+                    Volunteer = dto.Volunteer,
+                    AcceptMails = dto.AcceptMails
+                }).ToList()
+            };
 
-                _context.Teams.Add(team);
-                await _context.SaveChangesAsync();
+            _context.Teams.Add(team);
+            
+            await _context.SaveChangesAsync();
 
-                foreach (var dto in playerDtos)
-                {
-                    var player = new Player
-                    {
-                        FirstName = dto.FirstName,
-                        LastName = dto.LastName,
-                        Email = dto.Email,
-                        PhoneNumber = dto.PhoneNumber,
-                        Category = dto.Category,
-                        Outfit = dto.Outfit,
-                        Volunteer = dto.Volunteer,
-                        AcceptMails = dto.AcceptMails,
-                        TeamId = team.Id
-                    };
-                    _context.Players.Add(player);
-                }
-
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-
-                return team.Id;
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            return team.Id;
+            
         }
     
         public async Task MarkTeamAsPaidAsync(int teamId)

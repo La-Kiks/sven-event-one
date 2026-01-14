@@ -5,7 +5,7 @@
 namespace SportsReservationAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class updateone : Migration
+    public partial class InitialRDBEdit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

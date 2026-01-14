@@ -11,8 +11,8 @@ using SportsReservationAPI.Models;
 namespace SportsReservationAPI.Migrations
 {
     [DbContext(typeof(ReservationContext))]
-    [Migration("20260114122137_updateone")]
-    partial class updateone
+    [Migration("20260114130624_InitialRDBEdit")]
+    partial class InitialRDBEdit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
