@@ -102,7 +102,7 @@ export class InscriptionFormComponent {
 
     this.teamService.createTeam(payload).subscribe({
       next: (response) => {
-        console.log('Team created:', response.teamId);
+        console.log('Team created.');
         this.stripeService.redirectToCheckout(response.teamId);
         this.onSuccess();
       },
@@ -134,6 +134,7 @@ export class InscriptionFormComponent {
     this.openModal({ message: 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.', status: 'error' });
   }
 
+  // TODO : delete
   fillWithTestData(): void {
     this.form.patchValue({
       step1: {

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿    using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SportsReservationAPI.Models;
 using SportsReservationAPI.Services;
@@ -12,17 +11,17 @@ namespace SportsReservationAPI.Controllers
     [ApiController]
     public class StripeController : ControllerBase
     {
-        private readonly TeamService _teamService;
         private readonly StripeService _stripeService;
         private readonly ApiSettings _apiSettings;
-        public StripeController(
-            TeamService teamService,
+        private readonly ILogger<StripeController> _logger;
+        public StripeController(    
             StripeService stripeService,
-            IOptions<ApiSettings> apiSettings)
+            IOptions<ApiSettings> apiSettings,
+            ILogger<StripeController> logger)
         {
-            _teamService = teamService;
             _stripeService = stripeService;
             _apiSettings = apiSettings.Value;
+            _logger = logger;
         }
 
         [HttpPost("create-checkout-session/{teamId}")]
@@ -46,7 +45,7 @@ namespace SportsReservationAPI.Controllers
                 CancelUrl = $"{_apiSettings.FrontendBaseUrl}/payment-cancel",
                 Metadata = new Dictionary<string, string>
                 {
-                    { "team_id", teamId.ToString() }
+                    { "teamId", teamId.ToString() }
                 }
             };
 
@@ -59,8 +58,7 @@ namespace SportsReservationAPI.Controllers
         [HttpPost("webhook")]
         public async Task<IActionResult> Webhook()
         {
-            // TODO :
-            Console.WriteLine("Received Stripe webhook");
+            _logger.LogInformation("Received Stripe webhook");
 
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             var signatureHeader = Request.Headers["Stripe-Signature"];
@@ -83,8 +81,7 @@ namespace SportsReservationAPI.Controllers
 
             if (stripeEvent.Type == EventTypes.CheckoutSessionCompleted)
             {
-                //TODO :
-                Console.WriteLine("Handling checkout.session.completed event");
+                _logger.LogInformation("Handling checkout.session.completed event");
 
                 if (stripeEvent.Data.Object is Session session)
                 {
@@ -92,7 +89,7 @@ namespace SportsReservationAPI.Controllers
                 }
                 else
                 {
-                    Console.WriteLine("Webhook received but session was null or invalid");
+                    _logger.LogWarning("Webhook received but session was null or invalid");
                 }
             }
             return Ok();
