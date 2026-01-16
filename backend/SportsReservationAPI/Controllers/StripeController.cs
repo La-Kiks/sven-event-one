@@ -44,6 +44,10 @@ namespace SportsReservationAPI.Controllers
                 Mode = "payment",
                 SuccessUrl = $"{_apiSettings.FrontendBaseUrl}/payment-success?session_id={{CHECKOUT_SESSION_ID}}&team_id={teamId}",
                 CancelUrl = $"{_apiSettings.FrontendBaseUrl}/payment-cancel",
+                Metadata = new Dictionary<string, string>
+                {
+                    { "team_id", teamId.ToString() }
+                }
             };
 
             var service = new Stripe.Checkout.SessionService();
@@ -59,37 +63,39 @@ namespace SportsReservationAPI.Controllers
             Console.WriteLine("Received Stripe webhook");
 
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            string wbhookSecret = _apiSettings.Stripe.WebhookSecret;
+            var signatureHeader = Request.Headers["Stripe-Signature"];
+            string webhookSecret = _apiSettings.Stripe.WebhookSecret;
+
+            Event stripeEvent;
 
             try
             {
-                var stripeEvent = EventUtility.ParseEvent(json);
-                var signatureHeader = Request.Headers["Stripe-Signature"];
+                stripeEvent = EventUtility.ConstructEvent(
+                    json,
+                    signatureHeader,
+                    webhookSecret
+                );
+            }
+            catch (StripeException)
+            {
+                return BadRequest();
+            }
 
-                stripeEvent = EventUtility.ConstructEvent(json, signatureHeader, wbhookSecret);
+            if (stripeEvent.Type == EventTypes.CheckoutSessionCompleted)
+            {
+                //TODO :
+                Console.WriteLine("Handling checkout.session.completed event");
 
-                if (stripeEvent.Type == EventTypes.PaymentIntentSucceeded)
+                if (stripeEvent.Data.Object is Session session)
                 {
-                    //TODO:
-                    Console.WriteLine("PaymentIntent Success", stripeEvent);
-
-                    var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
-                    //handlePaymentIntentSucceeded(paymentIntent);
-                    // var teamHasPaid = await _teamService.MarkTeamAsPaidAsync(int teamId);
+                    await _stripeService.HandleCheckoutSessionCompleted(session);
                 }
                 else
                 {
-                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                    Console.WriteLine("Webhook received but session was null or invalid");
                 }
-                return Ok();
             }
-            catch (StripeException e)
-            {
-                //TODO:
-                Console.WriteLine("StripeException ", e);
-
-                return BadRequest();
-            }
+            return Ok();
         }
     }
 }

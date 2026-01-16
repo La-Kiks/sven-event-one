@@ -103,8 +103,7 @@ export class InscriptionFormComponent {
     this.teamService.createTeam(payload).subscribe({
       next: (response) => {
         console.log('Team created:', response.teamId);
-        // NEXT STEP:
-        // → call StripeService.redirectToCheckout()
+        this.stripeService.redirectToCheckout(response.teamId);
         this.onSuccess();
       },
       error: () => this.onError()

@@ -9,13 +9,15 @@ import { environment } from "../../environment";
 
 export class StripeService {
 
+    private readonly createCheckoutApiUrl = `${environment.apiUrl}/stripe/create-checkout-session`;
+
     constructor(private http: HttpClient) { }
 
-    async redirectToCheckout(): Promise<void> {
+    async redirectToCheckout(teamId: number): Promise<void> {
         const session = await firstValueFrom(
             this.http.post<{ url: string }>(
-                `${environment.apiUrl}/stripe/create-checkout-session`,
-                'body'
+                `${this.createCheckoutApiUrl}/${teamId}`,
+                {}
             )
         );
 
