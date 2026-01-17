@@ -46,7 +46,6 @@ export class InscriptionFormComponent {
 
   currentStep = 1;
 
-
   next() {
     const stepGroup = this.form.get(`step${this.currentStep}`);
     if (stepGroup?.valid) {
@@ -163,5 +162,4 @@ export class InscriptionFormComponent {
       }
     });
   }
-
 }
