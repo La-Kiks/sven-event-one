@@ -133,33 +133,4 @@ export class InscriptionFormComponent {
     this.openModal({ message: 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.', status: 'error' });
   }
 
-  // TODO : delete
-  fillWithTestData(): void {
-    this.form.patchValue({
-      step1: {
-        name_a: 'Doe',
-        firstname_a: 'John',
-        email_a: 'john.doe@test.com',
-        phone_a: '0600000001',
-        category_a: 'Senior',
-        outfit_a: 'Red',
-        volounteer_a: "true"
-      },
-      step2: {
-        name_b: 'Smith',
-        firstname_b: 'Jane',
-        email_b: 'jane.smith@test.com',
-        phone_b: '0600000002',
-        category_b: 'Senior',
-        outfit_b: 'Blue',
-        volounteer_b: "false"
-      },
-      step3: {
-        version: '2025',
-        administration: 'Club XYZ',
-        team_name: 'Dev Team',
-        subscribe: "true"
-      }
-    });
-  }
 }

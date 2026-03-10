@@ -1,16 +1,16 @@
 <section class="landing">
     <div class="part-one">
         <div class="title">
-            <h1>Grosse compet</h1>
+            <h1>Hyrox Police 54</h1>
         </div>
         <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/jgJHg3rAOVg?si=84A7zhqySfoYOU6H" title="YouTube video player"
-                frameborder="0"
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/iu4gl2vs--s?si=6mpAoWmavWTZYGDb"
+                title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
         <div class="cta">
-            <app-button label="INSCRIPTION" link="/inscription"></app-button>
+            <app-button label="INSCRIPTION POUR LE 26 JUIN" link="/inscription"></app-button>
         </div>
         <button (click)="scrollTo('part-two')" class="down-arrow" aria-label="Scroll down">
             <svg class="down-arrow" viewBox="0 0 24 24" width="32" height="32">
@@ -29,15 +29,16 @@
         <div class="cards">
             <h1>Format de la course</h1>
             <p><strong>1 km RUN&nbsp;</strong>avant chaque épreuve</p>
-            <app-card number="01" image="images/bodybuilder-vertical.jpg" description="1000m SkiErg"></app-card>
-            <app-card number="02" image="images/bodybuilder-vertical.jpg" description="50m SLED PUSH"></app-card>
-            <app-card number="03" image="images/bodybuilder-vertical.jpg" description="50m SLED PULL"></app-card>
-            <app-card number="04" image="images/bodybuilder-vertical.jpg"
-                description="80m BURPEE BROAD JUMPS"></app-card>
-            <app-card number="05" image="images/bodybuilder-vertical.jpg" description="1000m ROWING"></app-card>
-            <app-card number="06" image="images/bodybuilder-vertical.jpg" description="200m FARMERS CARRY"></app-card>
-            <app-card number="07" image="images/bodybuilder-vertical.jpg" description="100m SANDBAG LUNGES"></app-card>
-            <app-card number="08" image="images/bodybuilder-vertical.jpg" description="100x WALL BALLS"></app-card>
+            <div class="cards__grid">
+                <app-card number="01" image="images/ski-erg.webp" description="1000m SKI ERG"></app-card>
+                <app-card number="02" image="images/sled-push.webp" description="50m SLED PUSH"></app-card>
+                <app-card number="03" image="images/sled-pull.webp" description="50m SLED PULL"></app-card>
+                <app-card number="04" image="images/burpees.webp" description="80m BURPEES BROAD JUMP"></app-card>
+                <app-card number="05" image="images/rameur.webp" description="1000m ROWING"></app-card>
+                <app-card number="06" image="images/farmeur.webp" description="200m FARMERS CARRY"></app-card>
+                <app-card number="07" image="images/fente.webp" description="100m FENTES"></app-card>
+                <app-card number="08" image="images/wall-ball.webp" description="100x WALL BALLS"></app-card>
+            </div>
         </div>
     </div>
     <div id="part-three" class="part-three">

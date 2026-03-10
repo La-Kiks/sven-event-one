@@ -5,8 +5,10 @@
   background: $background-bright-color;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .number {
@@ -16,19 +18,23 @@
   color: $background-color;
   font-family: $font-title;
   font-size: $text-2xl;
+  z-index: 2;
 }
 
 .card img {
   width: 100%;
-  height: auto; /* keeps aspect ratio */
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
   border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  filter: grayscale(90%);
 }
 
 .description {
   color: white;
   margin-top: 12px;
-  font-size: $text-sm;
-  line-height: 1.4;
+  font-size: $text-base;
   font-family: $font-body;
 }
 
