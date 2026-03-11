@@ -29,16 +29,37 @@
 
         <div class="error-state" *ngIf="error">{{ error }}</div>
 
-        <ul class="teams-list" *ngIf="!isLoading && !error">
-            <li class="team-row" *ngFor="let team of teams; let i = index" (click)="openPanel(team)"
-                [class.active]="selectedTeam?.id === team.id">
-                <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
-                <span class="team-name">{{ team.name }}</span>
-                <span class="team-badge paid" *ngIf="team.isPaid">Paid</span>
-                <span class="team-badge unpaid" *ngIf="!team.isPaid">Unpaid</span>
-                <span class="team-arrow">→</span>
-            </li>
-        </ul>
+        <table class="teams-table" *ngIf="!isLoading && !error">
+            <thead>
+                <tr>
+                    <th class="sortable" (click)="sort('name')">
+                        Team <span class="sort-icon">{{ getSortIcon('name') }}</span>
+                    </th>
+                    <th class="sortable" (click)="sort('version')">
+                        Version <span class="sort-icon">{{ getSortIcon('version') }}</span>
+                    </th>
+                    <th class="sortable" (click)="sort('administration')">
+                        Administration <span class="sort-icon">{{ getSortIcon('administration') }}</span>
+                    </th>
+                    <th>Payment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let team of sortedTeams; let i = index" (click)="openPanel(team)"
+                    [class.active]="selectedTeam?.id === team.id">
+                    <td class="name-cell">
+                        <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+                        <span class="team-name">{{ team.name }}</span>
+                    </td>
+                    <td class="team-meta">{{ team.version === 'short' ? 'Court' : 'Long' }}</td>
+                    <td class="team-meta">{{ getAdminLabel(team.administration) }}</td>
+                    <td>
+                        <span class="team-badge paid" *ngIf="team.isPaid">Paid</span>
+                        <span class="team-badge unpaid" *ngIf="!team.isPaid">Unpaid</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </main>
 
     <!-- Backdrop -->

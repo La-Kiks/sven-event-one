@@ -156,6 +156,72 @@
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
+.teams-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  thead tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  th {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+    white-space: nowrap;
+
+    &.sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+      &:hover {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+
+  .sort-icon {
+    display: inline-block;
+    margin-left: 0.3rem;
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    transition: background 0.12s;
+
+    &:last-child {
+      border-bottom: none;
+    }
+    &:hover,
+    &.active {
+      background: rgba(255, 255, 255, 0.04);
+    }
+    &.active {
+      border-left: 2px solid #dc2626;
+    }
+  }
+
+  td {
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+  }
+}
+
+.name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
 .team-row {
   display: flex;
   align-items: center;
@@ -172,6 +238,12 @@
 
     .team-name {
       color: #ffffff;
+    }
+    .team-meta {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.35);
+      white-space: nowrap;
+      min-width: 100px;
     }
     .team-arrow {
       opacity: 1;

@@ -34,6 +34,9 @@ interface Team {
   styleUrls: ['./teams.component.scss']
 })
 export class TeamsComponent implements OnInit {
+  sortField: 'name' | 'version' | 'administration' = 'name';
+  sortDir: 'asc' | 'desc' = 'asc';
+  sortedTeams: Team[] = [];
   teams: Team[] = [];
   isLoading = true;
   error = '';
@@ -53,6 +56,7 @@ export class TeamsComponent implements OnInit {
     this.http.get<Team[]>(`${environment.apiUrl}/api/Teams/teams`).subscribe({
       next: (data) => {
         this.teams = data;
+        this.applySort();
         this.isLoading = false;
       },
       error: () => {
@@ -83,5 +87,39 @@ export class TeamsComponent implements OnInit {
   closePanel(): void {
     this.isPanelOpen = false;
     setTimeout(() => this.selectedTeam = null, 300);
+  }
+
+  getAdminLabel(value: string): string {
+    const labels: Record<string, string> = {
+      none: 'Autre',
+      gendarmerie: 'Gendarmerie',
+      militaire: 'Militaire',
+      penitancier: 'Pénitancier',
+      municipale: 'Police Municipale',
+      nationale: 'Police Nationale',
+      pompier: 'Pompier'
+    };
+    return labels[value] ?? value;
+  }
+  sort(field: 'name' | 'version' | 'administration'): void {
+    if (this.sortField === field) {
+      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortField = field;
+      this.sortDir = 'asc';
+    }
+    this.applySort();
+  }
+
+  applySort(): void {
+    this.sortedTeams = [...this.teams].sort((a, b) => {
+      const cmp = String(a[this.sortField]).localeCompare(String(b[this.sortField]));
+      return this.sortDir === 'asc' ? cmp : -cmp;
+    });
+  }
+
+  getSortIcon(field: 'name' | 'version' | 'administration'): string {
+    if (this.sortField !== field) return '↕';
+    return this.sortDir === 'asc' ? '↑' : '↓';
   }
 }
