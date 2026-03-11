@@ -5,6 +5,7 @@ import { PaymentSuccessComponent } from './pages/payment-success/payment-success
 import { PaymentCancelComponent } from './pages/payment-cancel/payment-cancel.component';
 import { LoginComponent } from './pages/login/login.component';
 import { TeamsComponent } from './pages/teams/teams.component';
+import { PlayersComponent } from './pages/players/players.component';
 import { AuthGuard } from './services/auth/auth.guard';
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
     { path: "payment-cancel", component: PaymentCancelComponent },
     { path: "login", component: LoginComponent },
     { path: "teams", component: TeamsComponent, canActivate: [AuthGuard] },
+    { path: "players", component: PlayersComponent, canActivate: [AuthGuard] },
 ];
 

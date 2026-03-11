@@ -73,5 +73,10 @@ namespace SportsReservationAPI.Services
             team.IsPaid = true;
             await _context.SaveChangesAsync();
         }
+        public async Task<int> GetTeamCountAsync()
+        {
+            return await _context.Teams.CountAsync();
+        }
     }
+
 }

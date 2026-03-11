@@ -11,5 +11,6 @@
         public string Outfit { get; set; } = "";
         public bool Volunteer { get; set; }
         public bool AcceptMails { get; set; }
+        public string TeamName { get; set; } = string.Empty;
     }
 }

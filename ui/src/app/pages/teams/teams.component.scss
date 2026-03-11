@@ -3,27 +3,63 @@
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #0d0d0d;
-  font-family: "DM Sans", sans-serif;
-  color: #ffffff;
 }
 
+// ── Page layout ───────────────────────────────────────────────────────────────
 .teams-page {
   min-height: 100vh;
+  background-color: #0d0d0d;
   background-image: radial-gradient(
     ellipse 60% 40% at 80% 0%,
     rgba(220, 38, 38, 0.08) 0%,
     transparent 60%
   );
+  font-family: "DM Sans", sans-serif;
+  color: #ffffff;
+  position: relative;
+  overflow-x: hidden;
 }
 
-// ── Top bar ──────────────────────────────────────────────────────────────────
+// ── Top bar ───────────────────────────────────────────────────────────────────
 .top-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 2rem;
   padding: 1.2rem 2.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  .brand {
+    margin-right: auto;
+  } // ← pushes nav + user-area to the right
+}
+
+// ── Nav links ─────────────────────────────────────────────────────────────────
+.nav-links {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0.4rem 1rem;
+  border-radius: 3px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .brand {
@@ -85,9 +121,10 @@
 
 // ── Content ───────────────────────────────────────────────────────────────────
 .content {
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 3rem 2rem;
+  transition: margin-right 0.3s ease;
 }
 
 .page-title {
@@ -101,7 +138,6 @@
     font-size: 3rem;
     letter-spacing: 0.08em;
     margin: 0;
-    color: #ffffff;
   }
 
   .count {
@@ -123,13 +159,17 @@
 .team-row {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1.1rem 0;
+  gap: 1.2rem;
+  padding: 1.1rem 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
+  border-radius: 3px;
   transition: background 0.15s;
 
-  &:hover {
+  &:hover,
+  &.active {
+    background: rgba(255, 255, 255, 0.04);
+
     .team-name {
       color: #ffffff;
     }
@@ -138,12 +178,16 @@
       color: #dc2626;
     }
   }
+
+  &.active {
+    border-left: 2px solid #dc2626;
+    padding-left: calc(0.5rem - 2px);
+  }
 }
 
 .team-index {
   font-family: "Bebas Neue", sans-serif;
   font-size: 0.9rem;
-  letter-spacing: 0.05em;
   color: rgba(255, 255, 255, 0.2);
   min-width: 28px;
 }
@@ -151,9 +195,29 @@
 .team-name {
   flex: 1;
   font-size: 1rem;
-  font-weight: 400;
   color: rgba(255, 255, 255, 0.75);
   transition: color 0.15s;
+}
+
+.team-badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+
+  &.paid {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  &.unpaid {
+    background: rgba(220, 38, 38, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(220, 38, 38, 0.25);
+  }
 }
 
 .team-arrow {
@@ -165,14 +229,222 @@
     color 0.15s;
 }
 
-// ── Loading skeleton ──────────────────────────────────────────────────────────
+// ── Backdrop ──────────────────────────────────────────────────────────────────
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ── Slide-in panel ────────────────────────────────────────────────────────────
+.detail-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 480px;
+  max-width: 95vw;
+  background: #141414;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &.open {
+    transform: translateX(0);
+  }
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+
+  h2 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    margin: 0;
+    color: #ffffff;
+  }
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: rgba(220, 38, 38, 0.2);
+    color: #f87171;
+    border-color: rgba(220, 38, 38, 0.4);
+  }
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+}
+
+// ── Info section ──────────────────────────────────────────────────────────────
+.info-section {
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.info-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.info-value {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+// ── Players section ───────────────────────────────────────────────────────────
+.section-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  margin: 0 0 1rem;
+}
+
+.player-card {
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.player-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.player-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.player-category {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.player-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.6rem;
+}
+
+.player-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  &.outfit {
+    background: rgba(220, 38, 38, 0.08);
+    color: rgba(248, 113, 113, 0.7);
+    border-color: rgba(220, 38, 38, 0.2);
+  }
+}
+
+// ── Loading / error ───────────────────────────────────────────────────────────
 .loading-state {
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
+.panel-loading {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
 .pulse-row {
   height: 52px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.03) 0%,
@@ -192,9 +464,9 @@
   }
 }
 
-// ── Error state ───────────────────────────────────────────────────────────────
-.error-state {
+.error-state,
+.panel-error {
   color: #f87171;
   font-size: 0.9rem;
-  padding: 1rem 0;
+  padding: 1rem;
 }

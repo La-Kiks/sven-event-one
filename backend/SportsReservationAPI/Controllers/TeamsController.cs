@@ -11,11 +11,11 @@ using SportsReservationAPI.Services;
 namespace SportsReservationAPI.Controllers
 {
     [Route("api/[controller]")]
-
     [ApiController]
     public class TeamsController : ControllerBase
     {
         private readonly TeamService _teamService;
+        private const int MaxTeams = 50;
 
         public TeamsController(TeamService teamService)
         {
@@ -48,6 +48,19 @@ namespace SportsReservationAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Error = "An unexpected error occurred." });
             }
+        }
+
+        // ── Public: GET /api/Teams/count ──────────────────────────────────────
+        [HttpGet("count")]
+        public async Task<IActionResult> GetTeamCount()
+        {
+            var count = await _teamService.GetTeamCountAsync();
+            return Ok(new
+            {
+                current = count,
+                max = MaxTeams,
+                isFull = count >= MaxTeams
+            });
         }
 
         [HttpGet("{teamId}")]

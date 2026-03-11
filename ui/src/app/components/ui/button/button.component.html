@@ -1,3 +1,9 @@
-<a class="btn" [routerLink]="link" target="_blank" rel="noopener noreferrer">
-    {{label}}
+<!-- Active: navigates to link -->
+<a *ngIf="!isFull" class="btn" [routerLink]="link" target="_blank" rel="noopener noreferrer">
+    {{ label }}
 </a>
+
+<!-- Full: no link, visually disabled -->
+<span *ngIf="isFull" class="btn btn--full">
+    INSCRIPTIONS FERME
+</span>

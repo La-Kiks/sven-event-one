@@ -1,0 +1,84 @@
+<div class="players-page">
+
+    <header class="top-bar">
+        <div class="brand">
+            <span class="logo-mark">SR</span>
+            <span class="brand-name">Sports Reservation</span>
+        </div>
+        <nav class="nav-links">
+            <button class="nav-btn" (click)="goToTeams()">Teams</button>
+            <button class="nav-btn active">Players</button>
+        </nav>
+        <div class="user-area">
+            <span class="username">{{ currentUser?.username }}</span>
+            <button class="logout-btn" (click)="authService.logout()">Sign out</button>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="page-title">
+            <h1>Players</h1>
+            <span class="count" *ngIf="!isLoading && !error">{{ players.length }} players</span>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading-state" *ngIf="isLoading">
+            <div class="pulse-row" *ngFor="let i of [1,2,3,4,5]"></div>
+        </div>
+
+        <!-- Error -->
+        <div class="error-state" *ngIf="error">{{ error }}</div>
+
+        <!-- Table -->
+        <div class="table-wrapper" *ngIf="!isLoading && !error">
+            <table>
+                <thead>
+                    <tr>
+                        <th (click)="sort('lastName')" class="sortable">
+                            Name <span class="sort-icon">{{ getSortIcon('lastName') }}</span>
+                        </th>
+                        <th (click)="sort('teamName')" class="sortable">
+                            Team <span class="sort-icon">{{ getSortIcon('teamName') }}</span>
+                        </th>
+                        <th (click)="sort('category')" class="sortable">
+                            Category <span class="sort-icon">{{ getSortIcon('category') }}</span>
+                        </th>
+                        <th (click)="sort('outfit')" class="sortable">
+                            Outfit <span class="sort-icon">{{ getSortIcon('outfit') }}</span>
+                        </th>
+                        <th (click)="sort('email')" class="sortable">
+                            Email <span class="sort-icon">{{ getSortIcon('email') }}</span>
+                        </th>
+                        <th (click)="sort('phoneNumber')" class="sortable">
+                            Phone <span class="sort-icon">{{ getSortIcon('phoneNumber') }}</span>
+                        </th>
+                        <th (click)="sort('volunteer')" class="sortable">
+                            Volunteer <span class="sort-icon">{{ getSortIcon('volunteer') }}</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let player of sorted">
+                        <td class="name-cell">
+                            <span class="full-name">{{ player.firstName }} {{ player.lastName }}</span>
+                        </td>
+                        <td>
+                            <span class="team-pill">{{ player.teamName }}</span>
+                        </td>
+                        <td>
+                            <span class="category-tag">{{ player.category }}</span>
+                        </td>
+                        <td class="muted">{{ player.outfit }}</td>
+                        <td class="muted">{{ player.email }}</td>
+                        <td class="muted">{{ player.phoneNumber }}</td>
+                        <td>
+                            <span class="volunteer-badge yes" *ngIf="player.volunteer">Yes</span>
+                            <span class="volunteer-badge no" *ngIf="!player.volunteer">No</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</div>

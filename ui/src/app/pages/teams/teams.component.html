@@ -1,16 +1,22 @@
-<div class="teams-page">
+<div class="teams-page" [class.panel-open]="isPanelOpen">
 
+    <!-- Top bar -->
     <header class="top-bar">
         <div class="brand">
             <span class="logo-mark">SR</span>
             <span class="brand-name">Sports Reservation</span>
         </div>
+        <nav class="nav-links">
+            <button class="nav-btn active">Teams</button>
+            <button class="nav-btn" routerLink="/players">Players</button>
+        </nav>
         <div class="user-area">
             <span class="username">{{ currentUser?.username }}</span>
             <button class="logout-btn" (click)="authService.logout()">Sign out</button>
         </div>
     </header>
 
+    <!-- Main content -->
     <main class="content">
         <div class="page-title">
             <h1>Teams</h1>
@@ -21,17 +27,87 @@
             <div class="pulse-row" *ngFor="let i of [1,2,3]"></div>
         </div>
 
-        <div class="error-state" *ngIf="error">
-            <p>{{ error }}</p>
-        </div>
+        <div class="error-state" *ngIf="error">{{ error }}</div>
 
         <ul class="teams-list" *ngIf="!isLoading && !error">
-            <li class="team-row" *ngFor="let team of teams; let i = index">
+            <li class="team-row" *ngFor="let team of teams; let i = index" (click)="openPanel(team)"
+                [class.active]="selectedTeam?.id === team.id">
                 <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
                 <span class="team-name">{{ team.name }}</span>
+                <span class="team-badge paid" *ngIf="team.isPaid">Paid</span>
+                <span class="team-badge unpaid" *ngIf="!team.isPaid">Unpaid</span>
                 <span class="team-arrow">→</span>
             </li>
         </ul>
     </main>
+
+    <!-- Backdrop -->
+    <div class="backdrop" *ngIf="isPanelOpen" (click)="closePanel()"></div>
+
+    <!-- Slide-in panel -->
+    <aside class="detail-panel" [class.open]="isPanelOpen">
+
+        <div class="panel-header">
+            <button class="close-btn" (click)="closePanel()">✕</button>
+            <h2 *ngIf="selectedTeam">{{ selectedTeam.name }}</h2>
+            <h2 *ngIf="!selectedTeam && isPanelLoading">Loading...</h2>
+        </div>
+
+        <!-- Loading -->
+        <div class="panel-loading" *ngIf="isPanelLoading">
+            <div class="pulse-row" *ngFor="let i of [1,2,3,4]"></div>
+        </div>
+
+        <!-- Error -->
+        <div class="panel-error" *ngIf="panelError">{{ panelError }}</div>
+
+        <!-- Content -->
+        <div class="panel-content" *ngIf="selectedTeam && !isPanelLoading">
+
+            <!-- Team info -->
+            <section class="info-section">
+                <div class="info-row">
+                    <span class="info-label">Version</span>
+                    <span class="info-value">{{ selectedTeam.version }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Administration</span>
+                    <span class="info-value">{{ selectedTeam.administration }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Payment</span>
+                    <span class="info-value">
+                        <span class="team-badge paid" *ngIf="selectedTeam.isPaid">✓ Paid</span>
+                        <span class="team-badge unpaid" *ngIf="!selectedTeam.isPaid">✗ Unpaid</span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Players</span>
+                    <span class="info-value">{{ selectedTeam.players.length }}</span>
+                </div>
+            </section>
+
+            <!-- Players list -->
+            <section class="players-section">
+                <h3 class="section-title">Players</h3>
+                <div class="player-card" *ngFor="let player of selectedTeam.players">
+                    <div class="player-main">
+                        <span class="player-name">{{ player.firstName }} {{ player.lastName }}</span>
+                        <span class="player-category">{{ player.category }}</span>
+                    </div>
+                    <div class="player-meta">
+                        <span>{{ player.email }}</span>
+                        <span>{{ player.phoneNumber }}</span>
+                    </div>
+                    <div class="player-tags">
+                        <span class="tag" *ngIf="player.volunteer">Volunteer</span>
+                        <span class="tag" *ngIf="player.acceptMails">Newsletter</span>
+                        <span class="tag outfit">{{ player.outfit }}</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </aside>
 
 </div>
