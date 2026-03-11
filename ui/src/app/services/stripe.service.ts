@@ -9,7 +9,7 @@ import { environment } from "../../environment";
 
 export class StripeService {
 
-    private readonly createCheckoutApiUrl = `${environment.apiUrl}/stripe/create-checkout-session`;
+    private readonly createCheckoutApiUrl = `${environment.apiUrl}/api/stripe/create-checkout-session`;
 
     constructor(private http: HttpClient) { }
 

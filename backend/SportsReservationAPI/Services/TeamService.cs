@@ -56,6 +56,13 @@ namespace SportsReservationAPI.Services
                 .FirstOrDefaultAsync(t => t.Id == teamId);
         }
 
+        public async Task<List<Team>> GetAllTeamsWithPlayersAsync()
+        {
+            return await _context.Teams
+                .Include(t => t.Players)
+                .ToListAsync();
+        }
+
         public async Task MarkTeamAsPaidAsync(int teamId)
         {
             var team = await _context.Teams.FindAsync(teamId);

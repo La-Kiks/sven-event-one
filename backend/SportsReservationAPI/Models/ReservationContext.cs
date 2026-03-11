@@ -10,5 +10,6 @@ namespace SportsReservationAPI.Models
         }
         public DbSet<Team.Team> Teams { get; set; } 
         public DbSet<Player.Player> Players { get; set; }
+        public DbSet<User.User> Users { get; set; }
     }
 }

@@ -1,0 +1,37 @@
+<div class="teams-page">
+
+    <header class="top-bar">
+        <div class="brand">
+            <span class="logo-mark">SR</span>
+            <span class="brand-name">Sports Reservation</span>
+        </div>
+        <div class="user-area">
+            <span class="username">{{ currentUser?.username }}</span>
+            <button class="logout-btn" (click)="authService.logout()">Sign out</button>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="page-title">
+            <h1>Teams</h1>
+            <span class="count" *ngIf="!isLoading && !error">{{ teams.length }} teams</span>
+        </div>
+
+        <div class="loading-state" *ngIf="isLoading">
+            <div class="pulse-row" *ngFor="let i of [1,2,3]"></div>
+        </div>
+
+        <div class="error-state" *ngIf="error">
+            <p>{{ error }}</p>
+        </div>
+
+        <ul class="teams-list" *ngIf="!isLoading && !error">
+            <li class="team-row" *ngFor="let team of teams; let i = index">
+                <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+                <span class="team-name">{{ team.name }}</span>
+                <span class="team-arrow">→</span>
+            </li>
+        </ul>
+    </main>
+
+</div>

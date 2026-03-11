@@ -12,7 +12,7 @@ import { CreateTeamResponse } from '../models/create-team-response';
 
 export class TeamService {
 
-    private readonly createTeamApiUrl = `${environment.apiUrl}/teams/create-team`;
+    private readonly createTeamApiUrl = `${environment.apiUrl}/api/teams/create-team`;
 
     constructor(private http: HttpClient) { }
 

@@ -19,7 +19,9 @@ namespace SportsReservationAPI.Configuration
                 { "RESERVATION_DB_SERVER", "ConnectionStrings:ReservationDatabase:Server" },
                 { "RESERVATION_DB_NAME", "ConnectionStrings:ReservationDatabase:Database" },
                 { "DB_USER", "ConnectionStrings:ReservationDatabase:User" },
-                { "DB_PASSWORD", "ConnectionStrings:ReservationDatabase:Password" }
+                { "DB_PASSWORD", "ConnectionStrings:ReservationDatabase:Password" },
+                { "JWT_KEY", "Jwt:Key" },
+                { "JWT_ISSUER", "Jwt:Issuer" }
             };
 
             var configurationDict = new Dictionary<string, string>();
