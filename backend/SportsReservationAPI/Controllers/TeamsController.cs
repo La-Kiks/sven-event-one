@@ -30,6 +30,12 @@ namespace SportsReservationAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            // Hard limit — blocks direct API calls too
+            var count = await _teamService.GetTeamCountAsync();
+            if (count >= MaxTeams)
+                return Conflict(new { Error = $"Registration is closed. The maximum of {MaxTeams} teams has been reached." });
+
             try
             {
                 var teamId = await _teamService.CreateTeamWithPlayersAsync(dto.TeamDto, dto.PlayerDtos);
