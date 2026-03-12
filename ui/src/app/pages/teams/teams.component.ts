@@ -22,6 +22,7 @@ interface Team {
   name: string;
   version: string;
   administration: string;
+  category: string; // ← added
   isPaid: boolean;
   players: Player[];
 }
@@ -34,7 +35,7 @@ interface Team {
   styleUrls: ['./teams.component.scss']
 })
 export class TeamsComponent implements OnInit {
-  sortField: 'name' | 'version' | 'administration' = 'name';
+  sortField: 'name' | 'version' | 'administration' | 'category' = 'name'; // ← category added
   sortDir: 'asc' | 'desc' = 'asc';
   sortedTeams: Team[] = [];
   teams: Team[] = [];
@@ -140,7 +141,16 @@ export class TeamsComponent implements OnInit {
     return labels[value] ?? value;
   }
 
-  sort(field: 'name' | 'version' | 'administration'): void {
+  getCategoryLabel(value: string): string {
+    const labels: Record<string, string> = {
+      man: 'Homme',
+      woman: 'Femme',
+      mixt: 'Mixte'
+    };
+    return labels[value] ?? value;
+  }
+
+  sort(field: 'name' | 'version' | 'administration' | 'category'): void {
     if (this.sortField === field) {
       this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
     } else {
@@ -157,7 +167,7 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  getSortIcon(field: 'name' | 'version' | 'administration'): string {
+  getSortIcon(field: 'name' | 'version' | 'administration' | 'category'): string {
     if (this.sortField !== field) return '↕';
     return this.sortDir === 'asc' ? '↑' : '↓';
   }

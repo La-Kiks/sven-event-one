@@ -86,6 +86,7 @@ namespace SportsReservationAPI.Controllers
                 Id = team.Id,
                 Name = team.Name,
                 Version = team.Version,
+                Category = team.Category,
                 Administration = team.Administration,
                 IsPaid = team.IsPaid,
                 Players = team.Players.Select(p => new PlayerDto
@@ -115,6 +116,7 @@ namespace SportsReservationAPI.Controllers
                 Id = team.Id,
                 Name = team.Name,
                 Version = team.Version,
+                Category = team.Category,
                 Administration = team.Administration,
                 IsPaid = team.IsPaid,
                 Players = team.Players.Select(p => new PlayerDto

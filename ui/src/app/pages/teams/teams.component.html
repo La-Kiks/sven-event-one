@@ -35,6 +35,9 @@
                     <th class="sortable" (click)="sort('name')">
                         Team <span class="sort-icon">{{ getSortIcon('name') }}</span>
                     </th>
+                    <th class="sortable" (click)="sort('category')">
+                        Category <span class="sort-icon">{{ getSortIcon('category') }}</span>
+                    </th>
                     <th class="sortable" (click)="sort('version')">
                         Version <span class="sort-icon">{{ getSortIcon('version') }}</span>
                     </th>
@@ -50,6 +53,11 @@
                     <td class="name-cell">
                         <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
                         <span class="team-name">{{ team.name }}</span>
+                    </td>
+                    <td>
+                        <span class="category-badge" [ngClass]="team.category">
+                            {{ getCategoryLabel(team.category) }}
+                        </span>
                     </td>
                     <td class="team-meta">{{ team.version === 'short' ? 'Court' : 'Long' }}</td>
                     <td class="team-meta">{{ getAdminLabel(team.administration) }}</td>
@@ -72,7 +80,6 @@
             <button class="close-btn" (click)="closePanel()">✕</button>
             <h2 *ngIf="selectedTeam">{{ selectedTeam.name }}</h2>
             <h2 *ngIf="!selectedTeam && isPanelLoading">Loading...</h2>
-            <!-- Delete trigger button -->
             <button *ngIf="selectedTeam && !isPanelLoading" class="delete-btn" (click)="confirmDelete()">
                 Delete
             </button>
@@ -93,9 +100,7 @@
             </p>
             <div class="confirm-error" *ngIf="deleteError">{{ deleteError }}</div>
             <div class="confirm-actions">
-                <button class="confirm-cancel-btn" (click)="cancelDelete()" [disabled]="isDeleting">
-                    Cancel
-                </button>
+                <button class="confirm-cancel-btn" (click)="cancelDelete()" [disabled]="isDeleting">Cancel</button>
                 <button class="confirm-delete-btn" (click)="deleteTeam()" [disabled]="isDeleting">
                     {{ isDeleting ? 'Deleting...' : 'Yes, delete' }}
                 </button>
@@ -107,6 +112,14 @@
 
             <!-- Team info -->
             <section class="info-section">
+                <div class="info-row">
+                    <span class="info-label">Category</span>
+                    <span class="info-value">
+                        <span class="category-badge" [ngClass]="selectedTeam.category">
+                            {{ getCategoryLabel(selectedTeam.category) }}
+                        </span>
+                    </span>
+                </div>
                 <div class="info-row">
                     <span class="info-label">Version</span>
                     <span class="info-value">{{ selectedTeam.version === 'short' ? 'Court' : 'Long' }}</span>

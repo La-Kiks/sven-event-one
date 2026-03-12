@@ -120,7 +120,7 @@
 
 // ── Content ───────────────────────────────────────────────────────────────────
 .content {
-  max-width: 800px;
+  max-width: 900px; // ← slightly wider to fit the extra column
   margin: 0 auto;
   padding: 3rem 2rem;
   transition: margin-right 0.3s ease;
@@ -231,6 +231,35 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
+// ── Category badge ────────────────────────────────────────────────────────────
+.category-badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+
+  &.man {
+    background: rgba(59, 130, 246, 0.12);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+  }
+
+  &.woman {
+    background: rgba(236, 72, 153, 0.12);
+    color: #f9a8d4;
+    border: 1px solid rgba(236, 72, 153, 0.25);
+  }
+
+  &.mixt {
+    background: rgba(168, 85, 247, 0.12);
+    color: #d8b4fe;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+  }
+}
+
+// ── Payment badge ─────────────────────────────────────────────────────────────
 .team-badge {
   font-size: 0.7rem;
   font-weight: 500;
@@ -306,7 +335,7 @@
     letter-spacing: 0.06em;
     margin: 0;
     color: #ffffff;
-    flex: 1; // pushes delete btn to the right
+    flex: 1;
   }
 }
 
@@ -331,7 +360,6 @@
   }
 }
 
-// ── Delete button (panel header) ──────────────────────────────────────────────
 .delete-btn {
   background: transparent;
   border: 1px solid rgba(220, 38, 38, 0.3);

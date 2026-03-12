@@ -15,19 +15,22 @@ namespace SportsReservationAPI.Services
             _context = context;
         }
 
+
         public async Task<int> CreateTeamWithPlayersAsync(
-            CreateTeamDto teamDto, 
-            List<CreatePlayerDto> playerDtos)
+    CreateTeamDto teamDto,
+    List<CreatePlayerDto> playerDtos)
         {
             if (playerDtos.Count != 2)
-            {
                 throw new ValidationException("Exactly two players are required to create a team.");
-            }            
+
+            var category = DetermineTeamCategory(playerDtos[0].Category, playerDtos[1].Category);
+
             var team = new Team
             {
                 Name = teamDto.TeamName,
                 Version = teamDto.Version,
                 Administration = teamDto.Administration,
+                Category = category, 
                 Players = playerDtos.Select(dto => new Player
                 {
                     FirstName = dto.FirstName,
@@ -42,11 +45,14 @@ namespace SportsReservationAPI.Services
             };
 
             _context.Teams.Add(team);
-            
             await _context.SaveChangesAsync();
-
             return team.Id;
-            
+        }
+
+        private static string DetermineTeamCategory(string cat1, string cat2)
+        {
+            if (cat1 == cat2) return cat1; 
+            return "mixt"; 
         }
 
         public async Task<Team?> GetTeamWithPlayersAsync(int teamId)
