@@ -21,6 +21,9 @@ services:
       STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
 
+      JWT_KEY: ${JWT_KEY}
+      JWT_ISSUER: ${JWT_ISSUER}
+
       API_BASE_URL: ${API_BASE_URL}
       FRONTEND_BASE_URL: ${FRONTEND_BASE_URL}
       ENVIRONMENT: ${ENVIRONMENT}
@@ -43,6 +46,16 @@ services:
       MSSQL_PID: Express
     volumes:
       - sql-data:/var/opt/mssql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${DB_PASSWORD}' -Q 'SELECT 1' -No || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s # give SQL Server time to initialize
 
 volumes:
   sql-data:
