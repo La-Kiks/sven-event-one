@@ -77,6 +77,20 @@ namespace SportsReservationAPI.Services
         {
             return await _context.Teams.CountAsync();
         }
+
+        public async Task<bool> DeleteTeamAsync(int teamId)
+        {
+            var team = await _context.Teams
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(t => t.Id == teamId);
+
+            if (team == null)
+                return false;
+
+            _context.Teams.Remove(team); // cascades to players if configured
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 
 }

@@ -48,6 +48,11 @@ export class TeamsComponent implements OnInit {
   isPanelLoading = false;
   panelError = '';
 
+  // Delete state
+  showDeleteConfirm = false;
+  isDeleting = false;
+  deleteError = '';
+
   constructor(private http: HttpClient, public authService: AuthService) {
     this.currentUser = this.authService.getCurrentUser();
   }
@@ -71,6 +76,8 @@ export class TeamsComponent implements OnInit {
     this.isPanelLoading = true;
     this.panelError = '';
     this.selectedTeam = null;
+    this.showDeleteConfirm = false;
+    this.deleteError = '';
 
     this.http.get<Team>(`${environment.apiUrl}/api/Teams/${team.id}`).subscribe({
       next: (data) => {
@@ -86,7 +93,38 @@ export class TeamsComponent implements OnInit {
 
   closePanel(): void {
     this.isPanelOpen = false;
+    this.showDeleteConfirm = false;
+    this.deleteError = '';
     setTimeout(() => this.selectedTeam = null, 300);
+  }
+
+  confirmDelete(): void {
+    this.showDeleteConfirm = true;
+    this.deleteError = '';
+  }
+
+  cancelDelete(): void {
+    this.showDeleteConfirm = false;
+    this.deleteError = '';
+  }
+
+  deleteTeam(): void {
+    if (!this.selectedTeam) return;
+    this.isDeleting = true;
+    this.deleteError = '';
+
+    this.http.delete(`${environment.apiUrl}/api/Teams/${this.selectedTeam.id}`).subscribe({
+      next: () => {
+        this.teams = this.teams.filter(t => t.id !== this.selectedTeam!.id);
+        this.applySort();
+        this.closePanel();
+        this.isDeleting = false;
+      },
+      error: () => {
+        this.deleteError = 'Failed to delete team. Please try again.';
+        this.isDeleting = false;
+      }
+    });
   }
 
   getAdminLabel(value: string): string {
@@ -101,6 +139,7 @@ export class TeamsComponent implements OnInit {
     };
     return labels[value] ?? value;
   }
+
   sort(field: 'name' | 'version' | 'administration'): void {
     if (this.sortField === field) {
       this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';

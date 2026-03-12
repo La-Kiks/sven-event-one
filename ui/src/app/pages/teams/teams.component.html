@@ -72,6 +72,10 @@
             <button class="close-btn" (click)="closePanel()">✕</button>
             <h2 *ngIf="selectedTeam">{{ selectedTeam.name }}</h2>
             <h2 *ngIf="!selectedTeam && isPanelLoading">Loading...</h2>
+            <!-- Delete trigger button -->
+            <button *ngIf="selectedTeam && !isPanelLoading" class="delete-btn" (click)="confirmDelete()">
+                Delete
+            </button>
         </div>
 
         <!-- Loading -->
@@ -82,18 +86,34 @@
         <!-- Error -->
         <div class="panel-error" *ngIf="panelError">{{ panelError }}</div>
 
+        <!-- Delete confirmation -->
+        <div class="delete-confirm" *ngIf="showDeleteConfirm && selectedTeam">
+            <p class="confirm-text">
+                Delete <strong>{{ selectedTeam.name }}</strong> and all its players? This cannot be undone.
+            </p>
+            <div class="confirm-error" *ngIf="deleteError">{{ deleteError }}</div>
+            <div class="confirm-actions">
+                <button class="confirm-cancel-btn" (click)="cancelDelete()" [disabled]="isDeleting">
+                    Cancel
+                </button>
+                <button class="confirm-delete-btn" (click)="deleteTeam()" [disabled]="isDeleting">
+                    {{ isDeleting ? 'Deleting...' : 'Yes, delete' }}
+                </button>
+            </div>
+        </div>
+
         <!-- Content -->
-        <div class="panel-content" *ngIf="selectedTeam && !isPanelLoading">
+        <div class="panel-content" *ngIf="selectedTeam && !isPanelLoading && !showDeleteConfirm">
 
             <!-- Team info -->
             <section class="info-section">
                 <div class="info-row">
                     <span class="info-label">Version</span>
-                    <span class="info-value">{{ selectedTeam.version }}</span>
+                    <span class="info-value">{{ selectedTeam.version === 'short' ? 'Court' : 'Long' }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Administration</span>
-                    <span class="info-value">{{ selectedTeam.administration }}</span>
+                    <span class="info-value">{{ getAdminLabel(selectedTeam.administration) }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Payment</span>

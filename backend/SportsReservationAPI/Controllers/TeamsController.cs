@@ -132,5 +132,17 @@ namespace SportsReservationAPI.Controllers
             }).ToList();
             return Ok(teamDtos);
         }
+
+        // ── Protected: DELETE /api/Teams/{teamId} ─────────────────────────────────
+        [HttpDelete("{teamId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteTeam(int teamId)
+        {
+            var deleted = await _teamService.DeleteTeamAsync(teamId);
+            if (!deleted)
+                return NotFound(new { Error = $"Team {teamId} not found." });
+
+            return NoContent(); // 204
+        }
     }
 }

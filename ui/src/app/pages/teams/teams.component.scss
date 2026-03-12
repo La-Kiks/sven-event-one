@@ -30,10 +30,9 @@
 
   .brand {
     margin-right: auto;
-  } // ← pushes nav + user-area to the right
+  }
 }
 
-// ── Nav links ─────────────────────────────────────────────────────────────────
 .nav-links {
   display: flex;
   gap: 0.3rem;
@@ -148,14 +147,7 @@
   }
 }
 
-// ── Teams list ────────────────────────────────────────────────────────────────
-.teams-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-
+// ── Teams table ───────────────────────────────────────────────────────────────
 .teams-table {
   width: 100%;
   border-collapse: collapse;
@@ -222,41 +214,6 @@
   gap: 0.8rem;
 }
 
-.team-row {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 1.1rem 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  cursor: pointer;
-  border-radius: 3px;
-  transition: background 0.15s;
-
-  &:hover,
-  &.active {
-    background: rgba(255, 255, 255, 0.04);
-
-    .team-name {
-      color: #ffffff;
-    }
-    .team-meta {
-      font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.35);
-      white-space: nowrap;
-      min-width: 100px;
-    }
-    .team-arrow {
-      opacity: 1;
-      color: #dc2626;
-    }
-  }
-
-  &.active {
-    border-left: 2px solid #dc2626;
-    padding-left: calc(0.5rem - 2px);
-  }
-}
-
 .team-index {
   font-family: "Bebas Neue", sans-serif;
   font-size: 0.9rem;
@@ -265,10 +222,13 @@
 }
 
 .team-name {
-  flex: 1;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.75);
-  transition: color 0.15s;
+}
+
+.team-meta {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .team-badge {
@@ -290,15 +250,6 @@
     color: #f87171;
     border: 1px solid rgba(220, 38, 38, 0.25);
   }
-}
-
-.team-arrow {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.2);
-  opacity: 0;
-  transition:
-    opacity 0.15s,
-    color 0.15s;
 }
 
 // ── Backdrop ──────────────────────────────────────────────────────────────────
@@ -355,6 +306,7 @@
     letter-spacing: 0.06em;
     margin: 0;
     color: #ffffff;
+    flex: 1; // pushes delete btn to the right
   }
 }
 
@@ -379,6 +331,105 @@
   }
 }
 
+// ── Delete button (panel header) ──────────────────────────────────────────────
+.delete-btn {
+  background: transparent;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  color: #f87171;
+  padding: 0.35rem 0.8rem;
+  border-radius: 3px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: rgba(220, 38, 38, 0.15);
+    border-color: rgba(220, 38, 38, 0.6);
+  }
+}
+
+// ── Delete confirmation ───────────────────────────────────────────────────────
+.delete-confirm {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(220, 38, 38, 0.05);
+  animation: fadeIn 0.15s ease;
+}
+
+.confirm-text {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 1.2rem;
+  line-height: 1.5;
+
+  strong {
+    color: #ffffff;
+  }
+}
+
+.confirm-error {
+  font-size: 0.82rem;
+  color: #f87171;
+  margin-bottom: 1rem;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.confirm-cancel-btn {
+  flex: 1;
+  padding: 0.6rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.confirm-delete-btn {
+  flex: 1;
+  padding: 0.6rem;
+  background: #dc2626;
+  border: none;
+  color: white;
+  border-radius: 3px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: #b91c1c;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// ── Panel content ─────────────────────────────────────────────────────────────
 .panel-content {
   flex: 1;
   overflow-y: auto;
@@ -396,7 +447,6 @@
   }
 }
 
-// ── Info section ──────────────────────────────────────────────────────────────
 .info-section {
   margin-bottom: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -429,7 +479,6 @@
   font-weight: 500;
 }
 
-// ── Players section ───────────────────────────────────────────────────────────
 .section-title {
   font-family: "Bebas Neue", sans-serif;
   font-size: 1rem;
