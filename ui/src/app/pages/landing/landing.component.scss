@@ -153,9 +153,21 @@ strong {
 }
 
 .partenaires {
-  // TODO : del height width
-  min-height: 200px;
-  min-width: 200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 
 .part-four {
@@ -198,9 +210,6 @@ strong {
 @media (min-width: 768px) {
   .part-one {
     background-size: cover;
-
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 60%, #000 95%)
-      url("/images/gym-competitors-large.jpg");
   }
 
   .cards > h1,
@@ -208,5 +217,14 @@ strong {
     display: flex;
     justify-content: center;
     grid-column: span 4;
+  }
+
+  .partenaires {
+    grid-template-columns: repeat(4, 1fr);
+
+    img {
+      max-width: 400px;
+      max-height: 400px;
+    }
   }
 }
