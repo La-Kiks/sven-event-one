@@ -7,7 +7,7 @@ RUN npm ci
 
 COPY . ./
 
-RUN ng build --configuration=production --base-href=/sven-event/ --deploy-url=/sven-event/
+RUN ng build --configuration=production
 
 FROM nginx:stable AS final
 EXPOSE 80
