@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { TeamsComponent } from './pages/teams/teams.component';
 import { PlayersComponent } from './pages/players/players.component';
 import { AuthGuard } from './services/auth/auth.guard';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
     { path: "", component: LandingComponent },
@@ -16,5 +17,6 @@ export const routes: Routes = [
     { path: "login", component: LoginComponent },
     { path: "teams", component: TeamsComponent, canActivate: [AuthGuard] },
     { path: "players", component: PlayersComponent, canActivate: [AuthGuard] },
+    { path: '**', component: NotFoundComponent },
 ];
 
