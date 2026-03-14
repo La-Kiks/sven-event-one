@@ -47,17 +47,24 @@ namespace SportsReservationAPI.Controllers
             });
         }
 
-        // TODO : DELETE TEST USER
-         [HttpPost("seed")]
-        public IActionResult SeedUser([FromServices] ReservationContext context)
+        // TODO : Comment this out in production, or add a check to only allow in development environment 
+        [HttpPost("seed")]
+        public IActionResult SeedUser(
+             [FromServices] ReservationContext context, 
+             [FromServices] IConfiguration configuration)
         {
-            if (context.Users.Any(u => u.Username == "admin"))
+            var username = configuration["ADMIN_USERNAME"];
+            var password = configuration["ADMIN_PASSWORD"];
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return BadRequest("Admin credentials not configured.");
+
+            if (context.Users.Any(u => u.Username == username))
                 return Ok("User already exists");
 
-            var hash = BCrypt.Net.BCrypt.HashPassword("admin123");
-            context.Users.Add(new User { Username = "admin", PasswordHash = hash, Role = "Admin" });
+            var hash = BCrypt.Net.BCrypt.HashPassword(password);
+            context.Users.Add(new User { Username = username, PasswordHash = hash, Role = "Admin" });
             context.SaveChanges();
-
             return Ok("User created");
         }
     }
