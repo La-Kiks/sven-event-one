@@ -36,7 +36,7 @@ namespace SportsReservationAPI.Controllers
                 {
                     new SessionLineItemOptions
                     {
-                        Price = "price_1SnFDV1fMF30f42GlLLtHqRp",
+                        Price = _apiSettings.Stripe.ProductPriceDuo,
                         Quantity = 1,
                     },
                 },
