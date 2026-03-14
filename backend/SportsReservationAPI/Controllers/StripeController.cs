@@ -59,9 +59,15 @@ namespace SportsReservationAPI.Controllers
         public async Task<IActionResult> Webhook()
         {
             _logger.LogInformation("Received Stripe webhook");
+            var signatureHeader = Request.Headers["Stripe-Signature"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(signatureHeader))
+            {
+                _logger.LogWarning("Missing Stripe-Signature header");
+                return BadRequest("Missing Stripe-Signature header");
+            }
 
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            var signatureHeader = Request.Headers["Stripe-Signature"];
             string webhookSecret = _apiSettings.Stripe.WebhookSecret;
 
             Event stripeEvent;
