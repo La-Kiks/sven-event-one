@@ -32,6 +32,12 @@ namespace SportsReservationAPI.Controllers
 
             var options = new Stripe.Checkout.SessionCreateOptions
             {
+                PaymentMethodTypes = new List<string>
+                {
+                    "card",
+                    "paypal",
+                    "revolut_pay",
+                },
                 LineItems = new List<SessionLineItemOptions>
                 {
                     new SessionLineItemOptions
