@@ -108,8 +108,9 @@ export class InscriptionFormComponent {
       // },
       next: () => {
         this.onSuccess();
+        console.log('Team created.');
         setTimeout(() => {
-          window.location.href = 'https://yurplan.com/';
+          window.location.href = 'https://yp.events/9f201d18-648c-44ab-9933-c4494c0b4afe/HYROX-POLICE-NATIONALE-54';
         }, 2000);
       },
       error: () => this.onError()
