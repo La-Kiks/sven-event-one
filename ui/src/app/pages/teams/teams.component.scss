@@ -281,6 +281,18 @@
   }
 }
 
+.team-badge.clickable {
+  cursor: pointer;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+
+  &:hover {
+    opacity: 0.75;
+    transform: scale(1.05);
+  }
+}
+
 // ── Backdrop ──────────────────────────────────────────────────────────────────
 .backdrop {
   position: fixed;

@@ -131,8 +131,10 @@
                 <div class="info-row">
                     <span class="info-label">Payment</span>
                     <span class="info-value">
-                        <span class="team-badge paid" *ngIf="selectedTeam.isPaid">✓ Paid</span>
-                        <span class="team-badge unpaid" *ngIf="!selectedTeam.isPaid">✗ Unpaid</span>
+                        <span class="team-badge paid clickable" *ngIf="selectedTeam.isPaid"
+                            (click)="togglePayment(selectedTeam)" title="Click to mark as unpaid">✓ Paid</span>
+                        <span class="team-badge unpaid clickable" *ngIf="!selectedTeam.isPaid"
+                            (click)="togglePayment(selectedTeam)" title="Click to mark as paid">✗ Unpaid</span>
                     </span>
                 </div>
                 <div class="info-row">

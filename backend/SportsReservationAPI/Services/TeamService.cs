@@ -97,6 +97,16 @@ namespace SportsReservationAPI.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> UpdatePaymentStatusAsync(int teamId, bool isPaid)
+        {
+            var team = await _context.Teams.FindAsync(teamId);
+            if (team == null) return false;
+
+            team.IsPaid = isPaid;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 
 }

@@ -171,4 +171,17 @@ export class TeamsComponent implements OnInit {
     if (this.sortField !== field) return '↕';
     return this.sortDir === 'asc' ? '↑' : '↓';
   }
+
+  togglePayment(team: Team): void {
+    this.http.patch(`${environment.apiUrl}/api/Teams/${team.id}/payment`, {
+      isPaid: !team.isPaid
+    }).subscribe({
+      next: () => {
+        team.isPaid = !team.isPaid;
+        if (this.selectedTeam?.id === team.id)
+          this.selectedTeam.isPaid = team.isPaid;
+      },
+      error: () => console.error('Failed to update payment status')
+    });
+  }
 }
