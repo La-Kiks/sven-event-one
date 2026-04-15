@@ -146,5 +146,17 @@ namespace SportsReservationAPI.Controllers
 
             return NoContent(); // 204
         }
+
+        // ── Protected: PATCH /api/Teams/{teamId}/payment ──────────────────────────
+        [HttpPatch("{teamId}/payment")]
+        [Authorize]
+        public async Task<IActionResult> UpdatePaymentStatus(int teamId, [FromBody] UpdatePaymentDto dto)
+        {
+            var updated = await _teamService.UpdatePaymentStatusAsync(teamId, dto.IsPaid);
+            if (!updated)
+                return NotFound(new { Error = $"Team {teamId} not found." });
+
+            return Ok(new { Message = $"Team {teamId} payment status updated to {dto.IsPaid}." });
+        }
     }
 }
