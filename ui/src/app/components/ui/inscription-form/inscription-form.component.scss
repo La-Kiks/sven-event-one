@@ -1,10 +1,14 @@
 @use "variables" as *;
 
 .form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 1440px;
   color: white;
   background-color: $background-bright-color;
   padding: 1em;
-  margin: 2em 1em;
+  margin: 2em auto;
   border-radius: 0.5em;
   border: solid 0.2em;
   border-color: $main-color;
@@ -23,6 +27,15 @@
   font-size: $text-xl;
 }
 
+.title2 {
+  margin: auto;
+  padding: 0.1em;
+  max-width: fit-content;
+  box-sizing: border-box;
+  font-family: $font-title;
+  font-size: $text-xl;
+}
+
 .label {
   margin: 0.5em 0em 0em 0em;
   padding: 0.5em 0em;
@@ -36,6 +49,8 @@
   border-radius: 0.5em;
   border: transparent 0px;
   width: 100%;
+  font-family: $font-body;
+  font-size: $text-sm;
 }
 
 .input:focus {

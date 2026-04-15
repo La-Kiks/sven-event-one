@@ -1,9 +1,12 @@
 <form class="form" [formGroup]="form">
-    <h1 class="row title" style="align-items: center;">Inscription</h1>
+    <h1 class="row title" style="align-items: center;">Inscription DUO {{ currentStep }}/3 </h1>
 
     <!-- Step 1 -->
     @if (currentStep === 1) {
     <div formGroupName="step1">
+        <h2 class="row title2">
+            Participant 1
+        </h2>
         <div class="row">
             <label class="label" for="name_a">Nom : <span class="required">*</span></label>
             <input class="input" id="name_a" formControlName="name_a" required>
@@ -68,7 +71,9 @@
     <!-- Step 2 -->
     @if (currentStep === 2) {
     <div formGroupName="step2">
-
+        <h2 class="row title2">
+            Participant 2
+        </h2>
         <div class="row">
             <label class="label" for="name_b">Nom : <span class="required">*</span></label>
             <input class="input" id="name_b" formControlName="name_b" required>
@@ -170,11 +175,8 @@
         </div>
 
         <div class="infoline">
-            <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required> Accepter de
-            recevoir
-            le mail
-            de
-            confirmation. Les informations de contact présentes dans ce formulaire ne seront utilisées que dans la cadre
+            <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required>Les informations de
+            contact présentes dans ce formulaire ne seront utilisées que dans la cadre
             de
             cet événement ou
             événement similaire.<span class="required">*</span>

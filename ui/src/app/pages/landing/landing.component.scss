@@ -1,6 +1,11 @@
 @use "variables" as *;
 
 .landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  max-width: 1440px;
   background-color: $background-color;
   scroll-behavior: smooth;
   overflow: scroll;

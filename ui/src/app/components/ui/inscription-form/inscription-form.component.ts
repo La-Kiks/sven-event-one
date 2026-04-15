@@ -100,10 +100,17 @@ export class InscriptionFormComponent {
     };
 
     this.teamService.createTeam(payload).subscribe({
-      next: (response) => {
-        console.log('Team created.');
-        this.stripeService.redirectToCheckout(response.teamId);
+      // // Outdated, was usefull on Stripe
+      // next: (response) => {
+      //   console.log('Team created.');
+      //   this.stripeService.redirectToCheckout(response.teamId);
+      //   this.onSuccess();
+      // },
+      next: () => {
         this.onSuccess();
+        setTimeout(() => {
+          window.location.href = 'https://yurplan.com/';
+        }, 2000);
       },
       error: () => this.onError()
     });
