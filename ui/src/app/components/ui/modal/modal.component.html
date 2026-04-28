@@ -5,6 +5,11 @@
             <app-error *ngSwitchCase="'error'"></app-error>
         </div>
         <p class="modal-message">{{ message }}</p>
+        <div *ngIf="url">
+            <a [href]="url" class="modal-url" target="_blank" rel="noopener noreferrer">
+    Redirection manuelle
+</a>
+        </div>
         <button class="modal-close-btn" (click)="onClose()">Fermer</button>
     </div>
 </div>

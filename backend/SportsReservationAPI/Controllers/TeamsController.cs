@@ -15,7 +15,7 @@ namespace SportsReservationAPI.Controllers
     public class TeamsController : ControllerBase
     {
         private readonly TeamService _teamService;
-        private const int MaxTeams = 50;
+        private const int MaxTeams = 60;
 
         public TeamsController(TeamService teamService)
         {

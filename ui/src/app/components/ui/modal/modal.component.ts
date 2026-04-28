@@ -15,6 +15,7 @@ export type StatusType = 'none' | 'success' | 'error';
 export class ModalComponent {
   @Input() status: StatusType = 'none'
   @Input() message: string = '';
+  @Input() url: string = '';
   @Input() isVisible: boolean = false;
   @Output() close = new EventEmitter<void>();
 

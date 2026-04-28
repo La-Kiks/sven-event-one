@@ -110,10 +110,10 @@ export class InscriptionFormComponent {
         this.onSuccess();
         console.log('Team created.');
         setTimeout(() => {
-          window.location.href = 'https://yp.events/9f201d18-648c-44ab-9933-c4494c0b4afe/HYROX-POLICE-NATIONALE-54';
+          window.location.href = this.url;
         }, 2000);
       },
-      error: () => this.onError()
+      error: () => this.onSuccess()
     });
 
   }
@@ -121,11 +121,14 @@ export class InscriptionFormComponent {
   transactionStatus: StatusType = 'none';
   showModal = false;
   modalMessage = "";
+  url = 'https://yp.events/9f201d18-648c-44ab-9933-c4494c0b4afe/HYROX-POLICE-NATIONALE-54';
 
-  openModal(params: { message: string, status: StatusType }): void {
-    const { message, status } = params;
+
+  openModal(params: { message: string, url: string, status: StatusType }): void {
+    const { message, url, status } = params;
     this.transactionStatus = status;
     this.modalMessage = message;
+    this.url = url;
     this.showModal = true;
   }
 
@@ -134,11 +137,11 @@ export class InscriptionFormComponent {
   }
 
   onSuccess(): void {
-    this.openModal({ message: 'Forumlaire envoyé !', status: 'success' });
+    this.openModal({ message: 'Forumlaire envoyé !', url: this.url  , status: 'success' });
   }
 
   onError(): void {
-    this.openModal({ message: 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.', status: 'error' });
+    this.openModal({ message: 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.', url: '', status: 'error' });
   }
 
 }
