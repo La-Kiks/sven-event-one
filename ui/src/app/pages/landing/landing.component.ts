@@ -17,7 +17,7 @@ export class LandingComponent implements OnInit {
   ngOnInit(): void {
     this.teamCountService.getCount().subscribe({
       next: (data) => this.isRegistrationFull = data.isFull,
-      error: () => this.isRegistrationFull = false
+      error: () => this.isRegistrationFull = true
     });
   }
 
