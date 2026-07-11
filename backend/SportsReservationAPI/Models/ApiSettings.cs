@@ -4,6 +4,7 @@
     {
         public StripeSettings Stripe { get; set; } = new();
         public DbSettings Db { get; set; } = new();
+        public MailSettings Mail { get; set; } = new();
         public string ApiBaseUrl { get; set; } = "";
         public string FrontendBaseUrl { get; set; } = "";
         public string Environment { get; set; } = "";
@@ -23,5 +24,14 @@
         public string? Database { get; set; }
         public string? User { get; set; }
         public string? Password { get; set; }
+    }
+
+    public class MailSettings
+    {
+        public string ApiKey { get; set; } = "";
+        public string Domain { get; set; } = "";
+        public string BaseUrl { get; set; } = "";
+        public string FromAddress { get; set; } = "";
+        public string FromName { get; set; } = "";
     }
 }
