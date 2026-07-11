@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportsReservationAPI.Exceptions;
 using SportsReservationAPI.Models;
 using SportsReservationAPI.Models.User;
 using SportsReservationAPI.Services;
@@ -23,10 +24,12 @@ namespace SportsReservationAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
+        private readonly UserService _userService;
 
-        public AuthController(AuthService authService)
+        public AuthController(AuthService authService, UserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -47,25 +50,29 @@ namespace SportsReservationAPI.Controllers
             });
         }
 
-        // TODO : Comment this out in production, or add a check to only allow in development environment 
-        //[HttpPost("seed")]
-        //public IActionResult SeedUser(
-        //     [FromServices] ReservationContext context, 
-        //     [FromServices] IConfiguration configuration)
-        //{
-        //    var username = configuration["ADMIN_USERNAME"];
-        //    var password = configuration["ADMIN_PASSWORD"];
+        // Verifies the email + sets the initial password in one step, then logs the user in directly.
+        [HttpPost("activate")]
+        public async Task<IActionResult> Activate([FromBody] ActivateAccountDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //    if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-        //        return BadRequest("Admin credentials not configured.");
+            try
+            {
+                var user = await _userService.VerifyAndSetPasswordAsync(dto.Token, dto.Password);
+                var token = _authService.GenerateToken(user);
 
-        //    if (context.Users.Any(u => u.Username == username))
-        //        return Ok("User already exists");
-
-        //    var hash = BCrypt.Net.BCrypt.HashPassword(password);
-        //    context.Users.Add(new User { Username = username, PasswordHash = hash, Role = "Admin" });
-        //    context.SaveChanges();
-        //    return Ok("User created");
-        //}
+                return Ok(new LoginResponse
+                {
+                    Token = token,
+                    Username = user.Username,
+                    Role = user.Role
+                });
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+        }
     }
 }

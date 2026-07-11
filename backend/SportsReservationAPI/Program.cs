@@ -8,6 +8,7 @@ using SportsReservationAPI.Configuration;
 using SportsReservationAPI.Models;
 using SportsReservationAPI.Models.Player;
 using SportsReservationAPI.Models.Team;
+using SportsReservationAPI.Models.User;
 using SportsReservationAPI.Services;
 using System.Text;
 
@@ -83,6 +84,8 @@ builder.Services.AddScoped<PlayerService>();
 builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<StripeService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddHttpClient<MailService>();
 
 // JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -131,6 +134,35 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("Database migration failed");
         Console.WriteLine(ex);
         throw;
+    }
+}
+
+// Dev-only: auto-create the admin account so a fresh local/dev database is
+// immediately usable via `docker compose up --build`, with no manual step.
+// Production already has its admin seeded out of band and is unaffected
+// (ENVIRONMENT will not be "Development" there).
+if (apiSettings?.Environment == "Development")
+{
+    using var seedScope = app.Services.CreateScope();
+    var seedContext = seedScope.ServiceProvider.GetRequiredService<ReservationContext>();
+
+    var adminUsername = app.Configuration["ADMIN_USERNAME"];
+    var adminPassword = app.Configuration["ADMIN_PASSWORD"];
+
+    if (string.IsNullOrWhiteSpace(adminUsername) || string.IsNullOrWhiteSpace(adminPassword))
+    {
+        Console.WriteLine("ADMIN_USERNAME/ADMIN_PASSWORD not set - skipping dev admin seed");
+    }
+    else if (!seedContext.Users.Any(u => u.Username == adminUsername))
+    {
+        seedContext.Users.Add(new User
+        {
+            Username = adminUsername,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword),
+            Role = "Admin"
+        });
+        seedContext.SaveChanges();
+        Console.WriteLine($"Dev admin account seeded: {adminUsername}");
     }
 }
 
