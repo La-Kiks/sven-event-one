@@ -58,4 +58,12 @@ docker-compose.yml               Orchestrates frontend + backend + SQL Server
 
 ## Development notes
 
-See [`CLAUDE.md`](CLAUDE.md) for a deeper architecture walkthrough (auth/role model, EF Core migration conventions, frontend runtime config injection, etc.). There is no automated test suite in this repo — changes are verified by rebuilding via `docker compose up --build` and exercising the running app.
+See [`CLAUDE.md`](CLAUDE.md) for a deeper architecture walkthrough (auth/role model, EF Core migration conventions, frontend runtime config injection, etc.). See [`docs/manual-testing-guide.md`](docs/manual-testing-guide.md) to manually exercise the participant/admin flows in a browser, and the "Automated tests" section below to run the API test suite.
+
+### Automated tests
+
+```bash
+docker compose run --rm tests
+```
+
+Runs the xUnit integration test suite (`backend/SportsReservationAPI.Tests`) against a dedicated, ephemeral SQL Server instance — never your dev database. See `CLAUDE.md` for how the suite is structured.
