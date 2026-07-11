@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { environment } from '../../../environment';
+import { environment } from '../../core/runtime-env';
 
 interface Player {
   id: number;

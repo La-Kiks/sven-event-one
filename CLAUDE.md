@@ -13,41 +13,15 @@ Both are wired together via the root `docker-compose.yml` plus a SQL Server cont
 
 ## Commands
 
-### Backend (`backend/SportsReservationAPI`)
-
-Run all commands from that directory.
+**This project is only ever run via Docker Compose — in local dev and in prod.** The user does not run `ng`, `npm`, or `dotnet` commands directly; don't suggest them as the way to run/build/test the app, and don't run them yourself (e.g. to "verify a build") without checking first.
 
 ```bash
-dotnet restore
-dotnet build
-dotnet run                          # runs with appsettings + .env (DotNetEnv) loaded via Configuration/EnvLoader.cs
-dotnet ef migrations add <Name>     # add a migration (Migrations/ folder)
-dotnet ef database update           # apply migrations manually (also auto-applied on app startup, see Program.cs)
+docker compose up --build      # build + run frontend, backend, and SQL Server
 ```
 
-There is no test project in this repo currently.
+Builds `ui` (Angular, built inside the image and served via nginx — see `ui/Dockerfile` + `ui/nginx.conf`) and `backend/SportsReservationAPI` (see its `Dockerfile`), plus a `mssql/server:2022-latest` container. Ports/credentials come from `.env` (`UI_PORT`, `API_PORT`, `DB_PORT`, etc. — see `.env.sample`). EF Core migrations are applied automatically on backend startup (see Program.cs), there's no separate migrate step.
 
-### Frontend (`ui`)
-
-Run all commands from that directory.
-
-```bash
-npm install
-npm start        # ng serve, http://localhost:4200
-npm run build    # ng build -> dist/
-npm run watch    # ng build --watch --configuration development
-npm test         # ng test (Karma/Jasmine)
-```
-
-To run a single spec, use Angular CLI's Karma filtering, e.g. `ng test --include='**/inscription-form.component.spec.ts'`.
-
-### Full stack via Docker
-
-```bash
-docker compose up --build
-```
-
-Builds `ui` (served via nginx, see `ui/Dockerfile` + `ui/nginx.conf`) and `backend/SportsReservationAPI` (see its `Dockerfile`), plus a `mssql/server:2022-latest` container. Ports/credentials come from `.env` (`UI_PORT`, `API_PORT`, `DB_PORT`, etc.).
+There is no test project/suite in this repo currently.
 
 ## Backend architecture
 
@@ -64,5 +38,5 @@ Builds `ui` (served via nginx, see `ui/Dockerfile` + `ui/nginx.conf`) and `backe
 - Angular 19 standalone components (no NgModules), routes declared in `app.routes.ts`. Public pages: landing, inscription (team signup), payment-success/cancel, login, not-found. Admin-only pages (`teams`, `players`) are gated by `AuthGuard` (`services/auth/auth.guard.ts`).
 - `AuthService` (`services/auth/auth.service.ts`) stores the JWT + user info in **sessionStorage** (not localStorage) and treats login state as "token present and not expired" by decoding the JWT payload client-side — no refresh flow.
 - `AuthInterceptor` (`services/auth/auth.interceptor.ts`) attaches `Authorization: Bearer <token>` to outgoing requests and force-logs-out on any `401` response.
-- `environment.ts` / `environment.prod.ts` hold `apiUrl` and `stripePublishableKey` — both currently point at the same production API host and both are marked `production: true`; there is no dev-specific environment file, so local frontend dev talks to the deployed backend unless you edit `environment.ts` directly.
+- Config (`apiUrl`, `stripePublishableKey`) is injected at **container runtime**, not baked in at build time: `ui/public/env.template.js` is copied into the image as-is by the Angular build, then `ui/docker-entrypoint.d/40-generate-runtime-env.sh` runs `envsubst` on it at nginx container startup (using `API_BASE_URL` / `STRIPE_PUBLISHABLE_KEY` from `docker-compose.yml` → `.env`) to produce `env.js`, which `index.html` loads before Angular bootstraps and which sets `window.__env`. App code imports `environment` from `app/core/runtime-env.ts`, which reads `window.__env` and falls back to the dev defaults in `src/environment.ts` if a key is missing (e.g. no `env.js`, or a var wasn't set). Changing the API URL or Stripe key for a given environment (local/prod) means changing `.env`, not rebuilding the image or editing `environment.ts`.
 - UI building blocks live under `components/ui/*` (button, card, modal, error, success, inscription-form); page-level components live under `pages/*`.

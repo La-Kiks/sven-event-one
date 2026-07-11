@@ -14,3 +14,5 @@ EXPOSE 80
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /src/dist/ui/browser /usr/share/nginx/html
+COPY docker-entrypoint.d/40-generate-runtime-env.sh /docker-entrypoint.d/40-generate-runtime-env.sh
+RUN chmod +x /docker-entrypoint.d/40-generate-runtime-env.sh

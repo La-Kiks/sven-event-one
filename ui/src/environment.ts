@@ -1,5 +1,8 @@
+// Fallback values used by `ng serve` and whenever env.js hasn't been generated
+// (e.g. no runtime config injected). In Docker, real values come from env.js,
+// generated at container startup from API_BASE_URL / STRIPE_PUBLISHABLE_KEY
+// (see ui/docker-entrypoint.d/40-generate-runtime-env.sh). See app/core/runtime-env.ts.
 export const environment = {
-    production: true,
-    apiUrl: 'https://sport-challenge-police-54.fr',
-    stripePublishableKey: 'pk_test_51Sms8DDhXlsYEBH4plkSmkjyNRaJIG3zDig7mgOeLRNGbhGwr6ajG2e4Ipwxn27OAvQoKTXzEoIs5XhatUtKafee00fuiE8Vko'
+    apiUrl: 'http://localhost:7163',
+    stripePublishableKey: ''
 };

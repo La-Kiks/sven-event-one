@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
-import { environment } from '../../../environment';
+import { environment } from '../../core/runtime-env';
 import { Router } from '@angular/router';
 
 interface Player {

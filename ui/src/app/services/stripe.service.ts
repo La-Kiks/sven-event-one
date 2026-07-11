@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { firstValueFrom } from "rxjs";
-import { environment } from "../../environment";
+import { environment } from "../core/runtime-env";
 
 @Injectable({
     providedIn: 'root'

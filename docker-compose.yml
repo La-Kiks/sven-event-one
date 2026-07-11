@@ -6,6 +6,9 @@ services:
     container_name: sports-reservation-ui
     ports:
       - "${UI_PORT}:80"
+    environment:
+      API_BASE_URL: ${API_BASE_URL}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
     depends_on:
       - backend
 
