@@ -70,5 +70,46 @@ services:
       retries: 10
       start_period: 30s # give SQL Server time to initialize
 
+  test-database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sports-reservation-test-db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Test_Password123!"
+      MSSQL_PID: Express
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Test_Password123!' -Q 'SELECT 1' -No || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    # No volume — ephemeral on purpose, so every run can start from a known state.
+
+  tests:
+    build:
+      context: ./backend
+      dockerfile: SportsReservationAPI.Tests/Dockerfile
+    container_name: sports-reservation-tests
+    environment:
+      ENVIRONMENT: Development
+      RESERVATION_DB_SERVER: test-database,1433
+      RESERVATION_DB_NAME: SportsReservationTestDB
+      DB_USER: sa
+      DB_PASSWORD: Test_Password123!
+      JWT_KEY: test-only-signing-key-not-for-production-use
+      JWT_ISSUER: SportsReservationAPI
+      ADMIN_USERNAME: testadmin
+      ADMIN_PASSWORD: TestAdminPassword123!
+      API_BASE_URL: http://localhost:8080
+      FRONTEND_BASE_URL: http://localhost:4200
+      STRIPE_WEBHOOK_SECRET: whsec_test_dummy_value
+    depends_on:
+      test-database:
+        condition: service_healthy
+
 volumes:
   sql-data:
