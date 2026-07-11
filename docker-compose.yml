@@ -73,6 +73,7 @@ services:
   test-database:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sports-reservation-test-db
+    profiles: ["test"] # excluded from a bare `docker compose up` — only starts via `docker compose run --rm tests`
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Test_Password123!"
@@ -94,6 +95,7 @@ services:
       context: ./backend
       dockerfile: SportsReservationAPI.Tests/Dockerfile
     container_name: sports-reservation-tests
+    profiles: ["test"] # excluded from a bare `docker compose up` — only starts via `docker compose run --rm tests`
     environment:
       ENVIRONMENT: Development
       RESERVATION_DB_SERVER: test-database,1433
