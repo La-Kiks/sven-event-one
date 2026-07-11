@@ -23,6 +23,9 @@ namespace SportsReservationAPI.Services
             var user = _context.Users.FirstOrDefault(u => u.Username == username);
             if (user == null) return null;
 
+            // Pending accounts (not yet activated) have an empty hash; BCrypt.Verify throws on that input.
+            if (string.IsNullOrEmpty(user.PasswordHash)) return null;
+
             // Verify the BCrypt hash
             bool isValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
             return isValid ? user : null;

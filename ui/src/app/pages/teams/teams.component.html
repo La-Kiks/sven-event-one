@@ -141,6 +141,23 @@
                     <span class="info-label">Players</span>
                     <span class="info-value">{{ selectedTeam.players.length }}</span>
                 </div>
+                <div class="info-row">
+                    <span class="info-label">Account</span>
+                    <span class="info-value">
+                        <span class="team-badge paid" *ngIf="selectedTeam.accountVerified">✓ Activé</span>
+                        <span class="team-badge unpaid" *ngIf="!selectedTeam.accountVerified">
+                            {{ selectedTeam.hasAccount ? 'En attente d\'activation' : 'Aucun compte' }}
+                        </span>
+                    </span>
+                </div>
+            </section>
+
+            <section class="info-section" *ngIf="!selectedTeam.accountVerified">
+                <div class="confirm-error" *ngIf="createAccountError">{{ createAccountError }}</div>
+                <div class="confirm-text" *ngIf="createAccountMessage">{{ createAccountMessage }}</div>
+                <button class="confirm-cancel-btn" (click)="createAccount(selectedTeam)" [disabled]="isCreatingAccount">
+                    {{ isCreatingAccount ? 'Envoi...' : (selectedTeam.hasAccount ? "Renvoyer l'email d'activation" : "Créer le compte") }}
+                </button>
             </section>
 
             <!-- Players list -->

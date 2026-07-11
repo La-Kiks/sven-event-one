@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.Options;
@@ -33,6 +34,7 @@ public class MailService
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authBytes));
 
             var fromName = string.IsNullOrWhiteSpace(_mailSettings.FromName) ? "Sport Challenge Police 54" : _mailSettings.FromName;
+            var toNameHtml = WebUtility.HtmlEncode(toName);
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["from"] = $"{fromName} <{_mailSettings.FromAddress}>",
@@ -45,7 +47,7 @@ public class MailService
                     "Ce lien est valable 7 jours.\n\n" +
                     "A bientot,\nSport Challenge Police 54",
                 ["html"] =
-                    $"<p>Bonjour {toName},</p>" +
+                    $"<p>Bonjour {toNameHtml},</p>" +
                     "<p>Votre équipe a bien été enregistrée. Cliquez sur le lien ci-dessous pour vérifier votre email et définir votre mot de passe :</p>" +
                     $"<p><a href=\"{activationUrl}\">{activationUrl}</a></p>" +
                     "<p>Ce lien est valable 7 jours.</p>" +

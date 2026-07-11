@@ -1,0 +1,43 @@
+<div class="login-page">
+
+    <div class="login-card" *ngIf="!missingToken; else noToken">
+        <div class="card-header">
+            <div class="logo-mark">SR</div>
+            <h1>Activer mon compte</h1>
+            <p>Choisissez votre mot de passe pour accéder à votre équipe</p>
+        </div>
+
+        <div class="error-banner" *ngIf="errorMessage">
+            <span class="error-icon">!</span>
+            {{ errorMessage }}
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" [(ngModel)]="password" placeholder="8 caractères minimum"
+                [class.has-value]="password" (keyup.enter)="onSubmit()" autocomplete="new-password" />
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirmer le mot de passe</label>
+            <input id="confirmPassword" type="password" [(ngModel)]="confirmPassword" placeholder="Retapez le mot de passe"
+                [class.has-value]="confirmPassword" (keyup.enter)="onSubmit()" autocomplete="new-password" />
+        </div>
+
+        <button class="submit-btn" (click)="onSubmit()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Activer mon compte</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+        </button>
+    </div>
+
+    <ng-template #noToken>
+        <div class="login-card">
+            <div class="card-header">
+                <div class="logo-mark">SR</div>
+                <h1>Lien invalide</h1>
+                <p>Ce lien d'activation est incomplet. Utilisez celui reçu par email, ou contactez un organisateur.</p>
+            </div>
+        </div>
+    </ng-template>
+
+</div>

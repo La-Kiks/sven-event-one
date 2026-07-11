@@ -1,0 +1,162 @@
+<div class="page">
+
+    <header class="top-bar">
+        <div class="brand">
+            <span class="logo-mark">SR</span>
+            <span class="brand-name">Mon équipe</span>
+        </div>
+        <div class="user-area">
+            <span class="username">{{ authService.getCurrentUser()?.username }}</span>
+            <button class="logout-btn" (click)="authService.logout()">Se déconnecter</button>
+        </div>
+    </header>
+
+    <div class="loading-state" *ngIf="isLoading">Chargement...</div>
+    <div class="error-state" *ngIf="loadError">{{ loadError }}</div>
+
+    <form class="form" [formGroup]="form" *ngIf="!isLoading && !loadError && team">
+
+        <h1 class="row title">{{ team.name }}</h1>
+
+        <div class="row">
+            <span class="label">Statut de paiement</span>
+            <span class="team-badge paid" *ngIf="team.isPaid">✓ Payé</span>
+            <span class="team-badge unpaid" *ngIf="!team.isPaid">✗ Non payé — à régler sur la billetterie</span>
+        </div>
+
+        <div class="save-banner success" *ngIf="saveSuccess">Modifications enregistrées.</div>
+        <div class="save-banner error" *ngIf="saveError">{{ saveError }}</div>
+
+        <!-- Team info -->
+        <div formGroupName="team">
+            <h2 class="row title2">Équipe</h2>
+
+            <div class="row">
+                <label class="label" for="team_name">Nom d'équipe : <span class="required">*</span></label>
+                <input class="input" id="team_name" formControlName="team_name" required>
+            </div>
+
+            <fieldset>
+                <legend>Version <span class="required">*</span></legend>
+                <div class="radio-group">
+                    <label><input type="radio" value="short" formControlName="version"> Courte</label>
+                    <label><input type="radio" value="long" formControlName="version"> Longue</label>
+                </div>
+            </fieldset>
+
+            <div class="form-group">
+                <label class="label" for="administration">Administration : <span class="required">*</span></label>
+                <select id="administration" formControlName="administration">
+                    <option value="">-- Choisir son administration --</option>
+                    <option value="none">Autre</option>
+                    <option value="gendarmerie">Gendarmerie</option>
+                    <option value="militaire">Militaire</option>
+                    <option value="penitancier">Pénitancier</option>
+                    <option value="municipale">Police Municipale</option>
+                    <option value="nationale">Police Nationale</option>
+                    <option value="pompier">Pompier</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Player 1 -->
+        <div formGroupName="player1">
+            <h2 class="row title2">Participant 1</h2>
+
+            <div class="row">
+                <label class="label" for="name_1">Nom : <span class="required">*</span></label>
+                <input class="input" id="name_1" formControlName="name" required>
+            </div>
+            <div class="row">
+                <label class="label" for="firstname_1">Prénom : <span class="required">*</span></label>
+                <input class="input" id="firstname_1" formControlName="firstname" required>
+            </div>
+            <div class="row">
+                <label class="label" for="email_1">Mail : <span class="required">*</span></label>
+                <input class="input" id="email_1" formControlName="email" required>
+            </div>
+            <div class="row">
+                <label class="label" for="phone_1">Téléphone : <span class="required">*</span></label>
+                <input class="input" id="phone_1" formControlName="phone" required>
+            </div>
+
+            <fieldset>
+                <legend>Catégorie <span class="required">*</span></legend>
+                <div class="radio-group">
+                    <label><input type="radio" value="man" formControlName="category"> Homme</label>
+                    <label><input type="radio" value="woman" formControlName="category"> Femme</label>
+                    <label><input type="radio" value="mixt" formControlName="category"> Mixte</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Tenue d'intervention <span class="required">*</span></legend>
+                <div class="radio-group">
+                    <label><input type="radio" value="yes" formControlName="outfit"> Oui, j'ai ma tenue.</label>
+                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête une.</label>
+                    <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
+                </div>
+            </fieldset>
+
+            <div>
+                <label class="infoline">
+                    <input type="checkbox" formControlName="volunteer">
+                    Je voudrais être bénévole.
+                </label>
+            </div>
+        </div>
+
+        <!-- Player 2 -->
+        <div formGroupName="player2">
+            <h2 class="row title2">Participant 2</h2>
+
+            <div class="row">
+                <label class="label" for="name_2">Nom : <span class="required">*</span></label>
+                <input class="input" id="name_2" formControlName="name" required>
+            </div>
+            <div class="row">
+                <label class="label" for="firstname_2">Prénom : <span class="required">*</span></label>
+                <input class="input" id="firstname_2" formControlName="firstname" required>
+            </div>
+            <div class="row">
+                <label class="label" for="email_2">Mail : <span class="required">*</span></label>
+                <input class="input" id="email_2" formControlName="email" required>
+            </div>
+            <div class="row">
+                <label class="label" for="phone_2">Téléphone : <span class="required">*</span></label>
+                <input class="input" id="phone_2" formControlName="phone" required>
+            </div>
+
+            <fieldset>
+                <legend>Catégorie <span class="required">*</span></legend>
+                <div class="radio-group">
+                    <label><input type="radio" value="man" formControlName="category"> Homme</label>
+                    <label><input type="radio" value="woman" formControlName="category"> Femme</label>
+                    <label><input type="radio" value="mixt" formControlName="category"> Mixte</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Tenue d'intervention <span class="required">*</span></legend>
+                <div class="radio-group">
+                    <label><input type="radio" value="yes" formControlName="outfit"> Oui, j'ai ma tenue.</label>
+                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête une.</label>
+                    <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
+                </div>
+            </fieldset>
+
+            <div>
+                <label class="infoline">
+                    <input type="checkbox" formControlName="volunteer">
+                    Je voudrais être bénévole.
+                </label>
+            </div>
+        </div>
+
+        <button class="button" type="button" (click)="save()" [disabled]="isSaving">
+            {{ isSaving ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+        </button>
+
+    </form>
+
+</div>

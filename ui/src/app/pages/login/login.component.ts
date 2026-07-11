@@ -20,7 +20,7 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {
     // Redirect if already logged in
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/teams']);
+      this.router.navigate([this.homeRouteFor(this.authService.getCurrentUser()?.role)]);
     }
   }
 
@@ -34,7 +34,7 @@ export class LoginComponent {
     this.errorMessage = '';
 
     this.authService.login({ username: this.username, password: this.password }).subscribe({
-      next: () => this.router.navigate(['/teams']),
+      next: (response) => this.router.navigate([this.homeRouteFor(response.role)]),
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = err.status === 401
@@ -42,5 +42,9 @@ export class LoginComponent {
           : 'Server error, please try again.';
       }
     });
+  }
+
+  private homeRouteFor(role: string | undefined): string {
+    return role === 'Admin' ? '/teams' : '/mon-equipe';
   }
 }

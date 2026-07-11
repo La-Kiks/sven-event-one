@@ -10,5 +10,6 @@
         public bool IsPaid { get; set; } = false;
 
         public List<Player.Player> Players { get; set; } = [];
+        public User.User? Account { get; set; }
     }
 }

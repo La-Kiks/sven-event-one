@@ -24,6 +24,8 @@ interface Team {
   administration: string;
   category: string; // ← added
   isPaid: boolean;
+  hasAccount: boolean;
+  accountVerified: boolean;
   players: Player[];
 }
 
@@ -54,6 +56,11 @@ export class TeamsComponent implements OnInit {
   isDeleting = false;
   deleteError = '';
 
+  // Account creation state
+  isCreatingAccount = false;
+  createAccountMessage = '';
+  createAccountError = '';
+
   constructor(private http: HttpClient, public authService: AuthService) {
     this.currentUser = this.authService.getCurrentUser();
   }
@@ -79,6 +86,8 @@ export class TeamsComponent implements OnInit {
     this.selectedTeam = null;
     this.showDeleteConfirm = false;
     this.deleteError = '';
+    this.createAccountMessage = '';
+    this.createAccountError = '';
 
     this.http.get<Team>(`${environment.apiUrl}/api/Teams/${team.id}`).subscribe({
       next: (data) => {
@@ -182,6 +191,27 @@ export class TeamsComponent implements OnInit {
           this.selectedTeam.isPaid = team.isPaid;
       },
       error: () => console.error('Failed to update payment status')
+    });
+  }
+
+  createAccount(team: Team): void {
+    this.isCreatingAccount = true;
+    this.createAccountMessage = '';
+    this.createAccountError = '';
+
+    this.http.post(`${environment.apiUrl}/api/Teams/${team.id}/create-account`, {}).subscribe({
+      next: () => {
+        this.isCreatingAccount = false;
+        this.createAccountMessage = "Email d'activation envoyé.";
+        team.hasAccount = true;
+        if (this.selectedTeam?.id === team.id) this.selectedTeam.hasAccount = true;
+      },
+      error: (err) => {
+        this.isCreatingAccount = false;
+        this.createAccountError = err.status === 409
+          ? 'Ce compte est déjà activé.'
+          : "Échec de l'envoi de l'email d'activation.";
+      }
     });
   }
 }

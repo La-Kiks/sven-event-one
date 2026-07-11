@@ -100,20 +100,13 @@ export class InscriptionFormComponent {
     };
 
     this.teamService.createTeam(payload).subscribe({
-      // // Outdated, was usefull on Stripe
-      // next: (response) => {
-      //   console.log('Team created.');
-      //   this.stripeService.redirectToCheckout(response.teamId);
-      //   this.onSuccess();
-      // },
       next: () => {
         this.onSuccess();
-        console.log('Team created.');
         setTimeout(() => {
           window.location.href = this.url;
         }, 2000);
       },
-      error: () => this.onSuccess()
+      error: (err) => this.onError(err.error?.error)
     });
 
   }
@@ -137,11 +130,20 @@ export class InscriptionFormComponent {
   }
 
   onSuccess(): void {
-    this.openModal({ message: 'Forumlaire envoyé !', url: this.url  , status: 'success' });
+    this.openModal({
+      message: 'Formulaire envoyé ! Un email va vous être envoyé pour activer votre compte et suivre votre inscription.',
+      url: this.url,
+      status: 'success'
+    });
   }
 
-  onError(): void {
-    this.openModal({ message: 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.', url: '', status: 'error' });
+  onError(serverMessage?: string): void {
+    this.openModal({
+      message: serverMessage
+        ?? 'Erreur... Essayez encore ! Si le problème persiste prenez contact avec un organisateur. Merci de votre compréhension.',
+      url: '',
+      status: 'error'
+    });
   }
 
 }

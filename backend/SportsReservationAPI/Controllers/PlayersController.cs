@@ -6,7 +6,7 @@ namespace SportsReservationAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class PlayersController : ControllerBase
     {
         private readonly PlayerService _playerService;

@@ -19,3 +19,12 @@ export interface CreateTeamWithPlayersRequest {
     teamDto: CreateTeamDto;
     playerDtos: CreatePlayerDto[];
 }
+
+export interface UpdatePlayerDto extends CreatePlayerDto {
+    id: number;
+}
+
+export interface UpdateTeamWithPlayersRequest {
+    teamDto: CreateTeamDto;
+    playerDtos: UpdatePlayerDto[];
+}

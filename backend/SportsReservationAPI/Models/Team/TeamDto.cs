@@ -10,6 +10,8 @@ namespace SportsReservationAPI.Models.Team
         public string Category { get; set; } = string.Empty;
         public string? Administration { get; set; }
         public bool IsPaid { get; set; }
+        public bool HasAccount { get; set; }
+        public bool AccountVerified { get; set; }
         public List<PlayerDto> Players { get; set; } = new();
     }
 }

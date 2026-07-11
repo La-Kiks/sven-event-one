@@ -8,6 +8,8 @@ import { TeamsComponent } from './pages/teams/teams.component';
 import { PlayersComponent } from './pages/players/players.component';
 import { AuthGuard } from './services/auth/auth.guard';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { ActivateAccountComponent } from './pages/activate-account/activate-account.component';
+import { MyTeamComponent } from './pages/my-team/my-team.component';
 
 export const routes: Routes = [
     { path: "", component: LandingComponent },
@@ -15,8 +17,9 @@ export const routes: Routes = [
     { path: "payment-success", component: PaymentSuccessComponent },
     { path: "payment-cancel", component: PaymentCancelComponent },
     { path: "login", component: LoginComponent },
-    { path: "teams", component: TeamsComponent, canActivate: [AuthGuard] },
-    { path: "players", component: PlayersComponent, canActivate: [AuthGuard] },
+    { path: "activer-compte", component: ActivateAccountComponent },
+    { path: "mon-equipe", component: MyTeamComponent, canActivate: [AuthGuard], data: { role: 'User' } },
+    { path: "teams", component: TeamsComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
+    { path: "players", component: PlayersComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
     { path: '**', component: NotFoundComponent },
 ];
-
