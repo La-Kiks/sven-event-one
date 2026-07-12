@@ -12,4 +12,5 @@ export class ButtonComponent {
   @Input() link = "";
   @Input() label = "";
   @Input() isFull = false;
+  @Input() small = false;
 }
