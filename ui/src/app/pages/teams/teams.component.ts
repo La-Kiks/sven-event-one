@@ -267,4 +267,8 @@ export class TeamsComponent implements OnInit {
   bulkResultsFailedCount(): number {
     return this.bulkResults?.filter(r => r.status === 'failed').length ?? 0;
   }
+
+  failedResults(): { teamId: number; teamName: string; status: string; error?: string }[] {
+    return this.bulkResults?.filter(r => r.status === 'failed') ?? [];
+  }
 }

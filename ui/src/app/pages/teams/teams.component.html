@@ -48,9 +48,7 @@
                 {{ bulkResultsSentCount() }} envoyé(s), {{ bulkResultsFailedCount() }} échec(s).
             </p>
             <ul *ngIf="bulkResultsFailedCount() > 0">
-                <li *ngFor="let r of bulkResults">
-                    <ng-container *ngIf="r.status === 'failed'">{{ r.teamName }} : {{ r.error }}</ng-container>
-                </li>
+                <li *ngFor="let r of failedResults()">{{ r.teamName }} : {{ r.error }}</li>
             </ul>
             <div class="confirm-actions">
                 <button class="confirm-cancel-btn" (click)="bulkResults = null">Fermer</button>
