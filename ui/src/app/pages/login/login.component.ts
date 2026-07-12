@@ -26,7 +26,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (!this.username || !this.password) {
-      this.errorMessage = 'Please fill in all fields.';
+      this.errorMessage = 'Merci de remplir tous les champs.';
       return;
     }
 
@@ -38,8 +38,8 @@ export class LoginComponent {
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = err.status === 401
-          ? 'Invalid username or password.'
-          : 'Server error, please try again.';
+          ? 'Email ou mot de passe incorrect.'
+          : 'Erreur serveur, veuillez réessayer.';
       }
     });
   }

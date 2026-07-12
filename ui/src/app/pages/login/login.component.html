@@ -3,8 +3,8 @@
     <div class="login-card">
         <div class="card-header">
             <div class="logo-mark">SR</div>
-            <h1>Welcome back</h1>
-            <p>Sign in to your account</p>
+            <h1>Bon retour</h1>
+            <p>Connectez-vous à votre compte</p>
         </div>
 
         <div class="error-banner" *ngIf="errorMessage">
@@ -13,19 +13,19 @@
         </div>
 
         <div class="form-group">
-            <label for="username">Username</label>
-            <input id="username" type="text" [(ngModel)]="username" placeholder="Enter your username"
-                [class.has-value]="username" (keyup.enter)="onSubmit()" autocomplete="username" />
+            <label for="username">Email</label>
+            <input id="username" type="text" [(ngModel)]="username" placeholder="Entrez votre email"
+                [class.has-value]="username" (keyup.enter)="onSubmit()" autocomplete="email" />
         </div>
 
         <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" type="password" [(ngModel)]="password" placeholder="Enter your password"
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" [(ngModel)]="password" placeholder="Entrez votre mot de passe"
                 [class.has-value]="password" (keyup.enter)="onSubmit()" autocomplete="current-password" />
         </div>
 
         <button class="submit-btn" (click)="onSubmit()" [disabled]="isLoading">
-            <span *ngIf="!isLoading">Sign in</span>
+            <span *ngIf="!isLoading">Se connecter</span>
             <span *ngIf="isLoading" class="spinner"></span>
         </button>
     </div>
