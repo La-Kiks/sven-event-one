@@ -21,7 +21,8 @@
         <div class="row">
             <span class="label">Statut de paiement</span>
             <span class="team-badge paid" *ngIf="team.isPaid">✓ Payé</span>
-            <span class="team-badge unpaid" *ngIf="!team.isPaid">✗ Non payé — à régler sur la billetterie</span>
+            <span class="team-badge unpaid" *ngIf="!team.isPaid">✗ Non payé — le paiement peut mettre 48h à
+                s'actualiser</span>
         </div>
 
         <div class="save-banner success" *ngIf="saveSuccess">Modifications enregistrées.</div>
@@ -93,7 +94,8 @@
                 <legend>Tenue d'intervention <span class="required">*</span></legend>
                 <div class="radio-group">
                     <label><input type="radio" value="yes" formControlName="outfit"> Oui, j'ai ma tenue.</label>
-                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête une.</label>
+                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête
+                        une.</label>
                     <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
                 </div>
             </fieldset>
@@ -140,7 +142,8 @@
                 <legend>Tenue d'intervention <span class="required">*</span></legend>
                 <div class="radio-group">
                     <label><input type="radio" value="yes" formControlName="outfit"> Oui, j'ai ma tenue.</label>
-                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête une.</label>
+                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête
+                        une.</label>
                     <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
                 </div>
             </fieldset>
