@@ -61,6 +61,12 @@ export class TeamsComponent implements OnInit {
   createAccountMessage = '';
   createAccountError = '';
 
+  // Bulk account creation state
+  isSendingBulk = false;
+  showBulkConfirm = false;
+  bulkResults: { teamId: number; teamName: string; status: string; error?: string }[] | null = null;
+  bulkError = '';
+
   constructor(private http: HttpClient, public authService: AuthService) {
     this.currentUser = this.authService.getCurrentUser();
   }
@@ -213,5 +219,52 @@ export class TeamsComponent implements OnInit {
           : "Échec de l'envoi de l'email d'activation.";
       }
     });
+  }
+
+  get pendingAccountsCount(): number {
+    return this.teams.filter(t => !t.accountVerified).length;
+  }
+
+  openBulkConfirm(): void {
+    this.showBulkConfirm = true;
+    this.bulkResults = null;
+    this.bulkError = '';
+  }
+
+  cancelBulkConfirm(): void {
+    this.showBulkConfirm = false;
+  }
+
+  sendBulkActivationEmails(): void {
+    this.isSendingBulk = true;
+    this.bulkError = '';
+
+    this.http.post<{ teamId: number; teamName: string; status: string; error?: string }[]>(
+      `${environment.apiUrl}/api/Teams/create-account-bulk`, {}
+    ).subscribe({
+      next: (results) => {
+        this.isSendingBulk = false;
+        this.showBulkConfirm = false;
+        this.bulkResults = results;
+        for (const result of results) {
+          if (result.status !== 'sent') continue;
+          const team = this.teams.find(t => t.id === result.teamId);
+          if (team) team.hasAccount = true;
+          if (this.selectedTeam?.id === result.teamId) this.selectedTeam.hasAccount = true;
+        }
+      },
+      error: () => {
+        this.isSendingBulk = false;
+        this.bulkError = "Échec de l'envoi groupé. Réessayez.";
+      }
+    });
+  }
+
+  bulkResultsSentCount(): number {
+    return this.bulkResults?.filter(r => r.status === 'sent').length ?? 0;
+  }
+
+  bulkResultsFailedCount(): number {
+    return this.bulkResults?.filter(r => r.status === 'failed').length ?? 0;
   }
 }

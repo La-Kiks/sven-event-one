@@ -21,6 +21,40 @@
         <div class="page-title">
             <h1>Teams</h1>
             <span class="count" *ngIf="!isLoading && !error">{{ teams.length }} teams</span>
+            <button class="bulk-send-trigger-btn" *ngIf="!isLoading && !error && pendingAccountsCount > 0"
+                (click)="openBulkConfirm()">
+                Envoyer les emails d'activation ({{ pendingAccountsCount }} en attente)
+            </button>
+        </div>
+
+        <div class="delete-confirm" *ngIf="showBulkConfirm">
+            <p class="confirm-text">
+                <strong>{{ pendingAccountsCount }}</strong> équipe(s) vont recevoir un email d'activation. Continuer
+                ?
+            </p>
+            <div class="confirm-error" *ngIf="bulkError">{{ bulkError }}</div>
+            <div class="confirm-actions">
+                <button class="confirm-cancel-btn" (click)="cancelBulkConfirm()"
+                    [disabled]="isSendingBulk">Annuler</button>
+                <button class="confirm-delete-btn" (click)="sendBulkActivationEmails()" [disabled]="isSendingBulk">
+                    {{ isSendingBulk ? 'Envoi en cours...' : "Confirmer l'envoi" }}
+                </button>
+            </div>
+        </div>
+
+        <div class="delete-confirm" *ngIf="bulkResults">
+            <p class="confirm-text">
+                <strong>{{ bulkResults.length }}</strong> équipe(s) traitées :
+                {{ bulkResultsSentCount() }} envoyé(s), {{ bulkResultsFailedCount() }} échec(s).
+            </p>
+            <ul *ngIf="bulkResultsFailedCount() > 0">
+                <li *ngFor="let r of bulkResults">
+                    <ng-container *ngIf="r.status === 'failed'">{{ r.teamName }} : {{ r.error }}</ng-container>
+                </li>
+            </ul>
+            <div class="confirm-actions">
+                <button class="confirm-cancel-btn" (click)="bulkResults = null">Fermer</button>
+            </div>
         </div>
 
         <div class="loading-state" *ngIf="isLoading">
