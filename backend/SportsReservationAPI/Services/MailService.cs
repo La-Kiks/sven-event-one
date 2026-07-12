@@ -19,12 +19,12 @@ public class MailService
         _logger = logger;
     }
 
-    public async Task SendActivationEmailAsync(string toEmail, string toName, string activationUrl)
+    public async Task<bool> SendActivationEmailAsync(string toEmail, string toName, string activationUrl)
     {
         if (string.IsNullOrWhiteSpace(_mailSettings.ApiKey) || string.IsNullOrWhiteSpace(_mailSettings.Domain))
         {
             _logger.LogWarning("Mailgun is not configured (MAILGUN_API_KEY/MAILGUN_DOMAIN missing) - skipping activation email to {Email}", toEmail);
-            return;
+            return false;
         }
 
         try
@@ -59,11 +59,15 @@ public class MailService
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
                 _logger.LogWarning("Mailgun request failed ({StatusCode}) for {Email}: {Body}", response.StatusCode, toEmail, responseBody);
+                return false;
             }
+
+            return true;
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to send activation email to {Email}", toEmail);
+            return false;
         }
     }
 }

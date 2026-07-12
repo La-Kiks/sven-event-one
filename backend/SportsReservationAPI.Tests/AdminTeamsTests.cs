@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace SportsReservationAPI.Tests;
@@ -152,6 +153,74 @@ public class AdminTeamsTests
             "PlayersForbiddenTeam", ApiTestFixture.UniqueEmail("playersforbid1"), ApiTestFixture.UniqueEmail("playersforbid2"));
 
         var response = await _fixture.Client.SendAsync(AuthedRequest(HttpMethod.Get, "/api/Players", participantJwt));
+
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task CreateAccountBulk_SendsToAllPendingTeamsAndSkipsVerified()
+    {
+        var adminJwt = await _fixture.GetAdminJwtAsync();
+
+        var pending1Email = ApiTestFixture.UniqueEmail("bulk-pending1");
+        await _fixture.Client.PostAsJsonAsync("/api/teams/create-team", new
+        {
+            teamDto = new { teamName = "BulkPendingTeamOne", version = "short", administration = "none" },
+            playerDtos = new[]
+            {
+                new { firstName = "Alice", lastName = "Test", email = pending1Email, phoneNumber = "+33612345678", category = "woman", outfit = "no", volunteer = false, acceptMails = true },
+                new { firstName = "Bob", lastName = "Test", email = ApiTestFixture.UniqueEmail("bulk-pending1b"), phoneNumber = "+33612345679", category = "man", outfit = "no", volunteer = false, acceptMails = true }
+            }
+        });
+
+        var pending2Email = ApiTestFixture.UniqueEmail("bulk-pending2");
+        await _fixture.Client.PostAsJsonAsync("/api/teams/create-team", new
+        {
+            teamDto = new { teamName = "BulkPendingTeamTwo", version = "short", administration = "none" },
+            playerDtos = new[]
+            {
+                new { firstName = "Carol", lastName = "Test", email = pending2Email, phoneNumber = "+33612345680", category = "woman", outfit = "no", volunteer = false, acceptMails = true },
+                new { firstName = "Dave", lastName = "Test", email = ApiTestFixture.UniqueEmail("bulk-pending2b"), phoneNumber = "+33612345681", category = "man", outfit = "no", volunteer = false, acceptMails = true }
+            }
+        });
+
+        var (activatedTeamId, _) = await _fixture.RegisterAndActivateTeamAsync(
+            "BulkAlreadyActiveTeam", ApiTestFixture.UniqueEmail("bulk-active1"), ApiTestFixture.UniqueEmail("bulk-active2"));
+
+        var response = await _fixture.Client.SendAsync(AuthedRequest(HttpMethod.Post, "/api/Teams/create-account-bulk", adminJwt));
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var results = await response.Content.ReadFromJsonAsync<JsonElement>();
+        var resultList = results.EnumerateArray().ToList();
+
+        var teamOneResult = resultList.First(r => r.GetProperty("teamName").GetString() == "BulkPendingTeamOne");
+        var teamTwoResult = resultList.First(r => r.GetProperty("teamName").GetString() == "BulkPendingTeamTwo");
+
+        // Mailgun isn't configured in the test environment (see docker-compose.yml's
+        // `tests` service — no MAILGUN_* vars), so every send reports "failed" here.
+        // That's expected and still proves the endpoint processed each pending team
+        // individually and reported per-team status instead of crashing the whole
+        // batch. The DB assertions below prove phase 1 (account preparation) worked
+        // regardless of phase 2 (the simulated mail outage).
+        Assert.Equal("failed", teamOneResult.GetProperty("status").GetString());
+        Assert.Equal("failed", teamTwoResult.GetProperty("status").GetString());
+
+        Assert.DoesNotContain(resultList, r => r.GetProperty("teamId").GetInt32() == activatedTeamId);
+
+        using var context = _fixture.CreateDbContext();
+        var user1 = await context.Users.FirstAsync(u => u.Username == pending1Email);
+        var user2 = await context.Users.FirstAsync(u => u.Username == pending2Email);
+        Assert.False(string.IsNullOrEmpty(user1.VerificationToken));
+        Assert.False(string.IsNullOrEmpty(user2.VerificationToken));
+    }
+
+    [Fact]
+    public async Task CreateAccountBulk_WithParticipantToken_ReturnsForbidden()
+    {
+        var (_, participantJwt) = await _fixture.RegisterAndActivateTeamAsync(
+            "BulkForbiddenTeam", ApiTestFixture.UniqueEmail("bulkforbid1"), ApiTestFixture.UniqueEmail("bulkforbid2"));
+
+        var response = await _fixture.Client.SendAsync(AuthedRequest(HttpMethod.Post, "/api/Teams/create-account-bulk", participantJwt));
 
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }

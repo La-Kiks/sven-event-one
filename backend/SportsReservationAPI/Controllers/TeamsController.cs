@@ -147,6 +147,16 @@ namespace SportsReservationAPI.Controllers
             }
         }
 
+        // ── Protected: POST /api/Teams/create-account-bulk ─────────────────────────
+        // Sends activation emails to every team still missing a verified account.
+        [HttpPost("create-account-bulk")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateAccountsBulk()
+        {
+            var results = await _userService.CreateAccountsForPendingTeamsAsync();
+            return Ok(results);
+        }
+
         // ── Protected: GET /api/Teams/my-team ──────────────────────────────────────
         [HttpGet("my-team")]
         [Authorize(Roles = "User")]

@@ -92,6 +92,80 @@ namespace SportsReservationAPI.Services
             return user;
         }
 
+        // Admin-triggered bulk backfill: prepares an account for every team missing a
+        // verified one, then sends all activation emails in parallel batches of 5 (DB
+        // writes stay sequential — DbContext isn't safe for concurrent use — only the
+        // independent Mailgun HTTP calls are parallelized). Returns one result per team
+        // attempted; teams already fully verified are excluded from the query entirely.
+        public async Task<List<BulkAccountResult>> CreateAccountsForPendingTeamsAsync()
+        {
+            var teams = await _context.Teams
+                .Include(t => t.Players)
+                .Include(t => t.Account)
+                .Where(t => t.Account == null || !t.Account.EmailVerified)
+                .ToListAsync();
+
+            var results = new List<BulkAccountResult>();
+            var toSend = new List<(BulkAccountResult Result, string Email, string FirstName, string ActivationUrl)>();
+
+            foreach (var team in teams)
+            {
+                var result = new BulkAccountResult { TeamId = team.Id, TeamName = team.Name };
+
+                if (team.Players.Count == 0)
+                {
+                    result.Status = "failed";
+                    result.Error = "Équipe sans participant.";
+                    results.Add(result);
+                    continue;
+                }
+
+                var participant1 = team.Players.OrderBy(p => p.Id).First();
+                var user = team.Account;
+
+                try
+                {
+                    if (user == null)
+                    {
+                        user = await BuildPendingAccountAsync(participant1.Email);
+                        user.TeamId = team.Id;
+                        _context.Users.Add(user);
+                    }
+                    else
+                    {
+                        user.VerificationToken = GenerateToken();
+                        user.VerificationTokenExpiresAt = DateTime.UtcNow.AddDays(7);
+                    }
+                }
+                catch (ValidationException ex)
+                {
+                    result.Status = "failed";
+                    result.Error = ex.Message;
+                    results.Add(result);
+                    continue;
+                }
+
+                results.Add(result);
+                toSend.Add((result, user.Username, participant1.FirstName, BuildActivationUrl(user.VerificationToken!)));
+            }
+
+            await _context.SaveChangesAsync();
+
+            const int batchSize = 5;
+            for (var i = 0; i < toSend.Count; i += batchSize)
+            {
+                var batch = toSend.Skip(i).Take(batchSize);
+                await Task.WhenAll(batch.Select(async item =>
+                {
+                    var sent = await _mailService.SendActivationEmailAsync(item.Email, item.FirstName, item.ActivationUrl);
+                    item.Result.Status = sent ? "sent" : "failed";
+                    if (!sent) item.Result.Error = "Échec de l'envoi de l'email.";
+                }));
+            }
+
+            return results;
+        }
+
         public string BuildActivationUrl(string token)
         {
             return $"{_apiSettings.FrontendBaseUrl}/activer-compte?token={token}";
