@@ -90,7 +90,7 @@ namespace SportsReservationAPI.Controllers
             }
             catch (RateLimitExceededException ex)
             {
-                return StatusCode(429, new { Error = ex.Message });
+                return StatusCode(StatusCodes.Status429TooManyRequests, new { Error = ex.Message });
             }
 
             return Ok(new { Message = "Si un compte existe pour cet email, un lien a été envoyé." });

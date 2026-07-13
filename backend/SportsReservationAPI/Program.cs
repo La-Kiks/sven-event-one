@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -121,6 +122,25 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Trust X-Forwarded-For from the reverse proxy in front of this API (Caddy in
+// prod) so RemoteIpAddress reflects the real client, not the proxy's own
+// address — otherwise every request collapses into one IP bucket for the
+// password-reset rate limiter (Services/PasswordResetRateLimiter.cs).
+// KnownNetworks/KnownProxies are cleared because the proxy's address isn't a
+// fixed, known value in this Docker deployment (see docker-compose.yml).
+// SECURITY ASSUMPTION: this API's port must not be reachable except through
+// that proxy — if it were also reachable directly, a caller could forge
+// X-Forwarded-For to spoof any IP and bypass the per-IP rate limit entirely.
+// Restrict this at the firewall/network level (only the proxy should be able
+// to reach the published API port).
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+forwardedHeadersOptions.KnownNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedHeadersOptions);
 
 // Apply pending EF Core migrations automatically
 using (var scope = app.Services.CreateScope())
