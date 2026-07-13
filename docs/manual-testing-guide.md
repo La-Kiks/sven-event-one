@@ -27,13 +27,20 @@ Build the URL yourself: `http://localhost:<UI_PORT>/activer-compte?token=<Verifi
 2. Set a password (8+ characters) and submit.
 3. Expect a redirect to `/mon-equipe` showing the team you just registered.
 
-## 4. Edit your team
+## 4. Reset a forgotten password
+
+1. Log out, go to `/login`, click "Mot de passe oublié ?".
+2. Submit the email from step 1. Expect the same generic confirmation message every time, whether or not the email exists.
+3. Fetch the new `VerificationToken` from the DB (same query as step 2), open `/activer-compte?token=<token>`, set a new password.
+4. Log in with the new password. Confirm the old password no longer works.
+
+## 5. Edit your team
 
 1. Change a field (e.g. team name, a player's category).
 2. Save. Expect a success message and the change to persist on refresh.
 3. Confirm the payment status badge is present but not clickable (participants can't toggle it).
 
-## 5. Check the admin view
+## 6. Check the admin view
 
 1. Log out (top bar).
 2. Log in at `/login` with your `ADMIN_USERNAME`/`ADMIN_PASSWORD`.
@@ -41,7 +48,7 @@ Build the URL yourself: `http://localhost:<UI_PORT>/activer-compte?token=<Verifi
 4. Find the team from step 1, open its detail panel, confirm your step 4 edit is reflected and the account shows as "Activé".
 5. Toggle the payment badge, confirm it updates.
 
-## 6. Confirm role gating
+## 7. Confirm role gating
 
 1. While still logged in as admin, navigate directly to `/mon-equipe`. Expect a redirect back to `/teams` (not `/login` — wrong role, not logged out).
 2. Log out, log back in with the participant credentials from step 3.

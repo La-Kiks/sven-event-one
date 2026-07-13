@@ -38,6 +38,10 @@ export class AuthService {
     );
   }
 
+  forgotPassword(email: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/forgot-password`, { email });
+  }
+
   private storeSession(response: LoginResponse): void {
     sessionStorage.setItem('auth_token', response.token);
     sessionStorage.setItem('auth_user', JSON.stringify({

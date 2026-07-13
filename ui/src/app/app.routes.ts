@@ -10,6 +10,7 @@ import { AuthGuard } from './services/auth/auth.guard';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ActivateAccountComponent } from './pages/activate-account/activate-account.component';
 import { MyTeamComponent } from './pages/my-team/my-team.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
     { path: "", component: LandingComponent },
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: "payment-success", component: PaymentSuccessComponent },
     { path: "payment-cancel", component: PaymentCancelComponent },
     { path: "login", component: LoginComponent },
+    { path: "mot-de-passe-oublie", component: ForgotPasswordComponent },
     { path: "activer-compte", component: ActivateAccountComponent },
     { path: "mon-equipe", component: MyTeamComponent, canActivate: [AuthGuard], data: { role: 'User' } },
     { path: "teams", component: TeamsComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
