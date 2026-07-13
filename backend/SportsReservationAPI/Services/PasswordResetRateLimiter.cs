@@ -33,28 +33,34 @@ namespace SportsReservationAPI.Services
             var now = _now();
             var queue = _requestsByIp.GetOrAdd(ipKey, _ => new ConcurrentQueue<DateTime>());
 
-            while (queue.TryPeek(out var oldest) && now - oldest > TimeSpan.FromHours(1))
-                queue.TryDequeue(out _);
+            lock (queue)
+            {
+                while (queue.TryPeek(out var oldest) && now - oldest > TimeSpan.FromHours(1))
+                    queue.TryDequeue(out _);
 
-            if (queue.Count >= _maxRequestsPerIpPerHour)
-                return false;
+                if (queue.Count >= _maxRequestsPerIpPerHour)
+                    return false;
 
-            queue.Enqueue(now);
-            return true;
+                queue.Enqueue(now);
+                return true;
+            }
         }
 
         public bool TryRegisterGlobalRequest()
         {
             var now = _now();
 
-            while (_globalRequests.TryPeek(out var oldest) && now - oldest > TimeSpan.FromHours(24))
-                _globalRequests.TryDequeue(out _);
+            lock (_globalRequests)
+            {
+                while (_globalRequests.TryPeek(out var oldest) && now - oldest > TimeSpan.FromHours(24))
+                    _globalRequests.TryDequeue(out _);
 
-            if (_globalRequests.Count >= _maxGlobalPerDay)
-                return false;
+                if (_globalRequests.Count >= _maxGlobalPerDay)
+                    return false;
 
-            _globalRequests.Enqueue(now);
-            return true;
+                _globalRequests.Enqueue(now);
+                return true;
+            }
         }
 
         public bool IsEmailInCooldown(string email)
