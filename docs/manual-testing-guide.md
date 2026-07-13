@@ -45,7 +45,7 @@ Build the URL yourself: `http://localhost:<UI_PORT>/activer-compte?token=<Verifi
 1. Log out (top bar).
 2. Log in at `/login` with your `ADMIN_USERNAME`/`ADMIN_PASSWORD`.
 3. Expect a redirect to `/teams` (not `/mon-equipe`).
-4. Find the team from step 1, open its detail panel, confirm your step 4 edit is reflected and the account shows as "Activé".
+4. Find the team from step 1, open its detail panel, confirm your step 5 edit is reflected and the account shows as "Activé".
 5. Toggle the payment badge, confirm it updates.
 
 ## 7. Confirm role gating
