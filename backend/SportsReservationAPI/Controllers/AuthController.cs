@@ -74,5 +74,26 @@ namespace SportsReservationAPI.Controllers
                 return BadRequest(new { Error = ex.Message });
             }
         }
+
+        // Public self-service password reset request. Always returns the same
+        // generic 200 message regardless of whether the email exists or is
+        // under cooldown, to avoid revealing which emails have an account.
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _userService.RequestPasswordResetAsync(dto.Email, HttpContext.Connection.RemoteIpAddress?.ToString());
+            }
+            catch (RateLimitExceededException ex)
+            {
+                return StatusCode(429, new { Error = ex.Message });
+            }
+
+            return Ok(new { Message = "Si un compte existe pour cet email, un lien a été envoyé." });
+        }
     }
 }

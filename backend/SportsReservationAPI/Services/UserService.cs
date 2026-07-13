@@ -12,12 +12,14 @@ namespace SportsReservationAPI.Services
         private readonly ReservationContext _context;
         private readonly MailService _mailService;
         private readonly ApiSettings _apiSettings;
+        private readonly PasswordResetRateLimiter _rateLimiter;
 
-        public UserService(ReservationContext context, MailService mailService, IOptions<ApiSettings> apiSettings)
+        public UserService(ReservationContext context, MailService mailService, IOptions<ApiSettings> apiSettings, PasswordResetRateLimiter rateLimiter)
         {
             _context = context;
             _mailService = mailService;
             _apiSettings = apiSettings.Value;
+            _rateLimiter = rateLimiter;
         }
 
         // Builds a pending (unsaved) account. Caller is responsible for attaching it to a Team
@@ -169,6 +171,43 @@ namespace SportsReservationAPI.Services
         public string BuildActivationUrl(string token)
         {
             return $"{_apiSettings.FrontendBaseUrl}/activer-compte?token={token}";
+        }
+
+        // Public self-service password reset. Reuses the activation token fields
+        // and the existing /activer-compte flow — VerifyAndSetPasswordAsync works
+        // identically whether the account was previously verified or not.
+        // Always completes without throwing except for the two rate-limit cases;
+        // the caller (AuthController) must return the same generic response for
+        // every other outcome (unknown email, email in cooldown) to avoid
+        // revealing which emails have an account.
+        public async Task RequestPasswordResetAsync(string email, string? ipAddress)
+        {
+            if (!_rateLimiter.TryRegisterIpRequest(ipAddress ?? "unknown"))
+                throw new RateLimitExceededException("Trop de tentatives depuis cette adresse. Réessayez plus tard.");
+
+            if (!_rateLimiter.TryRegisterGlobalRequest())
+                throw new RateLimitExceededException("Trop de demandes de réinitialisation aujourd'hui. Réessayez demain.");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == email && u.Role == "User");
+            if (user == null || user.TeamId == null)
+                return;
+
+            if (_rateLimiter.IsEmailInCooldown(email))
+                return;
+
+            var team = await _context.Teams.Include(t => t.Players).FirstOrDefaultAsync(t => t.Id == user.TeamId);
+            if (team == null || team.Players.Count == 0)
+                return;
+
+            var participant1 = team.Players.OrderBy(p => p.Id).First();
+
+            user.VerificationToken = GenerateToken();
+            user.VerificationTokenExpiresAt = DateTime.UtcNow.AddDays(7);
+            await _context.SaveChangesAsync();
+
+            _rateLimiter.RecordEmailRequest(email);
+
+            await _mailService.SendPasswordResetEmailAsync(user.Username, participant1.FirstName, BuildActivationUrl(user.VerificationToken));
         }
 
         private static string GenerateToken()
