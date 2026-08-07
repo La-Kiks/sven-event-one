@@ -12,7 +12,10 @@
     </header>
 
     <div class="loading-state" *ngIf="isLoading">Chargement...</div>
-    <div class="error-state" *ngIf="loadError">{{ loadError }}</div>
+    <div class="error-state" *ngIf="loadError">
+        <p>{{ loadError }}</p>
+        <button class="retry-btn" type="button" (click)="loadTeam()">Réessayer</button>
+    </div>
 
     <form class="form" [formGroup]="form" *ngIf="!isLoading && !loadError && team">
 
@@ -21,8 +24,14 @@
         <div class="row">
             <span class="label">Statut de paiement</span>
             <span class="team-badge paid" *ngIf="team.isPaid">✓ Payé</span>
-            <span class="team-badge unpaid" *ngIf="!team.isPaid">✗ Non payé — le paiement peut mettre 48h à
-                s'actualiser</span>
+            <ng-container *ngIf="!team.isPaid">
+                <span class="team-badge unpaid">✗ Non payé — le paiement peut mettre 48h à s'actualiser</span>
+                <p class="payment-note">Si ce statut ne s'actualise pas après 48h, contacte un organisateur :
+                    <a [href]="'tel:' + organizerPhone.replace(' ', '')">{{ organizerPhone }}</a>
+                    ou
+                    <a [href]="'mailto:' + organizerEmail">{{ organizerEmail }}</a>.
+                </p>
+            </ng-container>
         </div>
 
         <div class="save-banner success" *ngIf="saveSuccess">Modifications enregistrées.</div>
@@ -34,7 +43,13 @@
 
             <div class="row">
                 <label class="label" for="team_name">Nom d'équipe : <span class="required">*</span></label>
-                <input class="input" id="team_name" formControlName="team_name" required>
+                <input class="input" id="team_name" formControlName="team_name" required
+                    [class.input--invalid]="errorMessage('team.team_name')"
+                    [attr.aria-invalid]="errorMessage('team.team_name') ? true : null"
+                    [attr.aria-describedby]="errorMessage('team.team_name') ? 'team_name-error' : null">
+                @if (errorMessage('team.team_name'); as msg) {
+                <p class="field-error" id="team_name-error">{{ msg }}</p>
+                }
             </div>
 
             <fieldset>
@@ -43,11 +58,17 @@
                     <label><input type="radio" value="short" formControlName="version"> Courte</label>
                     <label><input type="radio" value="long" formControlName="version"> Longue</label>
                 </div>
+                @if (errorMessage('team.version'); as msg) {
+                <p class="field-error">{{ msg }}</p>
+                }
             </fieldset>
 
             <div class="form-group">
                 <label class="label" for="administration">Administration : <span class="required">*</span></label>
-                <select id="administration" formControlName="administration">
+                <select id="administration" formControlName="administration"
+                    [class.input--invalid]="errorMessage('team.administration')"
+                    [attr.aria-invalid]="errorMessage('team.administration') ? true : null"
+                    [attr.aria-describedby]="errorMessage('team.administration') ? 'administration-error' : null">
                     <option value="">-- Choisir son administration --</option>
                     <option value="none">Autre</option>
                     <option value="gendarmerie">Gendarmerie</option>
@@ -57,6 +78,9 @@
                     <option value="nationale">Police Nationale</option>
                     <option value="pompier">Pompier</option>
                 </select>
+                @if (errorMessage('team.administration'); as msg) {
+                <p class="field-error" id="administration-error">{{ msg }}</p>
+                }
             </div>
         </div>
 
@@ -66,19 +90,40 @@
 
             <div class="row">
                 <label class="label" for="name_1">Nom : <span class="required">*</span></label>
-                <input class="input" id="name_1" formControlName="name" required>
+                <input class="input" id="name_1" formControlName="name" required autocomplete="family-name"
+                    [class.input--invalid]="errorMessage('player1.name')"
+                    [attr.aria-invalid]="errorMessage('player1.name') ? true : null"
+                    [attr.aria-describedby]="errorMessage('player1.name') ? 'name_1-error' : null">
+                @if (errorMessage('player1.name'); as msg) {
+                <p class="field-error" id="name_1-error">{{ msg }}</p>
+                }
             </div>
             <div class="row">
                 <label class="label" for="firstname_1">Prénom : <span class="required">*</span></label>
-                <input class="input" id="firstname_1" formControlName="firstname" required>
+                <input class="input" id="firstname_1" formControlName="firstname" required autocomplete="given-name"
+                    [class.input--invalid]="errorMessage('player1.firstname')"
+                    [attr.aria-invalid]="errorMessage('player1.firstname') ? true : null"
+                    [attr.aria-describedby]="errorMessage('player1.firstname') ? 'firstname_1-error' : null">
+                @if (errorMessage('player1.firstname'); as msg) {
+                <p class="field-error" id="firstname_1-error">{{ msg }}</p>
+                }
             </div>
             <div class="row">
                 <label class="label" for="email_1">Mail : <span class="required">*</span></label>
-                <input class="input" id="email_1" formControlName="email" required>
+                <input class="input input--locked" id="email_1" type="email" formControlName="email" required
+                    readonly aria-describedby="email_1-hint">
+                <p class="field-hint" id="email_1-hint">Cet email est ton identifiant de connexion et ne peut pas
+                    être modifié ici. Contacte un organisateur pour le changer.</p>
             </div>
             <div class="row">
                 <label class="label" for="phone_1">Téléphone : <span class="required">*</span></label>
-                <input class="input" id="phone_1" formControlName="phone" required>
+                <input class="input" id="phone_1" type="tel" formControlName="phone" required autocomplete="tel"
+                    [class.input--invalid]="errorMessage('player1.phone')"
+                    [attr.aria-invalid]="errorMessage('player1.phone') ? true : null"
+                    [attr.aria-describedby]="errorMessage('player1.phone') ? 'phone_1-error' : null">
+                @if (errorMessage('player1.phone'); as msg) {
+                <p class="field-error" id="phone_1-error">{{ msg }}</p>
+                }
             </div>
 
             <fieldset>
@@ -88,6 +133,9 @@
                     <label><input type="radio" value="woman" formControlName="category"> Femme</label>
                     <label><input type="radio" value="mixt" formControlName="category"> Mixte</label>
                 </div>
+                @if (errorMessage('player1.category'); as msg) {
+                <p class="field-error">{{ msg }}</p>
+                }
             </fieldset>
 
             <fieldset>
@@ -98,6 +146,9 @@
                         une.</label>
                     <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
                 </div>
+                @if (errorMessage('player1.outfit'); as msg) {
+                <p class="field-error">{{ msg }}</p>
+                }
             </fieldset>
 
             <div>
@@ -114,19 +165,43 @@
 
             <div class="row">
                 <label class="label" for="name_2">Nom : <span class="required">*</span></label>
-                <input class="input" id="name_2" formControlName="name" required>
+                <input class="input" id="name_2" formControlName="name" required autocomplete="family-name"
+                    [class.input--invalid]="errorMessage('player2.name')"
+                    [attr.aria-invalid]="errorMessage('player2.name') ? true : null"
+                    [attr.aria-describedby]="errorMessage('player2.name') ? 'name_2-error' : null">
+                @if (errorMessage('player2.name'); as msg) {
+                <p class="field-error" id="name_2-error">{{ msg }}</p>
+                }
             </div>
             <div class="row">
                 <label class="label" for="firstname_2">Prénom : <span class="required">*</span></label>
-                <input class="input" id="firstname_2" formControlName="firstname" required>
+                <input class="input" id="firstname_2" formControlName="firstname" required autocomplete="given-name"
+                    [class.input--invalid]="errorMessage('player2.firstname')"
+                    [attr.aria-invalid]="errorMessage('player2.firstname') ? true : null"
+                    [attr.aria-describedby]="errorMessage('player2.firstname') ? 'firstname_2-error' : null">
+                @if (errorMessage('player2.firstname'); as msg) {
+                <p class="field-error" id="firstname_2-error">{{ msg }}</p>
+                }
             </div>
             <div class="row">
                 <label class="label" for="email_2">Mail : <span class="required">*</span></label>
-                <input class="input" id="email_2" formControlName="email" required>
+                <input class="input" id="email_2" type="email" formControlName="email" required autocomplete="email"
+                    [class.input--invalid]="errorMessage('player2.email')"
+                    [attr.aria-invalid]="errorMessage('player2.email') ? true : null"
+                    [attr.aria-describedby]="errorMessage('player2.email') ? 'email_2-error' : null">
+                @if (errorMessage('player2.email'); as msg) {
+                <p class="field-error" id="email_2-error">{{ msg }}</p>
+                }
             </div>
             <div class="row">
                 <label class="label" for="phone_2">Téléphone : <span class="required">*</span></label>
-                <input class="input" id="phone_2" formControlName="phone" required>
+                <input class="input" id="phone_2" type="tel" formControlName="phone" required autocomplete="tel"
+                    [class.input--invalid]="errorMessage('player2.phone')"
+                    [attr.aria-invalid]="errorMessage('player2.phone') ? true : null"
+                    [attr.aria-describedby]="errorMessage('player2.phone') ? 'phone_2-error' : null">
+                @if (errorMessage('player2.phone'); as msg) {
+                <p class="field-error" id="phone_2-error">{{ msg }}</p>
+                }
             </div>
 
             <fieldset>
@@ -136,6 +211,9 @@
                     <label><input type="radio" value="woman" formControlName="category"> Femme</label>
                     <label><input type="radio" value="mixt" formControlName="category"> Mixte</label>
                 </div>
+                @if (errorMessage('player2.category'); as msg) {
+                <p class="field-error">{{ msg }}</p>
+                }
             </fieldset>
 
             <fieldset>
@@ -146,6 +224,9 @@
                         une.</label>
                     <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
                 </div>
+                @if (errorMessage('player2.outfit'); as msg) {
+                <p class="field-error">{{ msg }}</p>
+                }
             </fieldset>
 
             <div>
@@ -156,7 +237,7 @@
             </div>
         </div>
 
-        <button class="button" type="button" (click)="save()" [disabled]="isSaving">
+        <button class="button" type="button" (click)="save()" [disabled]="isSaving || form.invalid">
             {{ isSaving ? 'Enregistrement...' : 'Enregistrer les modifications' }}
         </button>
 

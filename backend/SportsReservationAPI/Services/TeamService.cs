@@ -168,7 +168,10 @@ namespace SportsReservationAPI.Services
                 throw new ValidationException("Player ids must exactly match this team's existing players.");
 
             // Participant 1 is always the earliest-created player row (see CLAUDE.md) —
-            // their email is the team's login (User.Username), kept in sync here.
+            // their email is the team's login (User.Username). Self-service can't change
+            // it: once the account exists, changing this email would silently change the
+            // participant's login credential with no re-verification. Use a dedicated
+            // account-recovery flow instead (out of scope for this endpoint).
             var participant1Id = team.Players.OrderBy(p => p.Id).First().Id;
 
             foreach (var playerDto in playerDtos)
@@ -179,12 +182,7 @@ namespace SportsReservationAPI.Services
                     && team.Account != null
                     && !string.Equals(playerDto.Email, team.Account.Username, StringComparison.OrdinalIgnoreCase))
                 {
-                    var emailTaken = await _context.Users
-                        .AnyAsync(u => u.Username == playerDto.Email && u.Id != team.Account.Id);
-                    if (emailTaken)
-                        throw new ValidationException("Cet email est déjà associé à un autre compte.");
-
-                    team.Account.Username = playerDto.Email;
+                    throw new ValidationException("L'email du participant 1 est ton identifiant de connexion et ne peut pas être modifié depuis cette page. Contacte un organisateur pour le changer.");
                 }
 
                 player.FirstName = playerDto.FirstName;

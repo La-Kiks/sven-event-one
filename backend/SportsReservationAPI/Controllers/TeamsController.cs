@@ -215,7 +215,9 @@ namespace SportsReservationAPI.Controllers
                 IsPaid = team.IsPaid,
                 HasAccount = team.Account != null,
                 AccountVerified = team.Account?.EmailVerified ?? false,
-                Players = team.Players.Select(p => new PlayerDto
+                // Ordered by Id so index 0 is always Participant 1 (the account/login owner) —
+                // EF's navigation collection order isn't otherwise guaranteed stable.
+                Players = team.Players.OrderBy(p => p.Id).Select(p => new PlayerDto
                 {
                     Id = p.Id,
                     FirstName = p.FirstName,

@@ -1,5 +1,4 @@
 @use "variables" as *;
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap");
 
 :host {
   display: block;
@@ -8,13 +7,13 @@
 
 .page {
   min-height: 100vh;
-  background-color: #0d0d0d;
+  background-color: $background-color;
   background-image: radial-gradient(
     ellipse 60% 40% at 80% 0%,
-    rgba(220, 38, 38, 0.08) 0%,
+    rgba(255, 237, 0, 0.06) 0%,
     transparent 60%
   );
-  font-family: "DM Sans", sans-serif;
+  font-family: $font-body;
   color: #ffffff;
 }
 
@@ -37,18 +36,18 @@
       justify-content: center;
       width: 36px;
       height: 36px;
-      background: #dc2626;
-      color: white;
-      font-family: "Bebas Neue", sans-serif;
-      font-size: 1rem;
-      border-radius: 2px;
+      background: $main-color;
+      color: $text-color;
+      font-family: $font-title;
+      font-size: 0.9rem;
+      border-radius: 0.2em;
     }
 
     .brand-name {
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 0.05em;
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.6);
       text-transform: uppercase;
     }
   }
@@ -61,23 +60,28 @@
 
   .username {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.5);
   }
 }
 
 .logout-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
   padding: 0.4rem 0.9rem;
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border-radius: 0.2em;
+  font-family: $font-body;
   font-size: 0.8rem;
   cursor: pointer;
 
   &:hover {
-    border-color: #dc2626;
-    color: #f87171;
+    border-color: $main-color;
+    color: $main-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 }
 
@@ -88,13 +92,36 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.retry-btn {
+  margin-top: 1rem;
+  background-color: $main-color;
+  color: $text-color;
+  border: none;
+  border-radius: 0.25em;
+  padding: 0.5em 1.2em;
+  font-family: $font-body;
+  font-weight: 600;
+  font-size: $text-sm;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+
+  &:focus-visible {
+    outline: 3px solid $main-color;
+    outline-offset: 3px;
+  }
+}
+
 .team-badge {
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.3rem 0.7rem;
-  border-radius: 2px;
+  border-radius: 0.15em;
+  display: inline-block;
 
   &.paid {
     background: rgba(34, 197, 94, 0.15);
@@ -103,9 +130,19 @@
   }
 
   &.unpaid {
-    background: rgba(220, 38, 38, 0.1);
-    color: #f87171;
-    border: 1px solid rgba(220, 38, 38, 0.3);
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+}
+
+.payment-note {
+  margin: 0.5em 0 0;
+  font-size: $text-xs;
+  color: rgba(255, 255, 255, 0.6);
+
+  a {
+    color: $main-color;
   }
 }
 
@@ -121,8 +158,8 @@
   }
 
   &.error {
-    background: rgba(220, 38, 38, 0.1);
-    color: #f87171;
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
   }
 }
 
@@ -183,6 +220,32 @@
 .input:focus {
   outline: solid 0.15em;
   outline-color: $main-color;
+}
+
+.input--invalid {
+  box-shadow: 0 0 0 0.15em #ff6b6b;
+}
+
+.field-error {
+  color: #ff6b6b;
+  font-size: $text-xs;
+  margin: 0.25em 0 0;
+}
+
+.input--locked {
+  background-color: #d9d9d9;
+  color: #555;
+  cursor: not-allowed;
+}
+
+.input--locked:focus {
+  outline-color: #999;
+}
+
+.field-hint {
+  margin: 0.25em 0 0;
+  font-size: $text-xs;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .row {
@@ -285,6 +348,11 @@ input[type="checkbox"]:checked::before {
 
 .button:hover {
   filter: brightness(1.5);
+}
+
+.button:focus-visible {
+  outline: 3px solid $main-color;
+  outline-offset: 3px;
 }
 
 .button:disabled {

@@ -30,9 +30,27 @@ export class MyTeamComponent implements OnInit {
     player2: this.buildPlayerGroup(),
   });
 
+  private readonly requiredMessages: Record<string, string> = {
+    'team.version': 'Merci de choisir une version.',
+    'team.administration': 'Merci de sélectionner ton administration.',
+    'player1.category': 'Merci de choisir une catégorie.',
+    'player1.outfit': 'Merci de répondre à cette question.',
+    'player2.category': 'Merci de choisir une catégorie.',
+    'player2.outfit': 'Merci de répondre à cette question.',
+  };
+
+  readonly organizerPhone = '06 48 73 50 15';
+  readonly organizerEmail = 'svenbarberat@orange.fr';
+
   constructor(public authService: AuthService, private teamService: TeamService) { }
 
   ngOnInit(): void {
+    this.loadTeam();
+  }
+
+  loadTeam(): void {
+    this.isLoading = true;
+    this.loadError = '';
     this.teamService.getMyTeam().subscribe({
       next: (team) => {
         this.team = team;
@@ -44,6 +62,17 @@ export class MyTeamComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  errorMessage(path: string): string | null {
+    const control = this.form.get(path);
+    if (!control || !control.touched || control.valid) {
+      return null;
+    }
+    if (control.hasError('email')) {
+      return 'Adresse mail invalide.';
+    }
+    return this.requiredMessages[path] ?? 'Ce champ est requis.';
   }
 
   save(): void {
@@ -83,9 +112,9 @@ export class MyTeamComponent implements OnInit {
         this.isSaving = false;
         this.saveSuccess = true;
       },
-      error: () => {
+      error: (err) => {
         this.isSaving = false;
-        this.saveError = "Une erreur est survenue lors de l'enregistrement. Réessayez.";
+        this.saveError = err.error?.error ?? "Une erreur est survenue lors de l'enregistrement. Réessayez.";
       }
     });
   }
