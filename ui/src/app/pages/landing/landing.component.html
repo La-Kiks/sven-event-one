@@ -1,11 +1,8 @@
 <section class="landing">
     <div class="part-one">
         <div class="title">
-            <h1>
-                Hyrox Police 54
-                <br>
-                Rendez-vous en Septembre
-            </h1>
+            <h1>Hyrox Police 54</h1>
+            <p class="subtitle">Rendez-vous en Septembre</p>
         </div>
         <div class="video-wrapper">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/iu4gl2vs--s?si=6mpAoWmavWTZYGDb"
@@ -14,11 +11,20 @@
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
         <div class="cta">
-            <app-button label="S'INSCRIRE EN DUO - 60€" link="/inscription" [isFull]="isRegistrationFull"></app-button>
+            <app-button label="S'INSCRIRE EN DUO - 60€" link="/inscription" [isFull]="isRegistrationFull"
+                fullLabel="Inscriptions complètes — voir les contacts" fullLink="#part-four"></app-button>
         </div>
         <div class="cta cta--secondary">
             <app-button label="Déjà inscrit ? Se connecter" link="/login" [small]="true"></app-button>
         </div>
+        <button type="button" class="down-arrow" (click)="scrollTo('part-two')"
+            aria-label="Voir le format de la course">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
     </div>
     <div id="part-two" class="part-two">
         <div class="description">
@@ -26,7 +32,7 @@
                 tester l'endurance, la force et la polyvalence des participants.</p>
         </div>
         <div class="cards">
-            <h1>Format de la course</h1>
+            <h2 class="section-heading">Format de la course</h2>
             <p><strong>1 km RUN&nbsp;</strong>avant chaque épreuve</p>
             <div class="cards__grid">
                 <app-card number="01" image="images/ski-erg.webp" description="1000m SKI ERG"></app-card>
@@ -41,7 +47,7 @@
         </div>
     </div>
     <div id="part-three" class="part-three">
-        <h1>Partenaires : </h1>
+        <h2 class="section-heading">Partenaires</h2>
         <div class="partenaires">
             <img src="images/sponso-bfm.JPG" alt="sponso-bfm" width="200" height="200">
             <img src="images/sponso-cops13.JPEG" alt="sponso-cops13" width="200" height="200">
@@ -60,12 +66,12 @@
 
     </div>
     <div id="part-four" class="part-four">
-        <h1>Localisation</h1>
+        <h2 class="section-heading">Localisation</h2>
         <div class="localisation">
             <div class="maps"><iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2634.3182811443658!2d6.15653287591105!3d48.68027911322506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4794a286a33495e1%3A0x8a255355455498eb!2sWell%20and%20Fit!5e0!3m2!1sfr!2sfr!4v1766829210050!5m2!1sfr!2sfr"
-                    style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    title="Localisation Well & Fit, 113 Bd Emile Zola, Laxou" style="border:0;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
                 <p>
                     <strong>Well & Fit</strong><br>
@@ -73,7 +79,7 @@
                 </p>
             </div>
         </div>
-        <h2>Contact</h2>
+        <h2 class="section-heading">Contact</h2>
         <p>Tel : 06 48 73 50 15</p>
         <p>Mail: svenbarberat&#64;orange.fr</p>
     </div>

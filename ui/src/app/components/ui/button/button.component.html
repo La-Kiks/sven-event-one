@@ -1,10 +1,14 @@
 <!-- Active: navigates to link -->
-<a *ngIf="!isFull" class="btn" [class.btn--small]="small" [routerLink]="link" target="_blank"
-    rel="noopener noreferrer">
+<a *ngIf="!isFull" class="btn" [class.btn--small]="small" [routerLink]="link">
     {{ label }}
 </a>
 
-<!-- Full: no link, visually disabled -->
-<span *ngIf="isFull" class="btn btn--full" [class.btn--small]="small">
-    INSCRIPTIONS FERME
+<!-- Full, with a real next step: link to it (e.g. the contact section) -->
+<a *ngIf="isFull && fullLink" class="btn btn--full" [class.btn--small]="small" [href]="fullLink">
+    {{ fullLabel }}
+</a>
+
+<!-- Full, no next step available: visually disabled -->
+<span *ngIf="isFull && !fullLink" class="btn btn--full" [class.btn--small]="small" aria-disabled="true">
+    {{ fullLabel }}
 </span>

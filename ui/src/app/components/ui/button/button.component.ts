@@ -13,4 +13,6 @@ export class ButtonComponent {
   @Input() label = "";
   @Input() isFull = false;
   @Input() small = false;
+  @Input() fullLabel = "Inscriptions complètes";
+  @Input() fullLink = "";
 }
