@@ -1,5 +1,13 @@
 <form class="form" [formGroup]="form">
-    <h1 class="row title" style="align-items: center;">Inscription DUO {{ currentStep }}/3 </h1>
+    <h1 class="row title title--centered">Inscription DUO — Étape {{ currentStep }}/{{ totalSteps }}</h1>
+
+    <div class="stepper" role="progressbar" aria-valuemin="1" [attr.aria-valuenow]="currentStep"
+        [attr.aria-valuemax]="totalSteps" [attr.aria-label]="'Étape ' + currentStep + ' sur ' + totalSteps">
+        @for (step of steps; track step) {
+        <span class="stepper__dot" [class.stepper__dot--active]="step === currentStep"
+            [class.stepper__dot--done]="step < currentStep"></span>
+        }
+    </div>
 
     <!-- Step 1 -->
     @if (currentStep === 1) {
@@ -9,22 +17,46 @@
         </h2>
         <div class="row">
             <label class="label" for="name_a">Nom : <span class="required">*</span></label>
-            <input class="input" id="name_a" formControlName="name_a" required>
+            <input class="input" id="name_a" formControlName="name_a" required autocomplete="family-name"
+                [class.input--invalid]="errorMessage('step1.name_a')"
+                [attr.aria-invalid]="errorMessage('step1.name_a') ? true : null"
+                [attr.aria-describedby]="errorMessage('step1.name_a') ? 'name_a-error' : null">
+            @if (errorMessage('step1.name_a'); as msg) {
+            <p class="field-error" id="name_a-error">{{ msg }}</p>
+            }
         </div>
 
         <div class="row">
             <label class="label" for="firstname_a">Prénom : <span class="required">*</span></label>
-            <input class="input" id="firstname_a" formControlName="firstname_a" required>
+            <input class="input" id="firstname_a" formControlName="firstname_a" required autocomplete="given-name"
+                [class.input--invalid]="errorMessage('step1.firstname_a')"
+                [attr.aria-invalid]="errorMessage('step1.firstname_a') ? true : null"
+                [attr.aria-describedby]="errorMessage('step1.firstname_a') ? 'firstname_a-error' : null">
+            @if (errorMessage('step1.firstname_a'); as msg) {
+            <p class="field-error" id="firstname_a-error">{{ msg }}</p>
+            }
         </div>
 
         <div class="row">
             <label class="label" for="email_a">Mail : <span class="required">*</span></label>
-            <input class="input" id="email_a" formControlName="email_a" required>
+            <input class="input" id="email_a" type="email" formControlName="email_a" required autocomplete="email"
+                [class.input--invalid]="errorMessage('step1.email_a')"
+                [attr.aria-invalid]="errorMessage('step1.email_a') ? true : null"
+                [attr.aria-describedby]="errorMessage('step1.email_a') ? 'email_a-error' : null">
+            @if (errorMessage('step1.email_a'); as msg) {
+            <p class="field-error" id="email_a-error">{{ msg }}</p>
+            }
         </div>
 
         <div class="row">
             <label class="label" for="phone_a">Téléphone : <span class="required">*</span></label>
-            <input class="input" id="phone_a" formControlName="phone_a" required>
+            <input class="input" id="phone_a" type="tel" formControlName="phone_a" required autocomplete="tel"
+                [class.input--invalid]="errorMessage('step1.phone_a')"
+                [attr.aria-invalid]="errorMessage('step1.phone_a') ? true : null"
+                [attr.aria-describedby]="errorMessage('step1.phone_a') ? 'phone_a-error' : null">
+            @if (errorMessage('step1.phone_a'); as msg) {
+            <p class="field-error" id="phone_a-error">{{ msg }}</p>
+            }
         </div>
 
         <fieldset>
@@ -40,6 +72,9 @@
                     <input type="radio" value="mixt" formControlName="category_a"> Mixte
                 </label>
             </div>
+            @if (errorMessage('step1.category_a'); as msg) {
+            <p class="field-error">{{ msg }}</p>
+            }
         </fieldset>
 
         <fieldset>
@@ -49,18 +84,23 @@
                     <input type="radio" value="yes" formControlName="outfit_a"> Oui, j'ai ma tenue.
                 </label>
                 <label>
-                    <input type="radio" value="lend" formControlName="outfit_a"> Oui, j'ai besoin qu'on m'en prette une.
+                    <input type="radio" value="lend" formControlName="outfit_a"> Oui, j'ai besoin qu'on m'en prête
+                    une.
                 </label>
                 <label>
                     <input type="radio" value="no" formControlName="outfit_a"> Non.
                 </label>
             </div>
+            @if (errorMessage('step1.outfit_a'); as msg) {
+            <p class="field-error">{{ msg }}</p>
+            }
         </fieldset>
 
         <div>
             <label class="infoline">
                 <input type="checkbox" name="subscribe" value="yes" formControlName="volounteer_a">
-                Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres paricipants le jour J.
+                Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres participants le
+                jour J.
             </label>
         </div>
 
@@ -76,22 +116,46 @@
         </h2>
         <div class="row">
             <label class="label" for="name_b">Nom : <span class="required">*</span></label>
-            <input class="input" id="name_b" formControlName="name_b" required>
+            <input class="input" id="name_b" formControlName="name_b" required autocomplete="family-name"
+                [class.input--invalid]="errorMessage('step2.name_b')"
+                [attr.aria-invalid]="errorMessage('step2.name_b') ? true : null"
+                [attr.aria-describedby]="errorMessage('step2.name_b') ? 'name_b-error' : null">
+            @if (errorMessage('step2.name_b'); as msg) {
+            <p class="field-error" id="name_b-error">{{ msg }}</p>
+            }
         </div>
 
         <div class="row">
             <label class="label" for="firstname_b">Prénom : <span class="required">*</span></label>
-            <input class="input" id="firstname_b" formControlName="firstname_b" required>
+            <input class="input" id="firstname_b" formControlName="firstname_b" required autocomplete="given-name"
+                [class.input--invalid]="errorMessage('step2.firstname_b')"
+                [attr.aria-invalid]="errorMessage('step2.firstname_b') ? true : null"
+                [attr.aria-describedby]="errorMessage('step2.firstname_b') ? 'firstname_b-error' : null">
+            @if (errorMessage('step2.firstname_b'); as msg) {
+            <p class="field-error" id="firstname_b-error">{{ msg }}</p>
+            }
         </div>
 
         <div class="row">
             <label class="label" for="email_b">Mail : <span class="required">*</span></label>
-            <input class="input" id="email_b" formControlName="email_b" required>
+            <input class="input" id="email_b" type="email" formControlName="email_b" required autocomplete="email"
+                [class.input--invalid]="errorMessage('step2.email_b')"
+                [attr.aria-invalid]="errorMessage('step2.email_b') ? true : null"
+                [attr.aria-describedby]="errorMessage('step2.email_b') ? 'email_b-error' : null">
+            @if (errorMessage('step2.email_b'); as msg) {
+            <p class="field-error" id="email_b-error">{{ msg }}</p>
+            }
         </div>
 
         <div class="row">
             <label class="label" for="phone_b">Téléphone : <span class="required">*</span></label>
-            <input class="input" id="phone_b" type="tel" formControlName="phone_b" required>
+            <input class="input" id="phone_b" type="tel" formControlName="phone_b" required autocomplete="tel"
+                [class.input--invalid]="errorMessage('step2.phone_b')"
+                [attr.aria-invalid]="errorMessage('step2.phone_b') ? true : null"
+                [attr.aria-describedby]="errorMessage('step2.phone_b') ? 'phone_b-error' : null">
+            @if (errorMessage('step2.phone_b'); as msg) {
+            <p class="field-error" id="phone_b-error">{{ msg }}</p>
+            }
         </div>
 
         <fieldset>
@@ -107,6 +171,9 @@
                     <input type="radio" value="mixt" formControlName="category_b"> Mixte
                 </label>
             </div>
+            @if (errorMessage('step2.category_b'); as msg) {
+            <p class="field-error">{{ msg }}</p>
+            }
         </fieldset>
 
         <fieldset>
@@ -116,17 +183,21 @@
                     <input type="radio" value="yes" formControlName="outfit_b"> Oui, j'ai ma tenue.
                 </label>
                 <label>
-                    <input type="radio" value="lend" formControlName="outfit_b"> Oui, j'ai besoin qu'on m'en prette une.
+                    <input type="radio" value="lend" formControlName="outfit_b"> Oui, j'ai besoin qu'on m'en prête
+                    une.
                 </label>
                 <label>
                     <input type="radio" value="no" formControlName="outfit_b"> Non.
                 </label>
             </div>
+            @if (errorMessage('step2.outfit_b'); as msg) {
+            <p class="field-error">{{ msg }}</p>
+            }
         </fieldset>
 
         <div class="infoline">
             <input type="checkbox" name="subscribe" value="yes" formControlName="volounteer_b">
-            Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres paricipants le jour J.
+            Je voudrais être bénévole pour aider à l'organisation ainsi qu'à juger les autres participants le jour J.
         </div>
 
         <div class="button-group">
@@ -144,7 +215,13 @@
     <div formGroupName="step3">
         <div class="row">
             <label class="label" for="team_name">Nom d'équipe : <span class="required">*</span></label>
-            <input class="input" id="team_name" formControlName="team_name" required>
+            <input class="input" id="team_name" formControlName="team_name" required
+                [class.input--invalid]="errorMessage('step3.team_name')"
+                [attr.aria-invalid]="errorMessage('step3.team_name') ? true : null"
+                [attr.aria-describedby]="errorMessage('step3.team_name') ? 'team_name-error' : null">
+            @if (errorMessage('step3.team_name'); as msg) {
+            <p class="field-error" id="team_name-error">{{ msg }}</p>
+            }
         </div>
 
         <fieldset>
@@ -157,12 +234,18 @@
                     <input type="radio" value="long" formControlName="version"> Longue
                 </label>
             </div>
+            @if (errorMessage('step3.version'); as msg) {
+            <p class="field-error">{{ msg }}</p>
+            }
         </fieldset>
 
         <div class="form-group">
             <label class="label" for="administration">Selectionne ton administration : <span
                     class="required">*</span></label>
-            <select id="administration" name="administration" formControlName="administration">
+            <select id="administration" name="administration" formControlName="administration"
+                [class.input--invalid]="errorMessage('step3.administration')"
+                [attr.aria-invalid]="errorMessage('step3.administration') ? true : null"
+                [attr.aria-describedby]="errorMessage('step3.administration') ? 'administration-error' : null">
                 <option value="">-- Choisir son administration --</option>
                 <option value="none">Autre</option>
                 <option value="gendarmerie">Gendarmerie</option>
@@ -172,23 +255,107 @@
                 <option value="nationale">Police Nationale</option>
                 <option value="pompier">Pompier</option>
             </select>
+            @if (errorMessage('step3.administration'); as msg) {
+            <p class="field-error" id="administration-error">{{ msg }}</p>
+            }
         </div>
 
         <div class="infoline">
-            <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required>Les informations de
+            <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required
+                [attr.aria-invalid]="errorMessage('step3.subscribe') ? true : null"
+                [attr.aria-describedby]="errorMessage('step3.subscribe') ? 'subscribe-error' : null">Les informations
+            de
             contact présentes dans ce formulaire ne seront utilisées que dans la cadre
             de
             cet événement ou
             événement similaire.<span class="required">*</span>
         </div>
+        @if (errorMessage('step3.subscribe'); as msg) {
+        <p class="field-error" id="subscribe-error">{{ msg }}</p>
+        }
 
         <div class="button-group">
             <button class="button" type="button" (click)="prev()">Retour</button>
-            <button class="button" type="submit" (click)="submit()" [disabled]="form.invalid">Confirmer</button>
+            <button class="button" type="button" (click)="next()"
+                [disabled]="form.get('step3')?.invalid">Suivant</button>
         </div>
 
     </div>
 
+    }
+
+    <!-- Step 4: Review -->
+    @if (currentStep === 4) {
+    <div>
+        <h2 class="row title2">Récapitulatif</h2>
+
+        <div class="review-section">
+            <div class="review-section__header">
+                <h3>Participant 1</h3>
+                <button class="link-button" type="button" (click)="editStep(1)">Modifier</button>
+            </div>
+            <dl class="review-list">
+                <dt>Nom</dt>
+                <dd>{{ form.get('step1.firstname_a')?.value }} {{ form.get('step1.name_a')?.value }}</dd>
+                <dt>Mail</dt>
+                <dd>{{ form.get('step1.email_a')?.value }}</dd>
+                <dt>Téléphone</dt>
+                <dd>{{ form.get('step1.phone_a')?.value }}</dd>
+                <dt>Catégorie</dt>
+                <dd>{{ label(categoryLabels, form.get('step1.category_a')?.value) }}</dd>
+                <dt>Tenue</dt>
+                <dd>{{ label(outfitLabels, form.get('step1.outfit_a')?.value) }}</dd>
+            </dl>
+        </div>
+
+        <div class="review-section">
+            <div class="review-section__header">
+                <h3>Participant 2</h3>
+                <button class="link-button" type="button" (click)="editStep(2)">Modifier</button>
+            </div>
+            <dl class="review-list">
+                <dt>Nom</dt>
+                <dd>{{ form.get('step2.firstname_b')?.value }} {{ form.get('step2.name_b')?.value }}</dd>
+                <dt>Mail</dt>
+                <dd>{{ form.get('step2.email_b')?.value }}</dd>
+                <dt>Téléphone</dt>
+                <dd>{{ form.get('step2.phone_b')?.value }}</dd>
+                <dt>Catégorie</dt>
+                <dd>{{ label(categoryLabels, form.get('step2.category_b')?.value) }}</dd>
+                <dt>Tenue</dt>
+                <dd>{{ label(outfitLabels, form.get('step2.outfit_b')?.value) }}</dd>
+            </dl>
+        </div>
+
+        <div class="review-section">
+            <div class="review-section__header">
+                <h3>Équipe</h3>
+                <button class="link-button" type="button" (click)="editStep(3)">Modifier</button>
+            </div>
+            <dl class="review-list">
+                <dt>Nom d'équipe</dt>
+                <dd>{{ form.get('step3.team_name')?.value }}</dd>
+                <dt>Version</dt>
+                <dd>{{ label(versionLabels, form.get('step3.version')?.value) }}</dd>
+                <dt>Administration</dt>
+                <dd>{{ label(administrationLabels, form.get('step3.administration')?.value) }}</dd>
+            </dl>
+        </div>
+
+        <p class="review-note">En confirmant, vous serez redirigé(e) vers notre billetterie partenaire pour régler
+            les 60€ de l'inscription.</p>
+
+        <div class="button-group">
+            <button class="button" type="button" (click)="prev()" [disabled]="isSubmitting">Retour</button>
+            <button class="button" type="submit" (click)="submit()" [disabled]="form.invalid || isSubmitting">
+                @if (isSubmitting) {
+                <span class="spinner" aria-hidden="true"></span> Envoi en cours…
+                } @else {
+                Confirmer
+                }
+            </button>
+        </div>
+    </div>
     }
 
     <app-modal [status]="transactionStatus" [message]="modalMessage" [url]="url" [isVisible]="showModal"

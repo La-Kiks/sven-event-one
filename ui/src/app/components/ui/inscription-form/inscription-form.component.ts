@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ModalComponent, StatusType } from '../modal/modal.component';
 import { CreateTeamWithPlayersRequest } from '../../../models/create-team-request';
 import { TeamService } from '../../../services/team.service';
-import { StripeService } from '../../../services/stripe.service';
 
+const FORM_STORAGE_KEY = 'inscription-form-draft';
 
 @Component({
   selector: 'app-inscription-form',
@@ -13,9 +15,13 @@ import { StripeService } from '../../../services/stripe.service';
   templateUrl: './inscription-form.component.html',
   styleUrls: ['./inscription-form.component.scss']
 })
-export class InscriptionFormComponent {
+export class InscriptionFormComponent implements OnInit, OnDestroy {
 
-  constructor(private teamService: TeamService, private stripeService: StripeService) { }
+  constructor(
+    private teamService: TeamService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   form = new FormGroup({
     step1: new FormGroup({
@@ -40,23 +46,111 @@ export class InscriptionFormComponent {
       version: new FormControl('', Validators.required),
       administration: new FormControl('', Validators.required),
       team_name: new FormControl('', Validators.required),
-      subscribe: new FormControl('', Validators.required),
+      subscribe: new FormControl(false, Validators.requiredTrue),
     }),
   });
 
+  readonly totalSteps = 4;
+  readonly steps = [1, 2, 3, 4];
   currentStep = 1;
+  isSubmitting = false;
+
+  readonly categoryLabels: Record<string, string> = { man: 'Homme', woman: 'Femme', mixt: 'Mixte' };
+  readonly outfitLabels: Record<string, string> = {
+    yes: "Oui, j'ai ma tenue.",
+    lend: "Oui, j'ai besoin qu'on m'en prête une.",
+    no: 'Non.'
+  };
+  readonly versionLabels: Record<string, string> = { short: 'Courte', long: 'Longue' };
+  readonly administrationLabels: Record<string, string> = {
+    none: 'Autre',
+    gendarmerie: 'Gendarmerie',
+    militaire: 'Militaire',
+    penitancier: 'Pénitancier',
+    municipale: 'Police Municipale',
+    nationale: 'Police Nationale',
+    pompier: 'Pompier',
+  };
+
+  private readonly requiredMessages: Record<string, string> = {
+    'step1.category_a': 'Merci de choisir une catégorie.',
+    'step1.outfit_a': 'Merci de répondre à cette question.',
+    'step2.category_b': 'Merci de choisir une catégorie.',
+    'step2.outfit_b': 'Merci de répondre à cette question.',
+    'step3.version': 'Merci de choisir une version.',
+    'step3.administration': 'Merci de sélectionner ton administration.',
+    'step3.subscribe': "Merci d'accepter cette condition pour continuer.",
+  };
+
+  private querySub?: Subscription;
+
+  ngOnInit(): void {
+    this.restoreDraft();
+
+    this.querySub = this.route.queryParamMap.subscribe(params => {
+      const step = Number(params.get('step')) || 1;
+      this.currentStep = Math.min(Math.max(step, 1), this.totalSteps);
+    });
+
+    this.form.valueChanges.subscribe(value => {
+      sessionStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(value));
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.querySub?.unsubscribe();
+  }
+
+  private restoreDraft(): void {
+    const saved = sessionStorage.getItem(FORM_STORAGE_KEY);
+    if (!saved) {
+      return;
+    }
+    try {
+      this.form.patchValue(JSON.parse(saved));
+    } catch {
+      sessionStorage.removeItem(FORM_STORAGE_KEY);
+    }
+  }
+
+  private goToStep(step: number): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { step },
+      queryParamsHandling: 'merge'
+    });
+  }
 
   next() {
     const stepGroup = this.form.get(`step${this.currentStep}`);
     if (stepGroup?.valid) {
-      this.currentStep++;
+      this.goToStep(this.currentStep + 1);
     } else {
       stepGroup?.markAllAsTouched();
     }
   }
 
   prev() {
-    this.currentStep--;
+    this.goToStep(this.currentStep - 1);
+  }
+
+  editStep(step: number) {
+    this.goToStep(step);
+  }
+
+  errorMessage(path: string): string | null {
+    const control = this.form.get(path);
+    if (!control || !control.touched || control.valid) {
+      return null;
+    }
+    if (control.hasError('email')) {
+      return 'Adresse mail invalide.';
+    }
+    return this.requiredMessages[path] ?? 'Ce champ est requis.';
+  }
+
+  label(map: Record<string, string>, value: string | null | undefined): string {
+    return value ? (map[value] ?? value) : '';
   }
 
   submit() {
@@ -64,6 +158,11 @@ export class InscriptionFormComponent {
       this.onError();
       return;
     }
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.isSubmitting = true;
 
     const step1 = this.form.get('step1')!.value;
     const step2 = this.form.get('step2')!.value;
@@ -101,12 +200,17 @@ export class InscriptionFormComponent {
 
     this.teamService.createTeam(payload).subscribe({
       next: () => {
+        this.isSubmitting = false;
+        sessionStorage.removeItem(FORM_STORAGE_KEY);
         this.onSuccess();
         setTimeout(() => {
           window.location.href = this.url;
         }, 2000);
       },
-      error: (err) => this.onError(err.error?.error)
+      error: (err) => {
+        this.isSubmitting = false;
+        this.onError(err.error?.error);
+      }
     });
 
   }
@@ -131,7 +235,7 @@ export class InscriptionFormComponent {
 
   onSuccess(): void {
     this.openModal({
-      message: 'Formulaire envoyé ! Un email va vous être envoyé pour activer votre compte et suivre votre inscription.',
+      message: 'Formulaire envoyé ! Un email va vous être envoyé pour activer votre compte et suivre votre inscription. Vous allez maintenant être redirigé(e) vers notre billetterie partenaire Yurplan pour régler les 60€ de l\'inscription.',
       url: this.url,
       status: 'success'
     });
