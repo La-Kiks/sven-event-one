@@ -160,15 +160,29 @@
                     <span class="info-label">Administration</span>
                     <span class="info-value">{{ getAdminLabel(selectedTeam.administration) }}</span>
                 </div>
-                <div class="info-row">
+                <div class="info-row payment-row">
                     <span class="info-label">Payment</span>
                     <span class="info-value">
-                        <span class="team-badge paid clickable" *ngIf="selectedTeam.isPaid"
-                            (click)="togglePayment(selectedTeam)" title="Click to mark as unpaid">✓ Paid</span>
-                        <span class="team-badge unpaid clickable" *ngIf="!selectedTeam.isPaid"
-                            (click)="togglePayment(selectedTeam)" title="Click to mark as paid">✗ Unpaid</span>
+                        <ng-container *ngIf="!pendingPaymentConfirm">
+                            <span class="team-badge paid clickable" *ngIf="selectedTeam.isPaid"
+                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme non payé">✓ Paid</span>
+                            <span class="team-badge unpaid clickable" *ngIf="!selectedTeam.isPaid"
+                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme payé">✗ Unpaid</span>
+                        </ng-container>
+                        <span class="payment-confirm" *ngIf="pendingPaymentConfirm">
+                            <span class="payment-confirm-text">
+                                Marquer comme {{ selectedTeam.isPaid ? 'non payé' : 'payé' }} ?
+                            </span>
+                            <button class="payment-confirm-yes" (click)="togglePayment(selectedTeam)"
+                                [disabled]="isTogglingPayment">
+                                {{ isTogglingPayment ? '...' : 'Confirmer' }}
+                            </button>
+                            <button class="payment-confirm-no" (click)="cancelPaymentToggle()"
+                                [disabled]="isTogglingPayment">Annuler</button>
+                        </span>
                     </span>
                 </div>
+                <div class="payment-error" *ngIf="paymentError">{{ paymentError }}</div>
                 <div class="info-row">
                     <span class="info-label">Players</span>
                     <span class="info-value">{{ selectedTeam.players.length }}</span>

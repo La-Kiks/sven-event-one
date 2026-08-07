@@ -56,6 +56,11 @@ export class TeamsComponent implements OnInit {
   isDeleting = false;
   deleteError = '';
 
+  // Payment toggle state
+  pendingPaymentConfirm = false;
+  isTogglingPayment = false;
+  paymentError = '';
+
   // Account creation state
   isCreatingAccount = false;
   createAccountMessage = '';
@@ -94,6 +99,8 @@ export class TeamsComponent implements OnInit {
     this.deleteError = '';
     this.createAccountMessage = '';
     this.createAccountError = '';
+    this.pendingPaymentConfirm = false;
+    this.paymentError = '';
 
     this.http.get<Team>(`${environment.apiUrl}/api/Teams/${team.id}`).subscribe({
       next: (data) => {
@@ -111,6 +118,8 @@ export class TeamsComponent implements OnInit {
     this.isPanelOpen = false;
     this.showDeleteConfirm = false;
     this.deleteError = '';
+    this.pendingPaymentConfirm = false;
+    this.paymentError = '';
     setTimeout(() => this.selectedTeam = null, 300);
   }
 
@@ -187,16 +196,37 @@ export class TeamsComponent implements OnInit {
     return this.sortDir === 'asc' ? '↑' : '↓';
   }
 
+  requestPaymentToggle(): void {
+    this.pendingPaymentConfirm = true;
+    this.paymentError = '';
+  }
+
+  cancelPaymentToggle(): void {
+    this.pendingPaymentConfirm = false;
+    this.paymentError = '';
+  }
+
   togglePayment(team: Team): void {
+    if (this.isTogglingPayment) return;
+
+    this.isTogglingPayment = true;
+    this.paymentError = '';
+    const newValue = !team.isPaid;
+
     this.http.patch(`${environment.apiUrl}/api/Teams/${team.id}/payment`, {
-      isPaid: !team.isPaid
+      isPaid: newValue
     }).subscribe({
       next: () => {
-        team.isPaid = !team.isPaid;
+        team.isPaid = newValue;
         if (this.selectedTeam?.id === team.id)
-          this.selectedTeam.isPaid = team.isPaid;
+          this.selectedTeam.isPaid = newValue;
+        this.isTogglingPayment = false;
+        this.pendingPaymentConfirm = false;
       },
-      error: () => console.error('Failed to update payment status')
+      error: () => {
+        this.isTogglingPayment = false;
+        this.paymentError = "Échec de la mise à jour du statut de paiement. Réessayez.";
+      }
     });
   }
 
