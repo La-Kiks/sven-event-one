@@ -80,7 +80,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let team of sortedTeams; let i = index" (click)="openPanel(team)"
+                <tr *ngFor="let team of sortedTeams; let i = index" (click)="openPanel(team.id)"
                     [class.active]="selectedTeam?.id === team.id">
                     <td class="name-cell">
                         <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>

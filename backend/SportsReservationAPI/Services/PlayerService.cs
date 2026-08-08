@@ -27,6 +27,7 @@ namespace SportsReservationAPI.Services
                     Category = p.Category,
                     Outfit = p.Outfit,
                     Volunteer = p.Volunteer,
+                    TeamId = p.TeamId,
                     TeamName = p.Team != null ? p.Team.Name : "—"
                 })
                 .OrderBy(p => p.LastName)

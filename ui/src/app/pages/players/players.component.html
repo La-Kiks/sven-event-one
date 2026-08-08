@@ -18,7 +18,35 @@
     <main class="content">
         <div class="page-title">
             <h1>Players</h1>
-            <span class="count" *ngIf="!isLoading && !error">{{ players.length }} players</span>
+            <span class="count" *ngIf="!isLoading && !error">
+                {{ filtered.length }}<ng-container *ngIf="filtered.length !== players.length"> / {{ players.length
+                    }}</ng-container> players
+            </span>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar" *ngIf="!isLoading && !error">
+            <input class="search-input" type="text" placeholder="Search name, team, or email…"
+                [ngModel]="searchQuery" (ngModelChange)="onSearchChange($event)" />
+
+            <div class="filter-chips">
+                <button class="chip" [class.active]="volunteerFilter === 'all'"
+                    (click)="setVolunteerFilter('all')">All</button>
+                <button class="chip" [class.active]="volunteerFilter === 'yes'"
+                    (click)="setVolunteerFilter('yes')">Volunteers</button>
+                <button class="chip" [class.active]="volunteerFilter === 'no'"
+                    (click)="setVolunteerFilter('no')">Non-volunteers</button>
+            </div>
+
+            <select class="category-select" [ngModel]="categoryFilter"
+                (ngModelChange)="setCategoryFilter($event)">
+                <option value="all">All categories</option>
+                <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+            </select>
+
+            <button class="export-btn" (click)="exportCsv()" [disabled]="filtered.length === 0">
+                Export CSV
+            </button>
         </div>
 
         <!-- Loading -->
@@ -29,30 +57,49 @@
         <!-- Error -->
         <div class="error-state" *ngIf="error">{{ error }}</div>
 
+        <!-- No results -->
+        <div class="empty-state" *ngIf="!isLoading && !error && filtered.length === 0 && players.length > 0">
+            No players match your search or filters.
+        </div>
+
         <!-- Table -->
-        <div class="table-wrapper" *ngIf="!isLoading && !error">
+        <div class="table-wrapper" *ngIf="!isLoading && !error && filtered.length > 0">
             <table>
                 <thead>
                     <tr>
-                        <th (click)="sort('lastName')" class="sortable">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('lastName')" (click)="sort('lastName')"
+                            (keydown)="onSortKeydown($event, 'lastName')">
                             Name <span class="sort-icon">{{ getSortIcon('lastName') }}</span>
                         </th>
-                        <th (click)="sort('teamName')" class="sortable">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('teamName')" (click)="sort('teamName')"
+                            (keydown)="onSortKeydown($event, 'teamName')">
                             Team <span class="sort-icon">{{ getSortIcon('teamName') }}</span>
                         </th>
-                        <th (click)="sort('category')" class="sortable">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('category')" (click)="sort('category')"
+                            (keydown)="onSortKeydown($event, 'category')">
                             Category <span class="sort-icon">{{ getSortIcon('category') }}</span>
                         </th>
-                        <th (click)="sort('outfit')" class="sortable">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('outfit')" (click)="sort('outfit')"
+                            (keydown)="onSortKeydown($event, 'outfit')">
                             Outfit <span class="sort-icon">{{ getSortIcon('outfit') }}</span>
                         </th>
-                        <th (click)="sort('email')" class="sortable">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('email')" (click)="sort('email')"
+                            (keydown)="onSortKeydown($event, 'email')">
                             Email <span class="sort-icon">{{ getSortIcon('email') }}</span>
                         </th>
-                        <th (click)="sort('phoneNumber')" class="sortable">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('phoneNumber')" (click)="sort('phoneNumber')"
+                            (keydown)="onSortKeydown($event, 'phoneNumber')">
                             Phone <span class="sort-icon">{{ getSortIcon('phoneNumber') }}</span>
                         </th>
-                        <th (click)="sort('volunteer')" class="sortable">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('volunteer')" (click)="sort('volunteer')"
+                            (keydown)="onSortKeydown($event, 'volunteer')">
                             Volunteer <span class="sort-icon">{{ getSortIcon('volunteer') }}</span>
                         </th>
                     </tr>
@@ -63,7 +110,8 @@
                             <span class="full-name">{{ player.firstName }} {{ player.lastName }}</span>
                         </td>
                         <td>
-                            <span class="team-pill">{{ player.teamName }}</span>
+                            <a class="team-pill" [routerLink]="['/teams']"
+                                [queryParams]="{ teamId: player.teamId }">{{ player.teamName }}</a>
                         </td>
                         <td>
                             <span class="category-tag">{{ player.category }}</span>

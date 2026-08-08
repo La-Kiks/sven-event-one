@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { environment } from '../../core/runtime-env';
 
@@ -72,7 +72,12 @@ export class TeamsComponent implements OnInit {
   bulkResults: { teamId: number; teamName: string; status: string; error?: string }[] | null = null;
   bulkError = '';
 
-  constructor(private http: HttpClient, public authService: AuthService) {
+  constructor(
+    private http: HttpClient,
+    public authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.currentUser = this.authService.getCurrentUser();
   }
 
@@ -82,6 +87,12 @@ export class TeamsComponent implements OnInit {
         this.teams = data;
         this.applySort();
         this.isLoading = false;
+
+        const deepLinkedTeamId = Number(this.route.snapshot.queryParamMap.get('teamId'));
+        if (deepLinkedTeamId && this.teams.some(t => t.id === deepLinkedTeamId)) {
+          this.openPanel(deepLinkedTeamId);
+          this.router.navigate([], { relativeTo: this.route, queryParams: {}, replaceUrl: true });
+        }
       },
       error: () => {
         this.error = 'Failed to load teams.';
@@ -90,7 +101,7 @@ export class TeamsComponent implements OnInit {
     });
   }
 
-  openPanel(team: Team): void {
+  openPanel(teamId: number): void {
     this.isPanelOpen = true;
     this.isPanelLoading = true;
     this.panelError = '';
@@ -102,7 +113,7 @@ export class TeamsComponent implements OnInit {
     this.pendingPaymentConfirm = false;
     this.paymentError = '';
 
-    this.http.get<Team>(`${environment.apiUrl}/api/Teams/${team.id}`).subscribe({
+    this.http.get<Team>(`${environment.apiUrl}/api/Teams/${teamId}`).subscribe({
       next: (data) => {
         this.selectedTeam = data;
         this.isPanelLoading = false;
