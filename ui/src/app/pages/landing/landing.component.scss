@@ -81,6 +81,23 @@
   margin-top: -1.5rem;
 }
 
+.sticky-cta {
+  // `.landing` is its own `overflow: scroll` box, which made `position: sticky`
+  // stop sticking partway through the page (verified in-browser) — `fixed`
+  // relative to the viewport is what actually stays pinned on scroll here.
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255, 237, 0, 0.2);
+}
+
 .down-arrow {
   background: transparent;
   border: none;

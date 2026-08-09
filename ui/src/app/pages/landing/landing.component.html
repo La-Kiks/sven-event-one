@@ -12,7 +12,8 @@
         </div>
         <div class="cta">
             <app-button label="S'INSCRIRE EN DUO - 60€" link="/inscription" [isFull]="isRegistrationFull"
-                fullLabel="Inscriptions complètes — voir les contacts" fullLink="#part-four"></app-button>
+                [fullLabel]="countLoadError ? 'Erreur de chargement — contactez-nous' : 'Inscriptions complètes — voir les contacts'"
+                fullLink="#contact"></app-button>
         </div>
         <div class="cta cta--secondary">
             <app-button label="Déjà inscrit ? Se connecter" link="/login" [small]="true"></app-button>
@@ -26,6 +27,14 @@
             </svg>
         </button>
     </div>
+
+    <!-- Persistent CTA: the hero's register button scrolls out of view on a
+         long page, leaving no way to act on intent formed further down. -->
+    <div class="sticky-cta">
+        <app-button label="S'inscrire en duo - 60€" link="/inscription" [small]="true" [isFull]="isRegistrationFull"
+            [fullLabel]="countLoadError ? 'Erreur de chargement' : 'Complet'" fullLink="#contact"></app-button>
+    </div>
+
     <div id="part-two" class="part-two">
         <div class="description">
             <p>Cette compétition est l'enchainement d'épreuves combinant course à pied et ateliers fonctionnels pour
@@ -79,7 +88,7 @@
                 </p>
             </div>
         </div>
-        <h2 class="section-heading">Contact</h2>
+        <h2 id="contact" class="section-heading">Contact</h2>
         <p>Tel : 06 48 73 50 15</p>
         <p>Mail: svenbarberat&#64;orange.fr</p>
     </div>

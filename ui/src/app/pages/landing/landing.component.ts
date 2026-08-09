@@ -11,13 +11,20 @@ import { TeamCountService } from '../../services/team-count.service'; // ← adj
 })
 export class LandingComponent implements OnInit {
   isRegistrationFull = false;
+  countLoadError = false;
 
   constructor(private teamCountService: TeamCountService) { }
 
   ngOnInit(): void {
     this.teamCountService.getCount().subscribe({
       next: (data) => this.isRegistrationFull = data.isFull,
-      error: () => this.isRegistrationFull = true
+      // Fail closed (never oversell) on a network/API error, but track it
+      // separately from a genuine sellout so the CTA copy doesn't falsely
+      // tell every visitor during an outage that registration is closed.
+      error: () => {
+        this.isRegistrationFull = true;
+        this.countLoadError = true;
+      }
     });
   }
 
