@@ -44,8 +44,10 @@
                 <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
             </select>
 
-            <button class="export-btn" (click)="exportCsv()" [disabled]="filtered.length === 0">
-                Export CSV
+            <button class="export-btn" (click)="exportCsv()" [disabled]="filtered.length === 0"
+                [title]="filtered.length !== players.length ? 'Exporte seulement les ' + filtered.length + ' joueurs actuellement filtrés' : 'Exporte les ' + filtered.length + ' joueurs'">
+                <ng-container *ngIf="filtered.length !== players.length">Export CSV ({{ filtered.length }} filtrés)</ng-container>
+                <ng-container *ngIf="filtered.length === players.length">Export CSV ({{ filtered.length }})</ng-container>
             </button>
         </div>
 

@@ -166,7 +166,8 @@ export class PlayersComponent implements OnInit {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `players-${new Date().toISOString().slice(0, 10)}.csv`;
+    const scope = this.filtered.length !== this.players.length ? '-filtered' : '';
+    link.download = `players${scope}-${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }

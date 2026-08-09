@@ -81,6 +81,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let team of sortedTeams; let i = index" (click)="openPanel(team.id)"
+                    (keydown.enter)="openPanel(team.id)" tabindex="0" role="button"
+                    [attr.aria-label]="'Voir l\'équipe ' + team.name"
                     [class.active]="selectedTeam?.id === team.id">
                     <td class="name-cell">
                         <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
@@ -164,10 +166,10 @@
                     <span class="info-label">Payment</span>
                     <span class="info-value">
                         <ng-container *ngIf="!pendingPaymentConfirm">
-                            <span class="team-badge paid clickable" *ngIf="selectedTeam.isPaid"
-                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme non payé">✓ Paid</span>
-                            <span class="team-badge unpaid clickable" *ngIf="!selectedTeam.isPaid"
-                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme payé">✗ Unpaid</span>
+                            <button type="button" class="team-badge paid clickable" *ngIf="selectedTeam.isPaid"
+                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme non payé">✓ Paid</button>
+                            <button type="button" class="team-badge unpaid clickable" *ngIf="!selectedTeam.isPaid"
+                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme payé">✗ Unpaid</button>
                         </ng-container>
                         <span class="payment-confirm" *ngIf="pendingPaymentConfirm">
                             <span class="payment-confirm-text">

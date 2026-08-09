@@ -1,4 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap");
+@use "variables" as *;
+
+// Matches the top bar's rendered height (1.2rem vertical padding + its tallest
+// control) so the slide-in panel/backdrop can start below it instead of
+// overlapping the global nav — see the panel/backdrop rules further down.
+$top-bar-height: 4.5rem;
 
 :host {
   display: block;
@@ -8,13 +13,13 @@
 // ── Page layout ───────────────────────────────────────────────────────────────
 .teams-page {
   min-height: 100vh;
-  background-color: #0d0d0d;
+  background-color: $background-color;
   background-image: radial-gradient(
     ellipse 60% 40% at 80% 0%,
-    rgba(220, 38, 38, 0.08) 0%,
+    rgba(255, 237, 0, 0.08) 0%,
     transparent 60%
   );
-  font-family: "DM Sans", sans-serif;
+  font-family: $font-body;
   color: #ffffff;
   position: relative;
   overflow-x: hidden;
@@ -22,9 +27,13 @@
 
 // ── Top bar ───────────────────────────────────────────────────────────────────
 .top-bar {
+  position: relative;
+  z-index: 40; // stays above the slide-in panel/backdrop as a safety margin
   display: flex;
   align-items: center;
   gap: 2rem;
+  min-height: $top-bar-height;
+  box-sizing: border-box;
   padding: 1.2rem 2.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 
@@ -43,8 +52,8 @@
   border: 1px solid transparent;
   color: rgba(255, 255, 255, 0.4);
   padding: 0.4rem 1rem;
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border-radius: 0.25em;
+  font-family: $font-body;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.15s;
@@ -52,6 +61,11 @@
   &:hover {
     color: rgba(255, 255, 255, 0.7);
     border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 
   &.active {
@@ -72,11 +86,11 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: #dc2626;
-    color: white;
-    font-family: "Bebas Neue", sans-serif;
+    background: $main-color;
+    color: $text-color;
+    font-family: $font-title;
     font-size: 1rem;
-    border-radius: 2px;
+    border-radius: 0.25em;
   }
 
   .brand-name {
@@ -104,8 +118,8 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: rgba(255, 255, 255, 0.5);
   padding: 0.4rem 0.9rem;
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border-radius: 0.25em;
+  font-family: $font-body;
   font-size: 0.8rem;
   cursor: pointer;
   transition:
@@ -113,8 +127,13 @@
     color 0.2s;
 
   &:hover {
-    border-color: #dc2626;
-    color: #f87171;
+    border-color: $main-color;
+    color: $main-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 }
 
@@ -132,9 +151,9 @@
   margin-bottom: 2.5rem;
 
   h1 {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 3rem;
-    letter-spacing: 0.08em;
+    font-family: $font-title;
+    font-size: 2.4rem;
+    letter-spacing: -0.01em;
     margin: 0;
   }
 
@@ -150,17 +169,22 @@
   margin-left: auto;
   padding: 0.5rem 1rem;
   background: transparent;
-  border: 1px solid rgba(220, 38, 38, 0.4);
-  color: #f87171;
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border: 1px solid rgba(255, 237, 0, 0.4);
+  color: $main-color;
+  border-radius: 0.25em;
+  font-family: $font-body;
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.15s;
 
   &:hover {
-    background: rgba(220, 38, 38, 0.1);
-    border-color: #dc2626;
+    background: rgba(255, 237, 0, 0.1);
+    border-color: $main-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 }
 
@@ -192,6 +216,10 @@
       &:hover {
         color: rgba(255, 255, 255, 0.7);
       }
+      &:focus-visible {
+        outline: 2px solid $main-color;
+        outline-offset: -2px;
+      }
     }
   }
 
@@ -215,7 +243,11 @@
       background: rgba(255, 255, 255, 0.04);
     }
     &.active {
-      border-left: 2px solid #dc2626;
+      border-left: 2px solid $main-color;
+    }
+    &:focus-visible {
+      outline: 2px solid $main-color;
+      outline-offset: -2px;
     }
   }
 
@@ -232,7 +264,7 @@
 }
 
 .team-index {
-  font-family: "Bebas Neue", sans-serif;
+  font-family: $font-title;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.2);
   min-width: 28px;
@@ -277,7 +309,12 @@
 }
 
 // ── Payment badge ─────────────────────────────────────────────────────────────
+// .clickable variants render as real <button> elements (native keyboard/focus
+// support) so this resets button-default chrome back to the plain badge look.
 .team-badge {
+  display: inline-block;
+  font-family: inherit;
+  border: none;
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -292,9 +329,9 @@
   }
 
   &.unpaid {
-    background: rgba(220, 38, 38, 0.1);
-    color: #f87171;
-    border: 1px solid rgba(220, 38, 38, 0.25);
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.25);
   }
 }
 
@@ -307,6 +344,11 @@
   &:hover {
     opacity: 0.75;
     transform: scale(1.05);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 }
 
@@ -331,8 +373,8 @@
 .payment-confirm-yes,
 .payment-confirm-no {
   padding: 0.3rem 0.7rem;
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border-radius: 0.25em;
+  font-family: $font-body;
   font-size: 0.78rem;
   cursor: pointer;
   white-space: nowrap;
@@ -341,16 +383,21 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
 }
 
 .payment-confirm-yes {
-  background: #dc2626;
+  background: $main-color;
   border: none;
-  color: white;
+  color: $text-color;
   font-weight: 600;
 
   &:hover:not(:disabled) {
-    background: #b91c1c;
+    filter: brightness(1.15);
   }
 }
 
@@ -367,15 +414,21 @@
 
 .payment-error {
   font-size: 0.8rem;
-  color: #f87171;
+  color: #ff6b6b;
   padding: 0 1rem 0.8rem;
   margin-top: -0.5rem;
 }
 
 // ── Backdrop ──────────────────────────────────────────────────────────────────
+// Starts below the top bar (not inset: 0) so the panel and its scrim never sit
+// on top of the global nav — the Sign-out control stays reachable and unambiguous
+// even while the panel is open, instead of a fixed-position panel overlapping it.
 .backdrop {
   position: fixed;
-  inset: 0;
+  top: $top-bar-height;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 10;
   animation: fadeIn 0.2s ease;
@@ -391,16 +444,19 @@
 }
 
 // ── Slide-in panel ────────────────────────────────────────────────────────────
+// Starts below the top bar rather than at top: 0 — a fixed panel spanning the
+// full viewport height visually covered the top bar's Sign-out control, and a
+// fast click meant for Sign-out could land on the panel's Delete button instead.
 .detail-panel {
   position: fixed;
-  top: 0;
+  top: $top-bar-height;
   right: 0;
-  height: 100vh;
+  height: calc(100vh - #{$top-bar-height});
   width: 480px;
   max-width: 95vw;
   background: #141414;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 20;
+  z-index: 30;
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -421,9 +477,9 @@
   flex-shrink: 0;
 
   h2 {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.06em;
+    font-family: $font-title;
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
     margin: 0;
     color: #ffffff;
     flex: 1;
@@ -436,7 +492,7 @@
   color: rgba(255, 255, 255, 0.5);
   width: 32px;
   height: 32px;
-  border-radius: 3px;
+  border-radius: 0.25em;
   cursor: pointer;
   font-size: 0.8rem;
   flex-shrink: 0;
@@ -445,9 +501,14 @@
     color 0.15s;
 
   &:hover {
-    background: rgba(220, 38, 38, 0.2);
-    color: #f87171;
-    border-color: rgba(220, 38, 38, 0.4);
+    background: rgba(255, 237, 0, 0.15);
+    color: $main-color;
+    border-color: rgba(255, 237, 0, 0.4);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 }
 
@@ -456,8 +517,8 @@
   border: 1px solid rgba(220, 38, 38, 0.3);
   color: #f87171;
   padding: 0.35rem 0.8rem;
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border-radius: 0.25em;
+  font-family: $font-body;
   font-size: 0.78rem;
   cursor: pointer;
   flex-shrink: 0;
@@ -469,9 +530,16 @@
     background: rgba(220, 38, 38, 0.15);
     border-color: rgba(220, 38, 38, 0.6);
   }
+
+  &:focus-visible {
+    outline: 2px solid #f87171;
+    outline-offset: 2px;
+  }
 }
 
 // ── Delete confirmation ───────────────────────────────────────────────────────
+// Kept deliberately red: this is a destructive-action confirmation, independent
+// of the app's yellow/black brand accent (red = danger is a universal convention).
 .delete-confirm {
   padding: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
@@ -507,8 +575,8 @@
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: rgba(255, 255, 255, 0.5);
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border-radius: 0.25em;
+  font-family: $font-body;
   font-size: 0.85rem;
   cursor: pointer;
   transition:
@@ -518,6 +586,11 @@
   &:hover:not(:disabled) {
     border-color: rgba(255, 255, 255, 0.3);
     color: rgba(255, 255, 255, 0.8);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 
   &:disabled {
@@ -532,8 +605,8 @@
   background: #dc2626;
   border: none;
   color: white;
-  border-radius: 3px;
-  font-family: "DM Sans", sans-serif;
+  border-radius: 0.25em;
+  font-family: $font-body;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -541,6 +614,10 @@
 
   &:hover:not(:disabled) {
     background: #b91c1c;
+  }
+  &:focus-visible {
+    outline: 2px solid #f87171;
+    outline-offset: 2px;
   }
   &:disabled {
     opacity: 0.5;
@@ -599,10 +676,10 @@
 }
 
 .section-title {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 1rem;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.3);
+  font-family: $font-title;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
   text-transform: uppercase;
   margin: 0 0 1rem;
 }
@@ -664,9 +741,9 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 
   &.outfit {
-    background: rgba(220, 38, 38, 0.08);
-    color: rgba(248, 113, 113, 0.7);
-    border-color: rgba(220, 38, 38, 0.2);
+    background: rgba(255, 237, 0, 0.08);
+    color: rgba(255, 237, 0, 0.8);
+    border-color: rgba(255, 237, 0, 0.25);
   }
 }
 
@@ -706,7 +783,7 @@
 
 .error-state,
 .panel-error {
-  color: #f87171;
+  color: #ff6b6b;
   font-size: 0.9rem;
   padding: 1rem;
 }
