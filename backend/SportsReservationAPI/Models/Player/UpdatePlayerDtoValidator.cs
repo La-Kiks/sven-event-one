@@ -4,6 +4,12 @@ namespace SportsReservationAPI.Models.Player
 {
     public class UpdatePlayerDtoValidator : AbstractValidator<UpdatePlayerDto>
     {
+        // Mirrors the option values in inscription-form.component.html — see the
+        // matching comment in CreatePlayerDtoValidator for why this isn't just
+        // NotEmpty().
+        private static readonly HashSet<string> ValidCategories = ["man", "woman", "mixt"];
+        private static readonly HashSet<string> ValidOutfits = ["yes", "lend", "no"];
+
         public UpdatePlayerDtoValidator()
         {
             RuleFor(p => p.Id)
@@ -26,10 +32,12 @@ namespace SportsReservationAPI.Models.Player
                 .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("A valid phone number is required.");
 
             RuleFor(p => p.Category)
-                .NotEmpty().WithMessage("Category is required.");
+                .NotEmpty().WithMessage("Category is required.")
+                .Must(ValidCategories.Contains).WithMessage("Category must be one of: man, woman, mixt.");
 
             RuleFor(p => p.Outfit)
-                .NotEmpty().WithMessage("Outfit is required.");
+                .NotEmpty().WithMessage("Outfit is required.")
+                .Must(ValidOutfits.Contains).WithMessage("Outfit must be one of: yes, lend, no.");
 
             RuleFor(p => p.Volunteer)
                 .NotNull().WithMessage("Volunteer field must be specified.");

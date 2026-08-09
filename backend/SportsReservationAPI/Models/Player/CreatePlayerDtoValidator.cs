@@ -5,7 +5,14 @@ namespace SportsReservationAPI.Models.Player
 {
     public class CreatePlayerDtoValidator : AbstractValidator<CreatePlayerDto>
     {
-        public CreatePlayerDtoValidator() 
+        // Mirrors the option values in inscription-form.component.html — not just
+        // "non-empty", so a malformed direct API call can't leave a team with a
+        // Category/Outfit value the frontend has no matching radio option for
+        // (which renders as a silently-blank field instead of a validation error).
+        private static readonly HashSet<string> ValidCategories = ["man", "woman", "mixt"];
+        private static readonly HashSet<string> ValidOutfits = ["yes", "lend", "no"];
+
+        public CreatePlayerDtoValidator()
         {
             RuleFor(p => p.FirstName)
                 .NotEmpty().WithMessage("First name is required.")
@@ -24,10 +31,12 @@ namespace SportsReservationAPI.Models.Player
                 .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("A valid phone number is required.");
 
             RuleFor(p => p.Category)
-                .NotEmpty().WithMessage("Category is required.");
+                .NotEmpty().WithMessage("Category is required.")
+                .Must(ValidCategories.Contains).WithMessage("Category must be one of: man, woman, mixt.");
 
             RuleFor(p => p.Outfit)
-                .NotEmpty().WithMessage("Outfit is required.");
+                .NotEmpty().WithMessage("Outfit is required.")
+                .Must(ValidOutfits.Contains).WithMessage("Outfit must be one of: yes, lend, no.");
 
             RuleFor(p => p.Volunteer)
                 .NotNull().WithMessage("Volunteer field must be specified.");
