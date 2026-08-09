@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '../../components/ui/button/button.component';
 
 @Component({
   selector: 'app-not-found',
-  imports: [RouterLink],
+  imports: [ButtonComponent],
   templateUrl: './not-found.component.html',
   styleUrl: './not-found.component.scss'
 })

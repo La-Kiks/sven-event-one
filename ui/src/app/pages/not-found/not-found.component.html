@@ -2,7 +2,10 @@
     <div class="content">
         <span class="code">404</span>
         <h1>Page introuvable</h1>
-        <p>La page que vous cherchez n'existe pas.</p>
-        <a routerLink="/" class="back-btn">Retour à l'accueil</a>
+        <p>La page que vous cherchez n'existe pas. Rendez-vous en Septembre pour Hyrox Police 54 !</p>
+        <div class="actions">
+            <app-button label="Retour à l'accueil" link="/"></app-button>
+            <app-button label="Inscrire mon équipe" link="/inscription" [small]="true"></app-button>
+        </div>
     </div>
 </div>

@@ -20,7 +20,7 @@ export class ForgotPasswordComponent {
   constructor(private authService: AuthService) { }
 
   onSubmit(): void {
-    if (!this.email) {
+    if (!this.email.trim()) {
       this.errorMessage = 'Merci de renseigner votre email.';
       return;
     }
@@ -36,10 +36,23 @@ export class ForgotPasswordComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.status === 429
-          ? (err.error?.error ?? 'Trop de tentatives, réessayez plus tard.')
-          : 'Erreur serveur, veuillez réessayer.';
+        if (err.status === 429) {
+          this.errorMessage = err.error?.error ?? 'Trop de tentatives, réessayez plus tard.';
+        } else if (err.status === 400) {
+          this.errorMessage = err.error?.error ?? 'Vérifiez le format de votre email.';
+        } else {
+          this.errorMessage = 'Erreur serveur, veuillez réessayer.';
+        }
       }
     });
+  }
+
+  clearError(): void {
+    this.errorMessage = '';
+  }
+
+  tryAnotherEmail(): void {
+    this.successMessage = '';
+    this.email = '';
   }
 }

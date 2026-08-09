@@ -2,40 +2,60 @@
 
     <div class="login-card" *ngIf="!missingToken; else noToken">
         <div class="card-header">
-            <div class="logo-mark">SR</div>
+            <a class="logo-mark" routerLink="/" aria-label="Retour à l'accueil">SR</a>
             <h1>Activer mon compte</h1>
             <p>Choisissez votre mot de passe pour accéder à votre équipe</p>
         </div>
 
-        <div class="error-banner" *ngIf="errorMessage">
-            <span class="error-icon">!</span>
-            {{ errorMessage }}
+        <div class="error-banner" [class.error-banner--recovery]="tokenRejected" id="activate-error"
+            *ngIf="errorMessage" role="alert" aria-live="polite">
+            <span class="error-icon" aria-hidden="true">!</span>
+            <span>
+                {{ errorMessage }}
+                <ng-container *ngIf="tokenRejected">
+                    Ce lien a peut-être déjà été utilisé ou a expiré :
+                    <a routerLink="/mot-de-passe-oublie">demandez-en un nouveau</a>,
+                    ou contactez un organisateur au
+                    <a [href]="'tel:' + organizerPhone.replace(' ', '')">{{ organizerPhone }}</a>
+                    ou par
+                    <a [href]="'mailto:' + organizerEmail">email</a>.
+                </ng-container>
+            </span>
         </div>
 
         <div class="form-group">
             <label for="password">Mot de passe</label>
             <input id="password" type="password" [(ngModel)]="password" placeholder="8 caractères minimum"
-                [class.has-value]="password" (keyup.enter)="onSubmit()" autocomplete="new-password" />
+                [class.has-value]="password" (keyup.enter)="onSubmit()" autocomplete="new-password"
+                [attr.aria-invalid]="errorMessage ? true : null"
+                [attr.aria-describedby]="errorMessage ? 'activate-error' : null" />
         </div>
 
         <div class="form-group">
             <label for="confirmPassword">Confirmer le mot de passe</label>
             <input id="confirmPassword" type="password" [(ngModel)]="confirmPassword" placeholder="Retapez le mot de passe"
-                [class.has-value]="confirmPassword" (keyup.enter)="onSubmit()" autocomplete="new-password" />
+                [class.has-value]="confirmPassword" (keyup.enter)="onSubmit()" autocomplete="new-password"
+                [attr.aria-invalid]="errorMessage ? true : null"
+                [attr.aria-describedby]="errorMessage ? 'activate-error' : null" />
         </div>
 
         <button class="submit-btn" (click)="onSubmit()" [disabled]="isLoading">
             <span *ngIf="!isLoading">Activer mon compte</span>
             <span *ngIf="isLoading" class="spinner"></span>
         </button>
+
+        <p class="recovery-link"><a routerLink="/login">Retour à la connexion</a></p>
     </div>
 
     <ng-template #noToken>
         <div class="login-card">
             <div class="card-header">
-                <div class="logo-mark">SR</div>
+                <a class="logo-mark" routerLink="/" aria-label="Retour à l'accueil">SR</a>
                 <h1>Lien invalide</h1>
-                <p>Ce lien d'activation est incomplet. Utilisez celui reçu par email, ou contactez un organisateur.</p>
+                <p>Ce lien d'activation est incomplet. Utilisez celui reçu par email, ou contactez un organisateur au
+                    <a [href]="'tel:' + organizerPhone.replace(' ', '')">{{ organizerPhone }}</a>
+                    ou par <a [href]="'mailto:' + organizerEmail">email</a>.
+                </p>
             </div>
         </div>
     </ng-template>
