@@ -3,6 +3,8 @@
 namespace SportsReservationAPI.Services;
 
 
+// LEGACY / UNUSED IN PRODUCTION: see the comment on StripeController — the live
+// registration flow pays via an external Yurplan link, not this service.
 public class StripeService
 {
     private readonly TeamService _teamService;

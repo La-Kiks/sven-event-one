@@ -3,6 +3,9 @@ import { Injectable } from "@angular/core";
 import { firstValueFrom } from "rxjs";
 import { environment } from "../core/runtime-env";
 
+// LEGACY / UNUSED IN PRODUCTION: registration currently pays via an external
+// Yurplan link (see inscription-form.component.ts), not this service. Kept as
+// a working fallback in case Yurplan is ever dropped.
 @Injectable({
     providedIn: 'root'
 })

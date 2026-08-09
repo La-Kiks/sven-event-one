@@ -7,6 +7,11 @@ using Stripe.Checkout;
 
 namespace SportsReservationAPI.Controllers
 {
+    // LEGACY / UNUSED IN PRODUCTION: registration payment currently goes through
+    // an external Yurplan ticketing link (see inscription-form.component.ts),
+    // not this controller — the client didn't want to set up a Stripe account.
+    // Kept as a working fallback in case Yurplan is ever dropped; nothing in the
+    // live app calls create-checkout-session or reaches this webhook today.
     [Route("api/[controller]")]
     [ApiController]
     public class StripeController : ControllerBase
