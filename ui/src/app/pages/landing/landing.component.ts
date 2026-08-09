@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ButtonComponent } from '../../components/ui/button/button.component';
 import { CardComponent } from '../../components/ui/card/card.component';
 import { TeamCountService } from '../../services/team-count.service'; // ← adjust path if needed
@@ -9,9 +9,13 @@ import { TeamCountService } from '../../services/team-count.service'; // ← adj
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
-export class LandingComponent implements OnInit {
+export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   isRegistrationFull = false;
   countLoadError = false;
+  hasScrolledPastHero = false;
+
+  @ViewChild('hero') private heroRef?: ElementRef<HTMLElement>;
+  private heroObserver?: IntersectionObserver;
 
   constructor(private teamCountService: TeamCountService) { }
 
@@ -26,6 +30,21 @@ export class LandingComponent implements OnInit {
         this.countLoadError = true;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.heroRef) return;
+    // Show the persistent CTA only once the hero (with its own CTA) has
+    // scrolled out of view, so the two don't both show at once at the top.
+    this.heroObserver = new IntersectionObserver(
+      ([entry]) => this.hasScrolledPastHero = !entry.isIntersecting,
+      { threshold: 0 }
+    );
+    this.heroObserver.observe(this.heroRef.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.heroObserver?.disconnect();
   }
 
   scrollTo(id: string) {

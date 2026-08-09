@@ -1,5 +1,5 @@
 <section class="landing">
-    <div class="part-one">
+    <div class="part-one" #hero>
         <div class="title">
             <h1>Hyrox Police 54</h1>
             <p class="subtitle">Rendez-vous en Septembre</p>
@@ -30,7 +30,7 @@
 
     <!-- Persistent CTA: the hero's register button scrolls out of view on a
          long page, leaving no way to act on intent formed further down. -->
-    <div class="sticky-cta">
+    <div class="sticky-cta" [class.visible]="hasScrolledPastHero">
         <app-button label="S'inscrire en duo - 60€" link="/inscription" [small]="true" [isFull]="isRegistrationFull"
             [fullLabel]="countLoadError ? 'Erreur de chargement' : 'Complet'" fullLink="#contact"></app-button>
     </div>

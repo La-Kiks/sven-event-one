@@ -96,6 +96,20 @@
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(6px);
   border-top: 1px solid rgba(255, 237, 0, 0.2);
+  // Hidden until the hero (which has its own CTA) scrolls out of view —
+  // otherwise this duplicates that CTA while still at the top of the page.
+  opacity: 0;
+  transform: translateY(100%);
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
 }
 
 .down-arrow {
@@ -223,6 +237,9 @@ strong {
   background-color: $background-bright-color;
   color: white;
   padding: 1rem;
+  // Extra bottom clearance so the fixed .sticky-cta bar (~5rem including its
+  // own padding) never covers the last line of contact info below it.
+  padding-bottom: 5rem;
   margin: 1rem;
   border-radius: 0.5rem;
   font-family: $font-body;
