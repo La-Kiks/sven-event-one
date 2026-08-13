@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: "Lemon"; src: url("ui/public/fonts/Lemon/LEMONMILK-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+body { margin: 0; padding: 0; background-color: #000000; }
+a { color: #ffed00; }
+a:hover { color: #ffffff; }
+input, select, textarea { font-family: Cabin, sans-serif; }
+</style>
+</helmet>
+<div style="background:#000;min-height:100vh;color:#fff;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif">
+
+  <header style="display:flex;align-items:center;gap:1rem;padding:0.9rem clamp(1rem,4vw,3rem);border-bottom:1px solid rgba(255,255,255,0.08)">
+    <a href="#top" style="display:flex;align-items:center;gap:0.7rem;text-decoration:none;margin-right:auto">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:#ffed00;color:#000;font-family:Lemon,sans-serif;font-size:0.95rem;border-radius:3px">54</span>
+      <span style="font-family:Lemon,sans-serif;font-size:0.8rem;letter-spacing:0.14em;color:#fff">HYROX POLICE 54</span>
+    </a>
+    <span style="font-size:0.8rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Inscription duo · 60 €</span>
+  </header>
+
+  <div style="max-width:1180px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem) clamp(1rem,4vw,3rem);display:grid;grid-template-columns:minmax(0,1fr);gap:2.5rem">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2.5rem;align-items:start">
+
+      <aside style="{{ asideStyle }}">
+        <h1 style="font-family:Lemon,sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 0.5rem;text-transform:uppercase;line-height:1.05">Inscription<br /><span style="color:#ffed00">en duo</span></h1>
+        <p style="color:rgba(255,255,255,0.55);margin:0 0 2rem;line-height:1.55">Deux participants, une équipe, un paiement de 60 €. Compte environ 4 minutes.</p>
+        <div style="display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1)">
+          <sc-for list="{{ stepList }}" as="s" hint-placeholder-count="4">
+            <button type="button" onClick="{{ s.go }}" style="{{ s.style }}">
+              <span style="{{ s.numStyle }}">{{ s.num }}</span>
+              <span style="text-align:left">{{ s.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:1.5rem;line-height:1.6">Une question ? 06 48 73 50 15<br />svenbarberat&#64;orange.fr</p>
+      </aside>
+
+      <main style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:2px;padding:clamp(1.25rem,3vw,2.25rem)">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem">
+          <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#ffed00">Étape {{ step }} / 4</span>
+          <span style="flex:1;height:2px;background:rgba(255,255,255,0.1);position:relative;display:block;overflow:hidden"><span style="{{ progressStyle }}"></span></span>
+        </div>
+
+        <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <h2 style="font-family:Lemon,sans-serif;font-size:1.5rem;margin:0 0 1.5rem;text-transform:uppercase">Participant 1</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Nom <span style="color:#ffed00">*</span></span>
+                <input type="text" autocomplete="family-name" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Prénom <span style="color:#ffed00">*</span></span>
+                <input type="text" autocomplete="given-name" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Mail <span style="color:#ffed00">*</span></span>
+                <input type="email" autocomplete="email" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Téléphone <span style="color:#ffed00">*</span></span>
+                <input type="tel" autocomplete="tel" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+            </div>
+            <p style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin:1.75rem 0 0.7rem">Catégorie <span style="color:#ffed00">*</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+              <sc-for list="{{ cat1 }}" as="o" hint-placeholder-count="3">
+                <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+              </sc-for>
+            </div>
+            <p style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin:1.75rem 0 0.7rem">Participer en tenue d'intervention ? <span style="color:#ffed00">*</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+              <sc-for list="{{ outfit1 }}" as="o" hint-placeholder-count="3">
+                <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+              </sc-for>
+            </div>
+            <button type="button" onClick="{{ toggleVol1 }}" style="{{ vol1Style }}">
+              <span style="{{ vol1BoxStyle }}"></span>
+              <span style="text-align:left;line-height:1.45">Je voudrais être bénévole pour aider à l'organisation et juger les autres participants le jour J.</span>
+            </button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h2 style="font-family:Lemon,sans-serif;font-size:1.5rem;margin:0 0 1.5rem;text-transform:uppercase">Participant 2</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Nom <span style="color:#ffed00">*</span></span>
+                <input type="text" autocomplete="family-name" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Prénom <span style="color:#ffed00">*</span></span>
+                <input type="text" autocomplete="given-name" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Mail <span style="color:#ffed00">*</span></span>
+                <input type="email" autocomplete="email" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5)"><span style="display:flex;align-items:center;gap:0.3rem">Téléphone <span style="color:#ffed00">*</span></span>
+                <input type="tel" autocomplete="tel" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+              </label>
+            </div>
+            <p style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin:1.75rem 0 0.7rem">Catégorie <span style="color:#ffed00">*</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+              <sc-for list="{{ cat2 }}" as="o" hint-placeholder-count="3">
+                <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+              </sc-for>
+            </div>
+            <p style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin:1.75rem 0 0.7rem">Participer en tenue d'intervention ? <span style="color:#ffed00">*</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+              <sc-for list="{{ outfit2 }}" as="o" hint-placeholder-count="3">
+                <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+              </sc-for>
+            </div>
+            <button type="button" onClick="{{ toggleVol2 }}" style="{{ vol2Style }}">
+              <span style="{{ vol2BoxStyle }}"></span>
+              <span style="text-align:left;line-height:1.45">Je voudrais être bénévole pour aider à l'organisation et juger les autres participants le jour J.</span>
+            </button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h2 style="font-family:Lemon,sans-serif;font-size:1.5rem;margin:0 0 1.5rem;text-transform:uppercase">L'équipe</h2>
+            <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);max-width:420px"><span style="display:flex;align-items:center;gap:0.3rem">Nom d'équipe <span style="color:#ffed00">*</span></span>
+              <input type="text" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none" />
+            </label>
+            <p style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin:1.75rem 0 0.7rem">Version <span style="color:#ffed00">*</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+              <sc-for list="{{ versions }}" as="o" hint-placeholder-count="2">
+                <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+              </sc-for>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);max-width:420px;margin-top:1.75rem"><span style="display:flex;align-items:center;gap:0.3rem">Administration <span style="color:#ffed00">*</span></span>
+              <select style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.8rem 0.9rem;letter-spacing:normal;text-transform:none">
+                <option value="">-- Choisir son administration --</option>
+                <option value="none">Autre</option>
+                <option value="gendarmerie">Gendarmerie</option>
+                <option value="militaire">Militaire</option>
+                <option value="penitancier">Pénitancier</option>
+                <option value="municipale">Police Municipale</option>
+                <option value="nationale">Police Nationale</option>
+                <option value="pompier">Pompier</option>
+              </select>
+            </label>
+            <button type="button" onClick="{{ toggleConsent }}" style="{{ consentStyle }}">
+              <span style="{{ consentBoxStyle }}"></span>
+              <span style="text-align:left;line-height:1.45">Les informations de contact de ce formulaire ne seront utilisées que dans le cadre de cet événement ou d'un événement similaire. <span style="color:#ffed00">*</span></span>
+            </button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h2 style="font-family:Lemon,sans-serif;font-size:1.5rem;margin:0 0 1.5rem;text-transform:uppercase">Récapitulatif</h2>
+            <sc-for list="{{ review }}" as="r" hint-placeholder-count="3">
+              <section style="border:1px solid rgba(255,255,255,0.12);border-radius:2px;margin-bottom:1rem">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.1rem;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)">
+                  <h3 style="margin:0;font-family:Lemon,sans-serif;font-size:0.95rem;text-transform:uppercase">{{ r.title }}</h3>
+                  <button type="button" onClick="{{ r.edit }}" style="background:transparent;border:1px solid rgba(255,237,0,0.4);color:#ffed00;font-family:Cabin,sans-serif;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.8rem;border-radius:2px;cursor:pointer">Modifier</button>
+                </div>
+                <dl style="display:grid;grid-template-columns:minmax(110px,auto) 1fr;gap:0.6rem 1.5rem;margin:0;padding:1.1rem">
+                  <sc-for list="{{ r.rows }}" as="row" hint-placeholder-count="4">
+                    <div style="display:contents">
+                      <dt style="font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4)">{{ row.k }}</dt>
+                      <dd style="margin:0;color:rgba(255,255,255,0.85)">{{ row.v }}</dd>
+                    </div>
+                  </sc-for>
+                </dl>
+              </section>
+            </sc-for>
+            <div style="border-left:2px solid #ffed00;padding:0.9rem 1.1rem;background:rgba(255,237,0,0.06);margin-top:1.5rem;color:rgba(255,255,255,0.8);line-height:1.55">En confirmant, tu seras redirigé vers notre billetterie partenaire pour régler les 60 € de l'inscription. Un email d'activation de compte suivra.</div>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;gap:0.8rem;margin-top:2rem;flex-wrap:wrap">
+          <sc-if value="{{ canGoBack }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ prev }}" style="border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-family:Cabin,sans-serif;font-weight:600;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.95rem 1.6rem;border-radius:2px;cursor:pointer">Retour</button>
+          </sc-if>
+          <button type="button" onClick="{{ next }}" style="flex:1;min-width:200px;background:#ffed00;border:none;color:#000;font-family:Cabin,sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.95rem 1.6rem;border-radius:2px;cursor:pointer">{{ nextLabel }}</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { wide: typeof window !== 'undefined' ? window.innerWidth >= 860 : true, step: 1, cat1: 'man', outfit1: 'yes', cat2: 'woman', outfit2: 'lend', version: 'short', vol1: false, vol2: false, consent: true };
+
+  componentDidMount() {
+    this._onResize = () => {
+      const wide = window.innerWidth >= 860;
+      if (wide !== this.state.wide) this.setState({ wide });
+    };
+    window.addEventListener('resize', this._onResize);
+    this._onResize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+  }
+
+  chip(active) {
+    return 'background:' + (active ? '#ffed00' : 'transparent') + ';color:' + (active ? '#000' : 'rgba(255,255,255,0.75)') +
+      ';border:1px solid ' + (active ? '#ffed00' : 'rgba(255,255,255,0.18)') +
+      ';font-family:Cabin,sans-serif;font-weight:' + (active ? '700' : '500') +
+      ';font-size:0.92rem;padding:0.7rem 1.1rem;border-radius:2px;cursor:pointer;text-align:left';
+  }
+
+  group(key, options) {
+    return options.map(o => ({
+      label: o.label,
+      style: this.chip(this.state[key] === o.value),
+      pick: () => this.setState({ [key]: o.value })
+    }));
+  }
+
+  checkRow(on) {
+    return 'display:flex;align-items:flex-start;gap:0.8rem;margin-top:1.75rem;background:transparent;border:1px solid ' +
+      (on ? 'rgba(255,237,0,0.5)' : 'rgba(255,255,255,0.14)') +
+      ';border-radius:2px;padding:0.9rem 1rem;color:rgba(255,255,255,0.8);font-family:Cabin,sans-serif;font-size:0.92rem;cursor:pointer;width:100%;box-sizing:border-box';
+  }
+
+  checkBox(on) {
+    return 'flex:none;width:18px;height:18px;margin-top:2px;border-radius:2px;border:1px solid ' +
+      (on ? '#ffed00' : 'rgba(255,255,255,0.3)') + ';background:' + (on ? '#ffed00' : 'transparent') + ';display:block';
+  }
+
+  label(map, v) { return map[v] || '—'; }
+
+  renderVals() {
+    const s = this.state;
+    const cats = { man: 'Homme', woman: 'Femme', mixt: 'Mixte' };
+    const outfits = { yes: "Oui, j'ai ma tenue", lend: "Oui, à me prêter", no: 'Non' };
+    const versions = { short: 'Courte', long: 'Longue' };
+    const steps = [
+      { num: '01', label: 'Participant 1' },
+      { num: '02', label: 'Participant 2' },
+      { num: '03', label: 'Équipe' },
+      { num: '04', label: 'Récapitulatif' }
+    ];
+    const go = (n) => () => this.setState({ step: n });
+
+    return {
+      asideStyle: s.wide ? 'position:sticky;top:1.5rem;max-width:330px' : 'position:static;max-width:none',
+      step: s.step,
+      isStep1: s.step === 1, isStep2: s.step === 2, isStep3: s.step === 3, isStep4: s.step === 4,
+      canGoBack: s.step > 1,
+      nextLabel: s.step === 4 ? 'Confirmer et payer 60 €' : 'Continuer',
+      progressStyle: 'position:absolute;left:0;top:0;height:100%;background:#ffed00;display:block;width:' + (s.step * 25) + '%',
+      prev: () => this.setState({ step: Math.max(1, s.step - 1) }),
+      next: () => this.setState({ step: Math.min(4, s.step + 1) }),
+      stepList: steps.map((st, i) => {
+        const active = s.step === i + 1;
+        const done = s.step > i + 1;
+        return {
+          num: st.num, label: st.label, go: go(i + 1),
+          style: 'display:flex;align-items:center;gap:0.9rem;background:' + (active ? 'rgba(255,237,0,0.08)' : '#0a0a0a') +
+            ';border:none;border-left:2px solid ' + (active ? '#ffed00' : 'transparent') +
+            ';color:' + (active ? '#fff' : 'rgba(255,255,255,0.5)') +
+            ';font-family:Cabin,sans-serif;font-size:0.95rem;padding:1rem 1.1rem;cursor:pointer;width:100%;box-sizing:border-box',
+          numStyle: 'font-family:Lemon,sans-serif;font-size:0.85rem;color:' + (active || done ? '#ffed00' : 'rgba(255,255,255,0.25)')
+        };
+      }),
+      cat1: this.group('cat1', [{ label: 'Homme', value: 'man' }, { label: 'Femme', value: 'woman' }, { label: 'Mixte', value: 'mixt' }]),
+      cat2: this.group('cat2', [{ label: 'Homme', value: 'man' }, { label: 'Femme', value: 'woman' }, { label: 'Mixte', value: 'mixt' }]),
+      outfit1: this.group('outfit1', [{ label: "Oui, j'ai ma tenue", value: 'yes' }, { label: "Oui, j'ai besoin qu'on m'en prête une", value: 'lend' }, { label: 'Non', value: 'no' }]),
+      outfit2: this.group('outfit2', [{ label: "Oui, j'ai ma tenue", value: 'yes' }, { label: "Oui, j'ai besoin qu'on m'en prête une", value: 'lend' }, { label: 'Non', value: 'no' }]),
+      versions: this.group('version', [{ label: 'Courte', value: 'short' }, { label: 'Longue', value: 'long' }]),
+      toggleVol1: () => this.setState({ vol1: !s.vol1 }),
+      toggleVol2: () => this.setState({ vol2: !s.vol2 }),
+      toggleConsent: () => this.setState({ consent: !s.consent }),
+      vol1Style: this.checkRow(s.vol1), vol1BoxStyle: this.checkBox(s.vol1),
+      vol2Style: this.checkRow(s.vol2), vol2BoxStyle: this.checkBox(s.vol2),
+      consentStyle: this.checkRow(s.consent), consentBoxStyle: this.checkBox(s.consent),
+      review: [
+        { title: 'Participant 1', edit: go(1), rows: [
+          { k: 'Nom', v: 'Marc Lefevre' }, { k: 'Mail', v: 'm.lefevre@police.fr' },
+          { k: 'Téléphone', v: '06 12 44 87 03' }, { k: 'Catégorie', v: this.label(cats, s.cat1) }, { k: 'Tenue', v: this.label(outfits, s.outfit1) }
+        ] },
+        { title: 'Participant 2', edit: go(2), rows: [
+          { k: 'Nom', v: 'Julie Marchand' }, { k: 'Mail', v: 'j.marchand@police.fr' },
+          { k: 'Téléphone', v: '06 71 02 55 19' }, { k: 'Catégorie', v: this.label(cats, s.cat2) }, { k: 'Tenue', v: this.label(outfits, s.outfit2) }
+        ] },
+        { title: 'Équipe', edit: go(3), rows: [
+          { k: "Nom d'équipe", v: 'Les Sangliers 54' }, { k: 'Version', v: this.label(versions, s.version) }, { k: 'Administration', v: 'Police Nationale' }
+        ] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

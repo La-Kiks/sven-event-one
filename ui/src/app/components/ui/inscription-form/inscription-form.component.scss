@@ -1,279 +1,537 @@
 @use "variables" as *;
 
-.form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 1440px;
-  color: white;
-  background-color: $background-bright-color;
-  padding: 1em;
-  margin: 2em auto;
-  border-radius: 0.5em;
-  border: solid 0.2em;
-  border-color: $main-color;
+$surface: #0a0a0a;
+$field-bg: #141414;
+$border: rgba(255, 255, 255, 0.1);
+$field-border: rgba(255, 255, 255, 0.14);
+$text-secondary: rgba(255, 255, 255, 0.55);
+$text-tertiary: rgba(255, 255, 255, 0.4);
+$text-caption: rgba(255, 255, 255, 0.5);
+$radius: 2px;
+$gutter: clamp(1rem, 4vw, 3rem);
+
+:host {
+  display: block;
+  background: $background-color;
+  color: #fff;
   font-family: $font-body;
-  font-size: $text-base;
 }
 
-.title {
-  margin: 0.5em 0em;
-  padding: 0.5em;
-  border-radius: 0.5em;
-  box-sizing: border-box;
-  background-color: $main-color;
-  color: $text-color;
-  font-family: $font-title;
-  font-size: $text-xl;
+.page {
+  min-height: 100vh;
 }
 
-.title--centered {
+// Header
+// ------------------------------------------------------------------
+
+.header {
+  display: flex;
   align-items: center;
-  text-align: center;
+  gap: 1rem;
+  padding: 0.9rem $gutter;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.stepper {
+.header__brand {
   display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.header__mark {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.75em;
-  margin: 0 0 1em;
-}
-
-.stepper__dot {
-  width: 0.75em;
-  height: 0.75em;
-  border-radius: 50%;
-  background-color: $background-color;
-  border: 0.1em solid $main-color;
-}
-
-.stepper__dot--done {
-  background-color: $main-color;
-}
-
-.stepper__dot--active {
-  background-color: $main-color;
-  box-shadow: 0 0 0 0.2em rgba(255, 237, 0, 0.3);
-}
-
-.title2 {
-  margin: auto;
-  padding: 0.1em;
-  max-width: fit-content;
-  box-sizing: border-box;
+  width: 34px;
+  height: 34px;
+  background: $main-color;
+  color: #000;
   font-family: $font-title;
-  font-size: $text-xl;
+  font-size: 0.95rem;
+  border-radius: 3px;
 }
 
-.label {
-  margin: 0.5em 0em 0em 0em;
-  padding: 0.5em 0em;
+.header__wordmark {
+  font-family: $font-title;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  color: #fff;
+  text-transform: uppercase;
 }
 
-.input {
-  color: $text-color;
-  margin: 0em 0em 0.5em 0em;
-  padding: 0.5em;
-  box-sizing: border-box;
-  border-radius: 0.5em;
-  border: transparent 0px;
-  width: 100%;
-  font-family: $font-body;
-  font-size: $text-sm;
+.header__meta {
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $text-tertiary;
 }
 
-.input:focus {
-  outline: solid 0.15em;
-  outline-color: $main-color;
+// Layout
+// ------------------------------------------------------------------
+
+.layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3.5rem) $gutter;
 }
 
-.row {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  width: 100%;
-}
-
-.radio-group label {
-  display: inline-block;
-  font-weight: normal;
-  margin: 0.5em;
-  cursor: pointer;
-}
-
-fieldset,
-.form-group {
-  border: 0.2em solid $main-color;
-  border-radius: 0.5em;
-  padding: 0.5em;
-  margin-top: 1em;
-}
-
-legend {
-  font-weight: bold;
-  padding: 0em 0.2em;
-}
-
-input[type="radio"],
-input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="radio"] {
-  width: 1em;
-  height: 1em;
-  border: 0.1em solid $main-color;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-right: 0.1em;
-}
-
-input[type="checkbox"] {
+.layout__grid {
   display: grid;
-  place-items: center;
-  width: 1.5em;
-  height: 1.5em;
-  min-width: 1.5em;
-  border: 0.1em solid $main-color;
-  border-radius: 0.2em;
-  cursor: pointer;
-  margin-right: 0.5em;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  align-items: start;
 }
 
-input:checked {
-  background-color: $main-color;
-  border-color: white;
+// Aside / step rail
+// ------------------------------------------------------------------
+
+.aside {
+  position: static;
 }
 
-input[type="checkbox"]:checked::before {
-  content: "✕";
-  font-weight: bold;
-  font-size: $text-xs;
-  color: $text-color;
+@media (min-width: 860px) {
+  .aside {
+    position: sticky;
+    top: 1.5rem;
+  }
 }
 
-.infoline {
+.aside__title {
+  font-family: $font-title;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  line-height: 1.05;
+
+  span {
+    color: $main-color;
+  }
+}
+
+.aside__lead {
+  color: $text-secondary;
+  margin: 0 0 2rem;
+  line-height: 1.55;
+}
+
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: $border;
+  border: 1px solid $border;
+}
+
+.step-list__item {
   display: flex;
   align-items: center;
-  font-size: $text-sm;
-  margin-top: 1em;
-}
-
-.form-group select {
-  width: 100%;
-  padding: 0.5em;
-  margin: 0.5em 0em;
-  border: 0.1em solid $main-color;
-  border-radius: 0.5em;
-  background-color: white;
-  color: $text-color;
-  font-family: $font-body;
-  font-size: $text-sm;
-}
-
-.button {
-  background-color: $main-color;
-  font-size: $text-lg;
-  color: $text-color;
-  padding: 0.5em 1em;
+  gap: 0.9rem;
+  background: $surface;
   border: none;
-  border-radius: 0.5em;
-  width: 100%;
+  border-left: 2px solid transparent;
+  color: $text-caption;
+  font-family: $font-body;
+  font-size: 0.95rem;
+  padding: 1rem 1.1rem;
   cursor: pointer;
-  margin-top: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    color: #fff;
+  }
+
+  &--active {
+    background: rgba(255, 237, 0, 0.08);
+    border-left-color: $main-color;
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: -2px;
+  }
 }
 
-.button-group {
+.step-list__number {
+  font-family: $font-title;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.25);
+
+  &--lit {
+    color: $main-color;
+  }
+}
+
+.aside__contact {
+  font-size: 0.8rem;
+  color: $text-tertiary;
+  margin-top: 1.5rem;
+  line-height: 1.6;
+}
+
+// Form card
+// ------------------------------------------------------------------
+
+.form-card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+.form-card__head {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.form-card__step {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $main-color;
+  white-space: nowrap;
+}
+
+.form-card__progress {
+  flex: 1;
+  height: 2px;
+  background: $border;
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.form-card__progress-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: $main-color;
+  display: block;
+  transform-origin: left center;
+  transition: transform 0.2s ease;
+}
+
+.step-title {
+  font-family: $font-title;
+  font-size: 1.5rem;
+  margin: 0 0 1.5rem;
+  text-transform: uppercase;
+}
+
+// Fields
+// ------------------------------------------------------------------
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
 }
 
-.button:hover {
-  filter: brightness(1.5);
+.field {
+  display: flex;
+  flex-direction: column;
+
+  &--narrow {
+    max-width: 420px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $text-caption;
+  }
 }
 
-.button:disabled {
-  cursor: default;
-  color: gray;
-  filter: saturate(0.1);
+.field__caption {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.field__input {
+  background: $field-bg;
+  border: 1px solid $field-border;
+  border-radius: $radius;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.8rem 0.9rem;
+  letter-spacing: normal;
+  text-transform: none;
+  font-family: $font-body;
+  box-sizing: border-box;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: $main-color;
+  }
+
+  &--invalid {
+    border-color: #ff6b6b;
+  }
+}
+
+select.field__input {
+  cursor: pointer;
 }
 
 .required {
-  color: red;
+  color: $main-color;
 }
 
 .field-error {
   color: #ff6b6b;
-  font-size: $text-xs;
-  margin: 0.25em 0 0;
+  font-size: 0.78rem;
+  margin: 0.35em 0 0;
 }
 
-.input--invalid {
-  box-shadow: 0 0 0 0.15em #ff6b6b;
+// Chips (radio groups)
+// ------------------------------------------------------------------
+
+.chip-caption {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $text-caption;
+  margin: 1.75rem 0 0.7rem;
 }
 
-.review-section {
-  margin-top: 1em;
-  padding: 0.75em;
-  border: 0.15em solid $main-color;
-  border-radius: 0.5em;
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 }
 
-.review-section__header {
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &--active {
+    background: $main-color;
+    color: #000;
+    font-weight: 700;
+    border-color: $main-color;
+  }
+
+  &:focus-within {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
+}
+
+.chip__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+
+// Checkbox rows (bénévole / consent)
+// ------------------------------------------------------------------
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-top: 1.75rem;
+  background: transparent;
+  border: 1px solid $field-border;
+  border-radius: $radius;
+  padding: 0.9rem 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: $font-body;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+
+  &--checked {
+    border-color: rgba(255, 237, 0, 0.5);
+  }
+
+  &:focus-within {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 2px 0 0;
+    border-radius: $radius;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    cursor: pointer;
+
+    &:checked {
+      background: $main-color;
+      border-color: $main-color;
+    }
+  }
+}
+
+// Step 4 — review
+// ------------------------------------------------------------------
+
+.review-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius;
+  margin-bottom: 1rem;
+}
+
+.review-card__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5em;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+
+  h3 {
+    margin: 0;
+    font-family: $font-title;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+  }
 }
 
-.review-section__header h3 {
-  margin: 0;
-  font-family: $font-title;
-  font-size: $text-base;
-}
-
-.link-button {
+.review-card__edit {
   background: transparent;
-  border: none;
+  border: 1px solid rgba(255, 237, 0, 0.4);
   color: $main-color;
-  text-decoration: underline;
-  cursor: pointer;
   font-family: $font-body;
-  font-size: $text-sm;
-  padding: 0.25em;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border-radius: $radius;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
 }
 
-.link-button:hover {
-  filter: brightness(1.3);
-}
-
-.link-button:focus-visible {
-  outline: 0.15em solid $main-color;
-  outline-offset: 0.15em;
-}
-
-.review-list {
+.review-card__body {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.25em 1em;
+  grid-template-columns: minmax(110px, auto) 1fr;
+  gap: 0.6rem 1.5rem;
   margin: 0;
+  padding: 1.1rem;
+
+  dt {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $text-tertiary;
+  }
+
+  dd {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+  }
 }
 
-.review-list dt {
-  font-weight: bold;
-  color: $main-color;
+.review-warning {
+  border-left: 2px solid $main-color;
+  padding: 0.9rem 1.1rem;
+  background: rgba(255, 237, 0, 0.06);
+  margin-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
 }
 
-.review-list dd {
-  margin: 0;
+// Action bar
+// ------------------------------------------------------------------
+
+.action-bar {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
-.review-note {
-  margin-top: 1em;
-  font-size: $text-sm;
-  color: white;
+.btn-back {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #fff;
+  font-family: $font-body;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.6rem;
+  border-radius: $radius;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $main-color;
+  }
+}
+
+.btn-primary {
+  flex: 1;
+  min-width: 200px;
+  background: $main-color;
+  border: none;
+  color: #000;
+  font-family: $font-body;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.6rem;
+  border-radius: $radius;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    cursor: default;
+    filter: saturate(0.2) brightness(0.8);
+    opacity: 0.6;
+  }
+}
+
+:is(.btn-back, .btn-primary):focus-visible {
+  outline: 2px solid $main-color;
+  outline-offset: 2px;
 }
 
 .spinner {
@@ -281,7 +539,7 @@ input[type="checkbox"]:checked::before {
   width: 1em;
   height: 1em;
   border: 0.15em solid rgba(0, 0, 0, 0.3);
-  border-top-color: $text-color;
+  border-top-color: #000;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   vertical-align: middle;

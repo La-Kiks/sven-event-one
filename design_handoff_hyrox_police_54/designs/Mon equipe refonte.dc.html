@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: "Lemon"; src: url("ui/public/fonts/Lemon/LEMONMILK-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+body { margin: 0; padding: 0; background-color: #000000; }
+a { color: #ffed00; }
+a:hover { color: #ffffff; }
+input, select { font-family: Cabin, sans-serif; }
+</style>
+</helmet>
+<div style="background:#000;min-height:100vh;color:#fff;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif">
+
+  <header style="display:flex;align-items:center;gap:1rem;padding:0.9rem clamp(1rem,4vw,3rem);border-bottom:1px solid rgba(255,255,255,0.08)">
+    <a href="#top" style="display:flex;align-items:center;gap:0.7rem;text-decoration:none;margin-right:auto">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:#ffed00;color:#000;font-family:Lemon,sans-serif;font-size:0.95rem;border-radius:3px">54</span>
+      <span style="font-family:Lemon,sans-serif;font-size:0.8rem;letter-spacing:0.14em;color:#fff">HYROX POLICE 54</span>
+    </a>
+    <span style="font-size:0.82rem;color:rgba(255,255,255,0.45)">m.lefevre&#64;police.fr</span>
+    <button type="button" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:0.45rem 0.9rem;border-radius:2px;font-family:Cabin,sans-serif;font-size:0.8rem;cursor:pointer">Se déconnecter</button>
+  </header>
+
+  <div style="max-width:980px;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) clamp(1rem,4vw,3rem)">
+
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:2rem">
+      <div>
+        <div style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.6rem">Mon équipe</div>
+        <h1 style="font-family:Lemon,sans-serif;font-size:clamp(2rem,5vw,3.2rem);margin:0;text-transform:uppercase;line-height:1">Les Sangliers 54</h1>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <span style="font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.4rem 0.7rem;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:2px">Version courte</span>
+        <span style="font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;padding:0.4rem 0.7rem;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:2px">Police Nationale</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1);margin-bottom:2.5rem">
+      <div style="{{ payTile }}">
+        <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Paiement</div>
+        <div style="{{ payValue }}">{{ payLabel }}</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.5;margin-top:0.5rem">{{ payHint }}</div>
+      </div>
+      <div style="background:#0a0a0a;padding:1.3rem 1.4rem">
+        <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Compte</div>
+        <div style="font-family:Lemon,sans-serif;font-size:1.1rem;margin-top:0.7rem;color:#4ade80">Activé</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.5;margin-top:0.5rem">Tu peux modifier ton équipe jusqu'au jour de l'événement.</div>
+      </div>
+      <div style="background:#0a0a0a;padding:1.3rem 1.4rem">
+        <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Événement</div>
+        <div style="font-family:Lemon,sans-serif;font-size:1.1rem;margin-top:0.7rem">Septembre 2026</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.5;margin-top:0.5rem">Well &amp; Fit — 113 Bd Emile Zola, Laxou</div>
+      </div>
+    </div>
+
+    <section style="border:1px solid rgba(255,255,255,0.1);border-radius:2px;margin-bottom:1.5rem">
+      <h2 style="margin:0;padding:1rem 1.3rem;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);font-family:Lemon,sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase">Équipe</h2>
+      <div style="padding:1.4rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem">
+        <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Nom d'équipe
+          <input type="text" value="Les Sangliers 54" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.75rem 0.9rem;letter-spacing:normal;text-transform:none" />
+        </label>
+        <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Administration
+          <select style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.75rem 0.9rem;letter-spacing:normal;text-transform:none">
+            <option value="nationale">Police Nationale</option>
+            <option value="municipale">Police Municipale</option>
+            <option value="gendarmerie">Gendarmerie</option>
+            <option value="militaire">Militaire</option>
+            <option value="penitancier">Pénitancier</option>
+            <option value="pompier">Pompier</option>
+            <option value="none">Autre</option>
+          </select>
+        </label>
+        <div>
+          <div style="font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.6rem">Version</div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+            <sc-for list="{{ versions }}" as="o" hint-placeholder-count="2">
+              <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <sc-for list="{{ players }}" as="p" hint-placeholder-count="2">
+      <section style="border:1px solid rgba(255,255,255,0.1);border-radius:2px;margin-bottom:1.5rem">
+        <div style="display:flex;align-items:center;gap:0.9rem;padding:1rem 1.3rem;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)">
+          <span style="font-family:Lemon,sans-serif;font-size:0.85rem;color:#ffed00">{{ p.num }}</span>
+          <h2 style="margin:0;font-family:Lemon,sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase">{{ p.title }}</h2>
+        </div>
+        <div style="padding:1.4rem">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem">
+            <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Nom
+              <input type="text" value="{{ p.lastName }}" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.75rem 0.9rem;letter-spacing:normal;text-transform:none" />
+            </label>
+            <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Prénom
+              <input type="text" value="{{ p.firstName }}" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.75rem 0.9rem;letter-spacing:normal;text-transform:none" />
+            </label>
+            <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Mail
+              <input type="email" value="{{ p.email }}" readonly="{{ p.locked }}" style="{{ p.emailStyle }}" />
+            </label>
+            <label style="display:flex;flex-direction:column;gap:0.45rem;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Téléphone
+              <input type="tel" value="{{ p.phone }}" style="background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.75rem 0.9rem;letter-spacing:normal;text-transform:none" />
+            </label>
+          </div>
+          <sc-if value="{{ p.locked }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin:0.7rem 0 0;line-height:1.5">Cet email est ton identifiant de connexion. Contacte un organisateur pour le changer.</p>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1.6rem">
+            <div>
+              <div style="font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.6rem">Catégorie</div>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                <sc-for list="{{ p.cats }}" as="o" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.6rem">Tenue d'intervention</div>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                <sc-for list="{{ p.outfits }}" as="o" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <button type="button" onClick="{{ p.toggleVol }}" style="{{ p.volStyle }}">
+            <span style="{{ p.volBoxStyle }}"></span>
+            <span style="text-align:left">Je voudrais être bénévole.</span>
+          </button>
+        </div>
+      </section>
+    </sc-for>
+
+    <div style="position:sticky;bottom:0;display:flex;flex-wrap:wrap;align-items:center;gap:1rem;padding:1rem 0;background:linear-gradient(to top,#000 60%,rgba(0,0,0,0))">
+      <button type="button" style="background:#ffed00;border:none;color:#000;font-family:Cabin,sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;padding:1rem 2rem;border-radius:2px;cursor:pointer">Enregistrer les modifications</button>
+      <span style="font-size:0.82rem;color:rgba(255,255,255,0.4)">Dernière modification il y a 3 jours</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;isPaid&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;État&quot;}}">
+class Component extends DCLogic {
+  state = { version: 'short', cat1: 'man', outfit1: 'yes', vol1: true, cat2: 'woman', outfit2: 'lend', vol2: false };
+
+  chip(active) {
+    return 'background:' + (active ? '#ffed00' : 'transparent') + ';color:' + (active ? '#000' : 'rgba(255,255,255,0.75)') +
+      ';border:1px solid ' + (active ? '#ffed00' : 'rgba(255,255,255,0.18)') +
+      ';font-family:Cabin,sans-serif;font-weight:' + (active ? '700' : '500') +
+      ';font-size:0.88rem;padding:0.6rem 1rem;border-radius:2px;cursor:pointer;text-align:left';
+  }
+
+  group(key, options) {
+    return options.map(o => ({ label: o.label, style: this.chip(this.state[key] === o.value), pick: () => this.setState({ [key]: o.value }) }));
+  }
+
+  checkRow(on) {
+    return 'display:flex;align-items:center;gap:0.8rem;margin-top:1.5rem;background:transparent;border:1px solid ' +
+      (on ? 'rgba(255,237,0,0.5)' : 'rgba(255,255,255,0.14)') +
+      ';border-radius:2px;padding:0.8rem 1rem;color:rgba(255,255,255,0.8);font-family:Cabin,sans-serif;font-size:0.9rem;cursor:pointer';
+  }
+
+  checkBox(on) {
+    return 'flex:none;width:18px;height:18px;border-radius:2px;border:1px solid ' + (on ? '#ffed00' : 'rgba(255,255,255,0.3)') +
+      ';background:' + (on ? '#ffed00' : 'transparent') + ';display:block';
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isPaid = this.props.isPaid ?? true;
+    const catOpts = [{ label: 'Homme', value: 'man' }, { label: 'Femme', value: 'woman' }, { label: 'Mixte', value: 'mixt' }];
+    const outfitOpts = [{ label: "J'ai ma tenue", value: 'yes' }, { label: 'À me prêter', value: 'lend' }, { label: 'Non', value: 'no' }];
+    const lockedEmail = 'background:#1c1c1c;border:1px solid rgba(255,255,255,0.08);border-radius:2px;color:rgba(255,255,255,0.45);font-size:1rem;padding:0.75rem 0.9rem;letter-spacing:normal;text-transform:none;cursor:not-allowed';
+    const openEmail = 'background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:1rem;padding:0.75rem 0.9rem;letter-spacing:normal;text-transform:none';
+
+    return {
+      payTile: 'background:#0a0a0a;padding:1.3rem 1.4rem;border-left:2px solid ' + (isPaid ? '#4ade80' : '#ff6b6b'),
+      payValue: 'font-family:Lemon,sans-serif;font-size:1.1rem;margin-top:0.7rem;color:' + (isPaid ? '#4ade80' : '#ff6b6b'),
+      payLabel: isPaid ? 'Payé' : 'Non payé',
+      payHint: isPaid ? '60 € reçus pour ton équipe. Rien d\u2019autre à faire.' : 'Le paiement peut mettre 48 h à s\u2019actualiser. Passé ce délai, contacte un organisateur.',
+      versions: this.group('version', [{ label: 'Courte', value: 'short' }, { label: 'Longue', value: 'long' }]),
+      players: [
+        {
+          num: '01', title: 'Participant 1', lastName: 'Lefevre', firstName: 'Marc', email: 'm.lefevre@police.fr', phone: '06 12 44 87 03',
+          locked: true, emailStyle: lockedEmail,
+          cats: this.group('cat1', catOpts), outfits: this.group('outfit1', outfitOpts),
+          toggleVol: () => this.setState({ vol1: !s.vol1 }), volStyle: this.checkRow(s.vol1), volBoxStyle: this.checkBox(s.vol1)
+        },
+        {
+          num: '02', title: 'Participant 2', lastName: 'Marchand', firstName: 'Julie', email: 'j.marchand@police.fr', phone: '06 71 02 55 19',
+          locked: false, emailStyle: openEmail,
+          cats: this.group('cat2', catOpts), outfits: this.group('outfit2', outfitOpts),
+          toggleVol: () => this.setState({ vol2: !s.vol2 }), volStyle: this.checkRow(s.vol2), volBoxStyle: this.checkBox(s.vol2)
+        }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

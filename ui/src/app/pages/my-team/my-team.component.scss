@@ -1,75 +1,79 @@
 @use "variables" as *;
 
+$surface: #0a0a0a;
+$field-bg: #141414;
+$field-locked-bg: #1c1c1c;
+$border: rgba(255, 255, 255, 0.1);
+$field-border: rgba(255, 255, 255, 0.14);
+$text-secondary: rgba(255, 255, 255, 0.55);
+$text-tertiary: rgba(255, 255, 255, 0.4);
+$text-caption: rgba(255, 255, 255, 0.45);
+$radius: 2px;
+$gutter: clamp(1rem, 4vw, 3rem);
+
 :host {
   display: block;
   min-height: 100vh;
+  background: $background-color;
 }
 
 .page {
   min-height: 100vh;
-  background-color: $background-color;
-  background-image: radial-gradient(
-    ellipse 60% 40% at 80% 0%,
-    rgba(255, 237, 0, 0.06) 0%,
-    transparent 60%
-  );
+  color: #fff;
   font-family: $font-body;
-  color: #ffffff;
 }
 
-.top-bar {
+// Header
+// ------------------------------------------------------------------
+
+.header {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  padding: 1.2rem 2.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-
-  .brand {
-    margin-right: auto;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-
-    .logo-mark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      background: $main-color;
-      color: $text-color;
-      font-family: $font-title;
-      font-size: 0.9rem;
-      border-radius: 0.2em;
-    }
-
-    .brand-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      color: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
-    }
-  }
+  gap: 1rem;
+  padding: 0.9rem $gutter;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.user-area {
+.header__brand {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-
-  .username {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
+  gap: 0.7rem;
+  text-decoration: none;
+  margin-right: auto;
 }
 
-.logout-btn {
+.header__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: $main-color;
+  color: #000;
+  font-family: $font-title;
+  font-size: 0.95rem;
+  border-radius: 3px;
+}
+
+.header__wordmark {
+  font-family: $font-title;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.header__user {
+  font-size: 0.82rem;
+  color: $text-tertiary;
+}
+
+.header__logout {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: rgba(255, 255, 255, 0.6);
-  padding: 0.4rem 0.9rem;
-  border-radius: 0.2em;
+  padding: 0.45rem 0.9rem;
+  border-radius: $radius;
   font-family: $font-body;
   font-size: 0.8rem;
   cursor: pointer;
@@ -85,282 +89,432 @@
   }
 }
 
+// Layout
+// ------------------------------------------------------------------
+
+.layout {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) $gutter;
+}
+
 .loading-state,
 .error-state {
   padding: 3rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.5);
+  color: $text-secondary;
 }
 
 .retry-btn {
   margin-top: 1rem;
   background-color: $main-color;
-  color: $text-color;
+  color: #000;
   border: none;
-  border-radius: 0.25em;
-  padding: 0.5em 1.2em;
+  border-radius: $radius;
+  padding: 0.6rem 1.4rem;
   font-family: $font-body;
-  font-weight: 600;
-  font-size: $text-sm;
+  font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
 
   &:hover {
-    filter: brightness(1.15);
+    filter: brightness(1.1);
   }
 
   &:focus-visible {
-    outline: 3px solid $main-color;
-    outline-offset: 3px;
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 }
 
-.team-badge {
+// Page head
+// ------------------------------------------------------------------
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.page-head__eyebrow {
   font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 0.3rem 0.7rem;
-  border-radius: 0.15em;
-  display: inline-block;
+  color: $text-tertiary;
+  margin-bottom: 0.6rem;
+}
 
-  &.paid {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-    border: 1px solid rgba(34, 197, 94, 0.3);
+.page-head__title {
+  font-family: $font-title;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.page-head__pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: $radius;
+}
+
+// Status band
+// ------------------------------------------------------------------
+
+.status-band {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1px;
+  background: $border;
+  border: 1px solid $border;
+  margin-bottom: 2.5rem;
+}
+
+.status-tile {
+  background: $surface;
+  padding: 1.3rem 1.4rem;
+  border-left: 2px solid transparent;
+
+  &--good {
+    border-left-color: #4ade80;
   }
 
-  &.unpaid {
-    background: rgba(255, 107, 107, 0.1);
-    color: #ff6b6b;
-    border: 1px solid rgba(255, 107, 107, 0.3);
+  &--bad {
+    border-left-color: #ff6b6b;
   }
 }
 
-.payment-note {
-  margin: 0.5em 0 0;
-  font-size: $text-xs;
-  color: rgba(255, 255, 255, 0.6);
+.status-tile__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $text-tertiary;
+}
+
+.status-tile__value {
+  font-family: $font-title;
+  font-size: 1.1rem;
+  margin-top: 0.7rem;
+
+  &--good {
+    color: #4ade80;
+  }
+
+  &--bad {
+    color: #ff6b6b;
+  }
+}
+
+.status-tile__hint {
+  font-size: 0.82rem;
+  color: $text-secondary;
+  line-height: 1.5;
+  margin-top: 0.5rem;
 
   a {
     color: $main-color;
+    text-decoration: none;
+
+    &:hover {
+      color: #fff;
+    }
   }
 }
 
+// Save banner
+// ------------------------------------------------------------------
+
 .save-banner {
   padding: 0.7rem 1rem;
-  border-radius: 0.5em;
-  margin-top: 1em;
-  font-size: $text-sm;
+  border-radius: $radius;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
 
-  &.success {
+  &--success {
     background: rgba(34, 197, 94, 0.15);
     color: #4ade80;
   }
 
-  &.error {
+  &--error {
     background: rgba(255, 107, 107, 0.1);
     color: #ff6b6b;
   }
 }
 
-// ── Form (same visual language as the registration form) ──────────────────────
-.form {
+// Cards
+// ------------------------------------------------------------------
+
+.card {
+  border: 1px solid $border;
+  border-radius: $radius;
+  margin-bottom: 1.5rem;
+}
+
+.card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+
+  h2 {
+    margin: 0;
+    font-family: $font-title;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+.card__number {
+  font-family: $font-title;
+  font-size: 0.85rem;
+  color: $main-color;
+}
+
+.card__body {
+  padding: 1.4rem;
+}
+
+// Fields
+// ------------------------------------------------------------------
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.6rem;
+}
+
+.field {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  max-width: 900px;
-  color: white;
-  background-color: $background-bright-color;
-  padding: 1em;
-  margin: 2em auto;
-  border-radius: 0.5em;
-  border: solid 0.2em;
-  border-color: $main-color;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $text-caption;
+  }
+}
+
+.field__caption {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.field__input {
+  background: $field-bg;
+  border: 1px solid $field-border;
+  border-radius: $radius;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.75rem 0.9rem;
+  letter-spacing: normal;
+  text-transform: none;
   font-family: $font-body;
-  font-size: $text-base;
-}
-
-.title {
-  margin: 0.5em 0em;
-  padding: 0.5em;
-  border-radius: 0.5em;
   box-sizing: border-box;
-  background-color: $main-color;
-  color: $text-color;
-  font-family: $font-title;
-  font-size: $text-xl;
-}
-
-.title2 {
-  margin: 1em auto 0.5em;
-  padding: 0.1em;
-  max-width: fit-content;
-  box-sizing: border-box;
-  font-family: $font-title;
-  font-size: $text-xl;
-}
-
-.label {
-  margin: 0.5em 0em 0em 0em;
-  padding: 0.5em 0em;
-}
-
-.input {
-  color: $text-color;
-  margin: 0em 0em 0.5em 0em;
-  padding: 0.5em;
-  box-sizing: border-box;
-  border-radius: 0.5em;
-  border: transparent 0px;
   width: 100%;
-  font-family: $font-body;
-  font-size: $text-sm;
+
+  &:focus {
+    outline: none;
+    border-color: $main-color;
+  }
+
+  &--invalid {
+    border-color: #ff6b6b;
+  }
+
+  &--locked {
+    background: $field-locked-bg;
+    border-color: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.45);
+    cursor: not-allowed;
+  }
 }
 
-.input:focus {
-  outline: solid 0.15em;
-  outline-color: $main-color;
+select.field__input {
+  cursor: pointer;
 }
 
-.input--invalid {
-  box-shadow: 0 0 0 0.15em #ff6b6b;
+.required {
+  color: $main-color;
 }
 
 .field-error {
   color: #ff6b6b;
-  font-size: $text-xs;
-  margin: 0.25em 0 0;
-}
-
-.input--locked {
-  background-color: #d9d9d9;
-  color: #555;
-  cursor: not-allowed;
-}
-
-.input--locked:focus {
-  outline-color: #999;
+  font-size: 0.78rem;
+  margin: 0.35em 0 0;
 }
 
 .field-hint {
-  margin: 0.25em 0 0;
-  font-size: $text-xs;
-  color: rgba(255, 255, 255, 0.6);
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: $text-tertiary;
+  line-height: 1.5;
 }
 
-.row {
+// Chips (radio groups)
+// ------------------------------------------------------------------
+
+.chip-caption {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $text-caption;
+  margin: 0 0 0.6rem;
+}
+
+.chip-group {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.radio-group label {
-  display: inline-block;
-  font-weight: normal;
-  margin: 0.5em;
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-weight: 500;
+  font-size: 0.88rem;
+  padding: 0.6rem 1rem;
+  border-radius: $radius;
   cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &--active {
+    background: $main-color;
+    color: #000;
+    font-weight: 700;
+    border-color: $main-color;
+  }
+
+  &:focus-within {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
 }
 
-fieldset,
-.form-group {
-  border: 0.2em solid $main-color;
-  border-radius: 0.5em;
-  padding: 0.5em;
-  margin-top: 1em;
-}
-
-legend {
-  font-weight: bold;
-  padding: 0em 0.2em;
-}
-
-input[type="radio"],
-input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
+.chip__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
   margin: 0;
 }
-input[type="radio"] {
-  width: 1em;
-  height: 1em;
-  border: 0.1em solid $main-color;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-right: 0.1em;
-}
 
-input[type="checkbox"] {
-  display: grid;
-  place-items: center;
-  width: 1.5em;
-  height: 1.5em;
-  min-width: 1.5em;
-  border: 0.1em solid $main-color;
-  border-radius: 0.2em;
-  cursor: pointer;
-  margin-right: 0.5em;
-}
+// Checkbox rows (bénévole)
+// ------------------------------------------------------------------
 
-input:checked {
-  background-color: $main-color;
-  border-color: white;
-}
-
-input[type="checkbox"]:checked::before {
-  content: "✕";
-  font-weight: bold;
-  font-size: $text-xs;
-  color: $text-color;
-}
-
-.infoline {
+.checkbox-row {
   display: flex;
   align-items: center;
-  font-size: $text-sm;
-  margin-top: 1em;
-}
-
-.form-group select {
-  width: 100%;
-  padding: 0.5em;
-  margin: 0.5em 0em;
-  border: 0.1em solid $main-color;
-  border-radius: 0.5em;
-  background-color: white;
-  color: $text-color;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 1px solid $field-border;
+  border-radius: $radius;
+  padding: 0.8rem 1rem;
+  color: rgba(255, 255, 255, 0.8);
   font-family: $font-body;
-  font-size: $text-sm;
-}
-
-.button {
-  background-color: $main-color;
-  font-size: $text-lg;
-  color: $text-color;
-  padding: 0.5em 1em;
-  border: none;
-  border-radius: 0.5em;
-  width: 100%;
+  font-size: 0.9rem;
   cursor: pointer;
-  margin-top: 1em;
+  transition: border-color 0.15s ease;
+
+  &--checked {
+    border-color: rgba(255, 237, 0, 0.5);
+  }
+
+  &:focus-within {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    border-radius: $radius;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    cursor: pointer;
+
+    &:checked {
+      background: $main-color;
+      border-color: $main-color;
+    }
+  }
 }
 
-.button:hover {
-  filter: brightness(1.5);
+// Save bar
+// ------------------------------------------------------------------
+
+.save-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  background: linear-gradient(to top, #000 60%, rgba(0, 0, 0, 0));
 }
 
-.button:focus-visible {
-  outline: 3px solid $main-color;
-  outline-offset: 3px;
-}
+.btn-primary {
+  background: $main-color;
+  border: none;
+  color: #000;
+  font-family: $font-body;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  border-radius: $radius;
+  cursor: pointer;
 
-.button:disabled {
-  cursor: default;
-  color: gray;
-  filter: saturate(0.1);
-}
+  &:hover {
+    filter: brightness(1.1);
+  }
 
-.required {
-  color: red;
+  &:disabled {
+    cursor: default;
+    filter: saturate(0.2) brightness(0.8);
+    opacity: 0.6;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
 }

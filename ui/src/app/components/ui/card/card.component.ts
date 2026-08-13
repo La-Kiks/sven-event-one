@@ -9,6 +9,7 @@ import { Component, Input } from '@angular/core';
 export class CardComponent {
   @Input() number = '';
   @Input() image = '';
-  @Input() description = '';
-
+  @Input() alt = '';
+  @Input() name = '';
+  @Input() metric = '';
 }

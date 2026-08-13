@@ -1,14 +1,17 @@
 <!-- Active: navigates to link -->
-<a *ngIf="!isFull" class="btn" [class.btn--small]="small" [routerLink]="link">
+<a *ngIf="!isFull" class="btn" [class.btn--small]="small" [class.btn--ghost]="variant === 'ghost'"
+    [class.btn--dark]="variant === 'dark'" [routerLink]="link">
     {{ label }}
 </a>
 
-<!-- Full, with a real next step: link to it (e.g. the contact section) -->
-<a *ngIf="isFull && fullLink" class="btn btn--full" [class.btn--small]="small" [href]="fullLink">
+<!-- Full, with a real next step: link to it (e.g. the info section) -->
+<a *ngIf="isFull && fullLink" class="btn btn--full" [class.btn--small]="small" [class.btn--dark]="variant === 'dark'"
+    [href]="fullLink">
     {{ fullLabel }}
 </a>
 
 <!-- Full, no next step available: visually disabled -->
-<span *ngIf="isFull && !fullLink" class="btn btn--full" [class.btn--small]="small" aria-disabled="true">
+<span *ngIf="isFull && !fullLink" class="btn btn--full" [class.btn--small]="small"
+    [class.btn--dark]="variant === 'dark'" aria-disabled="true">
     {{ fullLabel }}
 </span>

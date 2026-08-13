@@ -15,4 +15,5 @@ export class ButtonComponent {
   @Input() small = false;
   @Input() fullLabel = "Inscriptions complètes";
   @Input() fullLink = "";
+  @Input() variant: 'solid' | 'ghost' | 'dark' = 'solid';
 }

@@ -94,10 +94,10 @@ $top-bar-height: 4.5rem;
   }
 
   .brand-name {
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    color: rgba(255, 255, 255, 0.5);
+    font-family: $font-title;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
   }
 }
@@ -188,11 +188,58 @@ $top-bar-height: 4.5rem;
   }
 }
 
+// ── KPI band ──────────────────────────────────────────────────────────────────
+.kpi-band {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.kpi-tile {
+  background: #0a0a0a;
+  padding: 1.1rem 1.2rem;
+}
+
+.kpi-value {
+  font-family: $font-title;
+  font-size: 1.6rem;
+  color: $main-color;
+  line-height: 1;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 0.5rem;
+}
+
 // ── Teams table ───────────────────────────────────────────────────────────────
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+}
+
 .teams-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
   thead tr {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);

@@ -4,27 +4,47 @@
     <header class="top-bar">
         <div class="brand">
             <span class="logo-mark">54</span>
-            <span class="brand-name">Sports Reservation</span>
+            <span class="brand-name">Administration</span>
         </div>
         <nav class="nav-links">
-            <button class="nav-btn active">Teams</button>
-            <button class="nav-btn" routerLink="/players">Players</button>
+            <button class="nav-btn active">Équipes</button>
+            <button class="nav-btn" routerLink="/players">Joueurs</button>
         </nav>
         <div class="user-area">
             <span class="username">{{ currentUser?.username }}</span>
-            <button class="logout-btn" (click)="authService.logout()">Sign out</button>
+            <button class="logout-btn" (click)="authService.logout()">Déconnexion</button>
         </div>
     </header>
 
     <!-- Main content -->
     <main class="content">
         <div class="page-title">
-            <h1>Teams</h1>
-            <span class="count" *ngIf="!isLoading && !error">{{ teams.length }} teams</span>
+            <h1>Équipes</h1>
+            <span class="count" *ngIf="!isLoading && !error">{{ teams.length }} équipes · {{ totalPlayers }}
+                joueurs</span>
             <button class="bulk-send-trigger-btn" *ngIf="!isLoading && !error && pendingAccountsCount > 0"
                 (click)="openBulkConfirm()">
                 Envoyer les emails d'activation ({{ pendingAccountsCount }} en attente)
             </button>
+        </div>
+
+        <div class="kpi-band" *ngIf="!isLoading && !error">
+            <div class="kpi-tile">
+                <div class="kpi-value">{{ teams.length }}</div>
+                <div class="kpi-label">Équipes</div>
+            </div>
+            <div class="kpi-tile">
+                <div class="kpi-value">{{ totalPlayers }}</div>
+                <div class="kpi-label">Joueurs</div>
+            </div>
+            <div class="kpi-tile">
+                <div class="kpi-value">{{ paidCount }}</div>
+                <div class="kpi-label">Payées</div>
+            </div>
+            <div class="kpi-tile">
+                <div class="kpi-value">{{ pendingAccountsCount }}</div>
+                <div class="kpi-label">En attente</div>
+            </div>
         </div>
 
         <div class="delete-confirm" *ngIf="showBulkConfirm">
@@ -61,47 +81,49 @@
 
         <div class="error-state" *ngIf="error">{{ error }}</div>
 
-        <table class="teams-table" *ngIf="!isLoading && !error">
-            <thead>
-                <tr>
-                    <th class="sortable" (click)="sort('name')">
-                        Team <span class="sort-icon">{{ getSortIcon('name') }}</span>
-                    </th>
-                    <th class="sortable" (click)="sort('category')">
-                        Category <span class="sort-icon">{{ getSortIcon('category') }}</span>
-                    </th>
-                    <th class="sortable" (click)="sort('version')">
-                        Version <span class="sort-icon">{{ getSortIcon('version') }}</span>
-                    </th>
-                    <th class="sortable" (click)="sort('administration')">
-                        Administration <span class="sort-icon">{{ getSortIcon('administration') }}</span>
-                    </th>
-                    <th>Payment</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let team of sortedTeams; let i = index" (click)="openPanel(team.id)"
-                    (keydown.enter)="openPanel(team.id)" tabindex="0" role="button"
-                    [attr.aria-label]="'Voir l\'équipe ' + team.name"
-                    [class.active]="selectedTeam?.id === team.id">
-                    <td class="name-cell">
-                        <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
-                        <span class="team-name">{{ team.name }}</span>
-                    </td>
-                    <td>
-                        <span class="category-badge" [ngClass]="team.category">
-                            {{ getCategoryLabel(team.category) }}
-                        </span>
-                    </td>
-                    <td class="team-meta">{{ team.version === 'short' ? 'Court' : 'Long' }}</td>
-                    <td class="team-meta">{{ getAdminLabel(team.administration) }}</td>
-                    <td>
-                        <span class="team-badge paid" *ngIf="team.isPaid">Paid</span>
-                        <span class="team-badge unpaid" *ngIf="!team.isPaid">Unpaid</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper" *ngIf="!isLoading && !error">
+            <table class="teams-table">
+                <thead>
+                    <tr>
+                        <th class="sortable" (click)="sort('name')">
+                            Équipe <span class="sort-icon">{{ getSortIcon('name') }}</span>
+                        </th>
+                        <th class="sortable" (click)="sort('category')">
+                            Catégorie <span class="sort-icon">{{ getSortIcon('category') }}</span>
+                        </th>
+                        <th class="sortable" (click)="sort('version')">
+                            Version <span class="sort-icon">{{ getSortIcon('version') }}</span>
+                        </th>
+                        <th class="sortable" (click)="sort('administration')">
+                            Administration <span class="sort-icon">{{ getSortIcon('administration') }}</span>
+                        </th>
+                        <th>Paiement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let team of sortedTeams; let i = index" (click)="openPanel(team.id)"
+                        (keydown.enter)="openPanel(team.id)" tabindex="0" role="button"
+                        [attr.aria-label]="'Voir l\'équipe ' + team.name"
+                        [class.active]="selectedTeam?.id === team.id">
+                        <td class="name-cell">
+                            <span class="team-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+                            <span class="team-name">{{ team.name }}</span>
+                        </td>
+                        <td>
+                            <span class="category-badge" [ngClass]="team.category">
+                                {{ getCategoryLabel(team.category) }}
+                            </span>
+                        </td>
+                        <td class="team-meta">{{ team.version === 'short' ? 'Court' : 'Long' }}</td>
+                        <td class="team-meta">{{ getAdminLabel(team.administration) }}</td>
+                        <td>
+                            <span class="team-badge paid" *ngIf="team.isPaid">Payé</span>
+                            <span class="team-badge unpaid" *ngIf="!team.isPaid">Non payé</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </main>
 
     <!-- Backdrop -->
@@ -113,9 +135,9 @@
         <div class="panel-header">
             <button class="close-btn" (click)="closePanel()">✕</button>
             <h2 *ngIf="selectedTeam">{{ selectedTeam.name }}</h2>
-            <h2 *ngIf="!selectedTeam && isPanelLoading">Loading...</h2>
+            <h2 *ngIf="!selectedTeam && isPanelLoading">Chargement...</h2>
             <button *ngIf="selectedTeam && !isPanelLoading" class="delete-btn" (click)="confirmDelete()">
-                Delete
+                Supprimer
             </button>
         </div>
 
@@ -130,13 +152,14 @@
         <!-- Delete confirmation -->
         <div class="delete-confirm" *ngIf="showDeleteConfirm && selectedTeam">
             <p class="confirm-text">
-                Delete <strong>{{ selectedTeam.name }}</strong> and all its players? This cannot be undone.
+                Supprimer <strong>{{ selectedTeam.name }}</strong> et tous ses joueurs ? Cette action est
+                irréversible.
             </p>
             <div class="confirm-error" *ngIf="deleteError">{{ deleteError }}</div>
             <div class="confirm-actions">
-                <button class="confirm-cancel-btn" (click)="cancelDelete()" [disabled]="isDeleting">Cancel</button>
+                <button class="confirm-cancel-btn" (click)="cancelDelete()" [disabled]="isDeleting">Annuler</button>
                 <button class="confirm-delete-btn" (click)="deleteTeam()" [disabled]="isDeleting">
-                    {{ isDeleting ? 'Deleting...' : 'Yes, delete' }}
+                    {{ isDeleting ? 'Suppression...' : 'Oui, supprimer' }}
                 </button>
             </div>
         </div>
@@ -147,7 +170,7 @@
             <!-- Team info -->
             <section class="info-section">
                 <div class="info-row">
-                    <span class="info-label">Category</span>
+                    <span class="info-label">Catégorie</span>
                     <span class="info-value">
                         <span class="category-badge" [ngClass]="selectedTeam.category">
                             {{ getCategoryLabel(selectedTeam.category) }}
@@ -163,13 +186,13 @@
                     <span class="info-value">{{ getAdminLabel(selectedTeam.administration) }}</span>
                 </div>
                 <div class="info-row payment-row">
-                    <span class="info-label">Payment</span>
+                    <span class="info-label">Paiement</span>
                     <span class="info-value">
                         <ng-container *ngIf="!pendingPaymentConfirm">
                             <button type="button" class="team-badge paid clickable" *ngIf="selectedTeam.isPaid"
-                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme non payé">✓ Paid</button>
+                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme non payé">✓ Payé</button>
                             <button type="button" class="team-badge unpaid clickable" *ngIf="!selectedTeam.isPaid"
-                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme payé">✗ Unpaid</button>
+                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme payé">✗ Non payé</button>
                         </ng-container>
                         <span class="payment-confirm" *ngIf="pendingPaymentConfirm">
                             <span class="payment-confirm-text">
@@ -186,11 +209,11 @@
                 </div>
                 <div class="payment-error" *ngIf="paymentError">{{ paymentError }}</div>
                 <div class="info-row">
-                    <span class="info-label">Players</span>
+                    <span class="info-label">Joueurs</span>
                     <span class="info-value">{{ selectedTeam.players.length }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Account</span>
+                    <span class="info-label">Compte</span>
                     <span class="info-value">
                         <span class="team-badge paid" *ngIf="selectedTeam.accountVerified">✓ Activé</span>
                         <span class="team-badge unpaid" *ngIf="!selectedTeam.accountVerified">
@@ -210,20 +233,21 @@
 
             <!-- Players list -->
             <section class="players-section">
-                <h3 class="section-title">Players</h3>
+                <h3 class="section-title">Joueurs</h3>
                 <div class="player-card" *ngFor="let player of selectedTeam.players">
                     <div class="player-main">
                         <span class="player-name">{{ player.firstName }} {{ player.lastName }}</span>
-                        <span class="player-category">{{ player.category }}</span>
+                        <span class="player-category">{{ getCategoryLabel(player.category) }}</span>
                     </div>
                     <div class="player-meta">
                         <span>{{ player.email }}</span>
                         <span>{{ player.phoneNumber }}</span>
                     </div>
                     <div class="player-tags">
-                        <span class="tag" *ngIf="player.volunteer">Volunteer</span>
-                        <span class="tag" *ngIf="player.acceptMails">Newsletter</span>
-                        <span class="tag outfit">{{ player.outfit }}</span>
+                        <span class="tag" *ngIf="player.volunteer">Bénévole</span>
+                        <span class="tag" *ngIf="player.acceptMails">Actus par mail</span>
+                        <span class="tag outfit" *ngIf="getOutfitTagLabel(player.outfit) as outfitTag">{{ outfitTag
+                            }}</span>
                     </div>
                 </div>
             </section>

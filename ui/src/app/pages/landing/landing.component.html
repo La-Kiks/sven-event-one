@@ -1,95 +1,155 @@
-<section class="landing">
-    <div class="part-one" #hero>
-        <div class="title">
-            <h1>Hyrox Police 54</h1>
-            <p class="subtitle">Rendez-vous en Septembre</p>
-        </div>
-        <div class="video-wrapper">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/iu4gl2vs--s?si=6mpAoWmavWTZYGDb"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="cta">
-            <app-button label="S'INSCRIRE EN DUO - 60€" link="/inscription" [isFull]="isRegistrationFull"
-                [fullLabel]="countLoadError ? 'Erreur de chargement — contactez-nous' : 'Inscriptions complètes — voir les contacts'"
-                fullLink="#contact"></app-button>
-        </div>
-        <div class="cta cta--secondary">
-            <app-button label="Déjà inscrit ? Se connecter" link="/login" [small]="true"></app-button>
-        </div>
-        <button type="button" class="down-arrow" (click)="scrollTo('part-two')"
-            aria-label="Voir le format de la course">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true">
-                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </button>
+<header class="header">
+    <a href="#top" class="header__brand">
+        <span class="header__mark">54</span>
+        <span class="header__wordmark">Hyrox Police 54</span>
+    </a>
+    <nav class="header__nav">
+        <a href="#format">Format</a>
+        <a href="#partenaires">Partenaires</a>
+        <a href="#infos">Infos</a>
+    </nav>
+    <div class="header__actions">
+        <app-button label="Se connecter" link="/login" [variant]="'ghost'"></app-button>
+        <app-button label="S'inscrire — 60 €" link="/inscription" [small]="true" [isFull]="isRegistrationFull"
+            [fullLabel]="countLoadError ? 'Erreur' : 'Complet'" fullLink="#infos"></app-button>
     </div>
+</header>
 
-    <!-- Persistent CTA: the hero's register button scrolls out of view on a
-         long page, leaving no way to act on intent formed further down. -->
-    <div class="sticky-cta" [class.visible]="hasScrolledPastHero">
-        <app-button label="S'inscrire en duo - 60€" link="/inscription" [small]="true" [isFull]="isRegistrationFull"
-            [fullLabel]="countLoadError ? 'Erreur de chargement' : 'Complet'" fullLink="#contact"></app-button>
-    </div>
-
-    <div id="part-two" class="part-two">
-        <div class="description">
-            <p>Cette compétition est l'enchainement d'épreuves combinant course à pied et ateliers fonctionnels pour
-                tester l'endurance, la force et la polyvalence des participants.</p>
+<section id="top" class="hero" #hero>
+    <div class="hero__inner">
+        <div class="hero__eyebrow">
+            <span class="hero__eyebrow-bar"></span>
+            <span>Septembre 2026 · Laxou (54)</span>
         </div>
-        <div class="cards">
-            <h2 class="section-heading">Format de la course</h2>
-            <p><strong>1 km RUN&nbsp;</strong>avant chaque épreuve</p>
-            <div class="cards__grid">
-                <app-card number="01" image="images/ski-erg.webp" description="1000m SKI ERG"></app-card>
-                <app-card number="02" image="images/sled-push.webp" description="50m SLED PUSH"></app-card>
-                <app-card number="03" image="images/sled-pull.webp" description="50m SLED PULL"></app-card>
-                <app-card number="04" image="images/burpees.webp" description="80m BURPEES BROAD JUMP"></app-card>
-                <app-card number="05" image="images/rameur.webp" description="1000m ROWING"></app-card>
-                <app-card number="06" image="images/farmeur.webp" description="200m FARMERS CARRY"></app-card>
-                <app-card number="07" image="images/fente.webp" description="100m FENTES"></app-card>
-                <app-card number="08" image="images/wall-ball.webp" description="100x WALL BALLS"></app-card>
+        <h1 class="hero__title">Hyrox<br /><span>Police 54</span></h1>
+        <p class="hero__lead">Course à pied et ateliers fonctionnels, en duo. 8 épreuves, 8 kilomètres, une seule
+            équipe. Réservé aux forces de l'ordre et personnels assimilés.</p>
+        <div class="hero__cta-row">
+            <app-button label="S'inscrire en duo — 60 €" link="/inscription" [isFull]="isRegistrationFull"
+                [fullLabel]="countLoadError ? 'Erreur de chargement — contactez-nous' : 'Inscriptions complètes — voir les infos'"
+                fullLink="#infos"></app-button>
+            <a href="#format" class="btn-outline">Voir le format</a>
+        </div>
+        <div class="hero__stats">
+            <div class="hero__stat">
+                <div class="hero__stat-value">8</div>
+                <div class="hero__stat-label">Ateliers</div>
+            </div>
+            <div class="hero__stat">
+                <div class="hero__stat-value">8&nbsp;km</div>
+                <div class="hero__stat-label">De course</div>
+            </div>
+            <div class="hero__stat">
+                <div class="hero__stat-value">2</div>
+                <div class="hero__stat-label">Équipiers</div>
+            </div>
+            <div class="hero__stat">
+                <div class="hero__stat-value">60&nbsp;€</div>
+                <div class="hero__stat-label">Par duo</div>
             </div>
         </div>
-    </div>
-    <div id="part-three" class="part-three">
-        <h2 class="section-heading">Partenaires</h2>
-        <div class="partenaires">
-            <img src="images/sponso-bfm.JPG" alt="sponso-bfm" width="200" height="200">
-            <img src="images/sponso-cops13.JPEG" alt="sponso-cops13" width="200" height="200">
-            <img src="images/sponso-crossfitlaxou.PNG" alt="sponso-crossfitlaxou" width="200" height="200">
-            <img src="images/sponso-fitnesspark.JPG" alt="sponso-fitnesspark" width="200" height="200">
-            <img src="images/sponso-fitnrack.JPEG" alt="sponso-fitnrack" width="200" height="200">
-            <img src="images/sponso-intersport.PNG" alt="sponso-intersport" width="200" height="200">
-            <img src="images/sponso-mgp.JPEG" alt="sponso-mgp" width="200" height="200">
-            <img src="images/sponso-orpheopolis.JPEG" alt="sponso-orpheopolis" width="200" height="200">
-            <img src="images/sponso-rw.PNG" alt="sponso-rw" width="200" height="200">
-            <img src="images/sponso-wellfit.JPG" alt="sponso-wellfit" width="200" height="200">
-            <img src="images/sponso-fspn.JPG" alt="sponso-fspn" width="200" height="200">
-            <img src="images/sponso-policenationale.JPEG" alt="sponso-policenationale" width="200" height="200">
-        </div>
-
-
-    </div>
-    <div id="part-four" class="part-four">
-        <h2 class="section-heading">Localisation</h2>
-        <div class="localisation">
-            <div class="maps"><iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2634.3182811443658!2d6.15653287591105!3d48.68027911322506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4794a286a33495e1%3A0x8a255355455498eb!2sWell%20and%20Fit!5e0!3m2!1sfr!2sfr!4v1766829210050!5m2!1sfr!2sfr"
-                    title="Localisation Well & Fit, 113 Bd Emile Zola, Laxou" style="border:0;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-                <p>
-                    <strong>Well & Fit</strong><br>
-                    113 Bd Emile Zola, 54520 Laxou
-                </p>
-            </div>
-        </div>
-        <h2 id="contact" class="section-heading">Contact</h2>
-        <p>Tel : 06 48 73 50 15</p>
-        <p>Mail: svenbarberat&#64;orange.fr</p>
     </div>
 </section>
+
+<section class="video">
+    <div class="video__head">
+        <h2>L'événement en vidéo</h2>
+        <p>Le format, les épreuves et le déroulé de l'inscription, expliqués en quelques minutes.</p>
+    </div>
+    <div class="video__frame">
+        <div class="video__frame-outline"></div>
+        <iframe class="video__iframe" src="https://www.youtube.com/embed/iu4gl2vs--s?si=6mpAoWmavWTZYGDb"
+            title="Vidéo de présentation Hyrox Police 54"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+</section>
+
+<div class="marquee">1 KM RUN · AVANT CHAQUE ÉPREUVE · 1 KM RUN · AVANT CHAQUE ÉPREUVE · 1 KM RUN</div>
+
+<section id="format" class="format">
+    <div class="format__head">
+        <h2>Format de la course</h2>
+        <span>8 ateliers · 8 km</span>
+    </div>
+    <div class="format__grid">
+        <app-card number="01" image="/images/ski-erg.webp" alt="Ski Erg" name="Ski Erg" metric="1000 m"></app-card>
+        <app-card number="02" image="/images/sled-push.webp" alt="Sled Push" name="Sled Push" metric="50 m"></app-card>
+        <app-card number="03" image="/images/sled-pull.webp" alt="Sled Pull" name="Sled Pull" metric="50 m"></app-card>
+        <app-card number="04" image="/images/burpees.webp" alt="Burpees Broad Jump" name="Burpees Broad Jump"
+            metric="80 m"></app-card>
+        <app-card number="05" image="/images/rameur.webp" alt="Rowing" name="Rowing" metric="1000 m"></app-card>
+        <app-card number="06" image="/images/farmeur.webp" alt="Farmers Carry" name="Farmers Carry"
+            metric="200 m"></app-card>
+        <app-card number="07" image="/images/fente.webp" alt="Fentes" name="Fentes" metric="100 m"></app-card>
+        <app-card number="08" image="/images/wall-ball.webp" alt="Wall Balls" name="Wall Balls" metric="100 x"></app-card>
+    </div>
+</section>
+
+<section id="partenaires" class="partners">
+    <div class="partners__head">
+        <h2>Partenaires</h2>
+        <span>Ils soutiennent l'événement</span>
+    </div>
+    <div class="partners__grid">
+        <div class="partners__tile"><img src="/images/sponso-policenationale.JPEG" alt="Police Nationale"></div>
+        <div class="partners__tile"><img src="/images/sponso-orpheopolis.JPEG" alt="Orphéopolis"></div>
+        <div class="partners__tile"><img src="/images/sponso-fspn.JPG" alt="FSPN"></div>
+        <div class="partners__tile"><img src="/images/sponso-wellfit.JPG" alt="Well & Fit"></div>
+        <div class="partners__tile"><img src="/images/sponso-crossfitlaxou.PNG" alt="CrossFit Laxou"></div>
+        <div class="partners__tile"><img src="/images/sponso-fitnesspark.JPG" alt="Fitness Park"></div>
+        <div class="partners__tile"><img src="/images/sponso-fitnrack.JPEG" alt="Fitnrack"></div>
+        <div class="partners__tile"><img src="/images/sponso-intersport.PNG" alt="Intersport"></div>
+        <div class="partners__tile"><img src="/images/sponso-mgp.JPEG" alt="MGP"></div>
+        <div class="partners__tile"><img src="/images/sponso-bfm.JPG" alt="BFM"></div>
+        <div class="partners__tile"><img src="/images/sponso-cops13.JPEG" alt="Cops13"></div>
+        <div class="partners__tile"><img src="/images/sponso-rw.PNG" alt="RW"></div>
+    </div>
+</section>
+
+<section id="infos" class="infos">
+    <h2>Infos pratiques</h2>
+    <div class="infos__grid">
+        <iframe class="infos__map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2634.3182811443658!2d6.15653287591105!3d48.68027911322506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4794a286a33495e1%3A0x8a255355455498eb!2sWell%20and%20Fit!5e0!3m2!1sfr!2sfr!4v1766829210050!5m2!1sfr!2sfr"
+            title="Localisation Well &amp; Fit, 113 Bd Emile Zola, Laxou" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <div class="infos__tiles">
+            <div class="infos__tile">
+                <div class="infos__tile-label">Lieu</div>
+                <div class="infos__tile-title">Well &amp; Fit</div>
+                <div class="infos__tile-text">113 Bd Emile Zola, 54520 Laxou</div>
+            </div>
+            <div class="infos__tile">
+                <div class="infos__tile-label">Contact organisateur</div>
+                <div class="infos__tile-title">Sven Barberat</div>
+                <div class="infos__tile-links">
+                    <a href="tel:0648735015">06 48 73 50 15</a>
+                    <a href="mailto:svenbarberat@orange.fr">svenbarberat&#64;orange.fr</a>
+                </div>
+            </div>
+            <div class="infos__tile infos__tile--grow">
+                <div class="infos__tile-label">Inscription</div>
+                <div class="infos__tile-text">60 € par équipe de 2. Paiement en ligne à la fin du formulaire, puis
+                    activation du compte par email.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="inscription" class="cta-banner">
+    <div class="cta-banner__inner">
+        <div>
+            <h2>Trouve ton binôme.<br />Inscris ton équipe.</h2>
+            <p>Places limitées · 60 € par duo · Septembre 2026</p>
+        </div>
+        <app-button label="S'inscrire en duo" link="/inscription" [variant]="'dark'" [isFull]="isRegistrationFull"
+            [fullLabel]="countLoadError ? 'Erreur de chargement — contactez-nous' : 'Inscriptions complètes — voir les infos'"
+            fullLink="#infos"></app-button>
+    </div>
+</section>
+
+<footer class="footer">
+    <span>Hyrox Police 54 — organisé au profit d'Orphéopolis</span>
+    <span>Well &amp; Fit, Laxou · 06 48 73 50 15</span>
+</footer>

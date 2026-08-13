@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: "Lemon"; src: url("ui/public/fonts/Lemon/LEMONMILK-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+body { margin: 0; padding: 0; background-color: #000000; }
+a { color: #ffed00; }
+a:hover { color: #ffffff; }
+input, select { font-family: Cabin, sans-serif; }
+</style>
+</helmet>
+<div style="background:#000;min-height:100vh;color:#fff;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;position:relative;overflow-x:hidden">
+
+  <header style="position:relative;z-index:40;display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;padding:1rem clamp(1rem,3vw,2.5rem);border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div style="display:flex;align-items:center;gap:0.7rem;margin-right:auto">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:#ffed00;color:#000;font-family:Lemon,sans-serif;font-size:0.95rem;border-radius:3px">54</span>
+      <span style="font-family:Lemon,sans-serif;font-size:0.78rem;letter-spacing:0.14em;color:rgba(255,255,255,0.6)">ADMINISTRATION</span>
+    </div>
+    <nav style="display:flex;gap:0.3rem">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+        <button type="button" onClick="{{ t.go }}" style="{{ t.style }}">{{ t.label }}</button>
+      </sc-for>
+    </nav>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <span style="font-size:0.82rem;color:rgba(255,255,255,0.4)">sven</span>
+      <button type="button" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);padding:0.4rem 0.9rem;border-radius:2px;font-family:Cabin,sans-serif;font-size:0.8rem;cursor:pointer">Déconnexion</button>
+    </div>
+  </header>
+
+  <main style="max-width:1180px;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) clamp(1rem,3vw,2.5rem)">
+
+    <sc-if value="{{ isTeams }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:1rem;margin-bottom:2rem">
+          <h1 style="font-family:Lemon,sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);margin:0;text-transform:uppercase">Équipes</h1>
+          <span style="font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding-bottom:0.4rem">6 équipes · 12 joueurs</span>
+          <button type="button" style="margin-left:auto;background:transparent;border:1px solid rgba(255,237,0,0.45);color:#ffed00;font-family:Cabin,sans-serif;font-size:0.82rem;letter-spacing:0.06em;padding:0.6rem 1rem;border-radius:2px;cursor:pointer">Envoyer les emails d'activation (2 en attente)</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1);margin-bottom:2rem">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:#0a0a0a;padding:1.1rem 1.2rem">
+              <div style="font-family:Lemon,sans-serif;font-size:1.6rem;color:#ffed00;line-height:1">{{ k.value }}</div>
+              <div style="font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:0.5rem">{{ k.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:2px;overflow-x:auto">
+          <div style="min-width:720px">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr;gap:1rem;padding:0.8rem 1.2rem;background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.1);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4)">
+            <span>Équipe</span><span>Catégorie</span><span>Version</span><span>Administration</span><span>Paiement</span>
+          </div>
+          <sc-for list="{{ teams }}" as="t" hint-placeholder-count="6">
+            <button type="button" onClick="{{ t.open }}" style="{{ t.rowStyle }}">
+              <span style="display:flex;align-items:center;gap:0.9rem;min-width:0">
+                <span style="font-family:Lemon,sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.25)">{{ t.index }}</span>
+                <span style="color:#fff;font-size:0.98rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.name }}</span>
+              </span>
+              <span><span style="{{ t.catStyle }}">{{ t.category }}</span></span>
+              <span style="font-size:0.86rem;color:rgba(255,255,255,0.45)">{{ t.version }}</span>
+              <span style="font-size:0.86rem;color:rgba(255,255,255,0.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.administration }}</span>
+              <span><span style="{{ t.payStyle }}">{{ t.payLabel }}</span></span>
+            </button>
+          </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPlayers }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:1rem;margin-bottom:1.5rem">
+          <h1 style="font-family:Lemon,sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);margin:0;text-transform:uppercase">Joueurs</h1>
+          <span style="font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding-bottom:0.4rem">12 joueurs</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.5rem;align-items:center">
+          <input type="text" placeholder="Rechercher un nom, une équipe, un email…" style="flex:1 1 240px;background:#141414;border:1px solid rgba(255,255,255,0.14);border-radius:2px;color:#fff;font-size:0.9rem;padding:0.65rem 0.9rem" />
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+            <button type="button" onClick="{{ f.go }}" style="{{ f.style }}">{{ f.label }}</button>
+          </sc-for>
+          <button type="button" style="margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.7);font-family:Cabin,sans-serif;font-size:0.82rem;padding:0.6rem 1rem;border-radius:2px;cursor:pointer">Export CSV (12)</button>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:2px;overflow-x:auto">
+          <div style="min-width:900px">
+          <div style="display:grid;grid-template-columns:1.4fr 1.2fr 0.8fr 1.6fr 1fr 0.8fr;gap:1rem;padding:0.8rem 1.2rem;background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.1);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4)">
+            <span>Nom</span><span>Équipe</span><span>Catégorie</span><span>Email</span><span>Téléphone</span><span>Bénévole</span>
+          </div>
+          <sc-for list="{{ playersRows }}" as="p" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:1.4fr 1.2fr 0.8fr 1.6fr 1fr 0.8fr;gap:1rem;align-items:center;padding:0.85rem 1.2rem;border-bottom:1px solid rgba(255,255,255,0.05)">
+              <span style="color:#fff;font-size:0.95rem">{{ p.name }}</span>
+              <span><span style="display:inline-block;font-size:0.75rem;padding:0.2rem 0.6rem;border-radius:2px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6)">{{ p.team }}</span></span>
+              <span style="font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.45)">{{ p.category }}</span>
+              <span style="font-size:0.85rem;color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.email }}</span>
+              <span style="font-size:0.85rem;color:rgba(255,255,255,0.5)">{{ p.phone }}</span>
+              <span><span style="{{ p.volStyle }}">{{ p.volLabel }}</span></span>
+            </div>
+          </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <div style="{{ backdropStyle }}" onClick="{{ closePanel }}"></div>
+
+  <aside style="{{ panelStyle }}">
+    <div style="display:flex;align-items:center;gap:1rem;padding:1.3rem 1.4rem;border-bottom:1px solid rgba(255,255,255,0.08)">
+      <button type="button" onClick="{{ closePanel }}" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:0.8rem">✕</button>
+      <h2 style="flex:1;margin:0;font-family:Lemon,sans-serif;font-size:1.2rem;text-transform:uppercase">{{ selectedName }}</h2>
+      <button type="button" style="background:transparent;border:1px solid rgba(220,38,38,0.35);color:#f87171;font-family:Cabin,sans-serif;font-size:0.78rem;padding:0.4rem 0.8rem;border-radius:2px;cursor:pointer">Supprimer</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:1.4rem">
+      <div style="border:1px solid rgba(255,255,255,0.08);border-radius:2px;margin-bottom:1.5rem">
+        <sc-for list="{{ selectedInfo }}" as="i" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.8rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05)">
+            <span style="font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35)">{{ i.k }}</span>
+            <span style="font-size:0.9rem;color:rgba(255,255,255,0.85)">{{ i.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.75rem">
+        <button type="button" onClick="{{ togglePaid }}" style="{{ togglePaidStyle }}">{{ togglePaidLabel }}</button>
+        <button type="button" style="background:transparent;border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.7);font-family:Cabin,sans-serif;font-size:0.82rem;padding:0.6rem 1rem;border-radius:2px;cursor:pointer">Renvoyer l'email d'activation</button>
+      </div>
+      <h3 style="font-family:Lemon,sans-serif;font-size:0.8rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 0.9rem">Joueurs</h3>
+      <sc-for list="{{ selectedPlayers }}" as="p" hint-placeholder-count="2">
+        <div style="border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:1rem;margin-bottom:0.6rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:0.5rem">
+            <span style="font-weight:600;color:#fff">{{ p.name }}</span>
+            <span style="font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.35)">{{ p.category }}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:1.2rem;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.7rem">
+            <span>{{ p.email }}</span><span>{{ p.phone }}</span>
+          </div>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            <sc-for list="{{ p.tags }}" as="tag" hint-placeholder-count="2">
+              <span style="{{ tag.style }}">{{ tag.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'teams', selected: null, filter: 'all', paidOverride: {} };
+
+  badge(kind) {
+    const map = {
+      man: 'rgba(59,130,246,0.12)|#93c5fd|rgba(59,130,246,0.25)',
+      woman: 'rgba(236,72,153,0.12)|#f9a8d4|rgba(236,72,153,0.25)',
+      mixt: 'rgba(168,85,247,0.12)|#d8b4fe|rgba(168,85,247,0.25)',
+      paid: 'rgba(34,197,94,0.15)|#4ade80|rgba(34,197,94,0.3)',
+      unpaid: 'rgba(255,107,107,0.1)|#ff6b6b|rgba(255,107,107,0.25)',
+      neutral: 'rgba(255,255,255,0.05)|rgba(255,255,255,0.4)|rgba(255,255,255,0.08)',
+      yellow: 'rgba(255,237,0,0.08)|rgba(255,237,0,0.8)|rgba(255,237,0,0.25)'
+    };
+    const [bg, fg, bd] = map[kind].split('|');
+    return 'display:inline-block;font-size:0.7rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:2px;background:' + bg + ';color:' + fg + ';border:1px solid ' + bd;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const raw = [
+      { id: 1, name: 'Les Sangliers 54', category: 'man', version: 'Court', administration: 'Police Nationale', paid: true },
+      { id: 2, name: 'Duo Choc', category: 'mixt', version: 'Long', administration: 'Gendarmerie', paid: true },
+      { id: 3, name: 'Team Zola', category: 'woman', version: 'Court', administration: 'Police Municipale', paid: false },
+      { id: 4, name: 'Nancy Force', category: 'man', version: 'Long', administration: 'Pompier', paid: true },
+      { id: 5, name: 'Les Renardes', category: 'woman', version: 'Court', administration: 'Militaire', paid: false },
+      { id: 6, name: 'Laxou Squad', category: 'mixt', version: 'Long', administration: 'Police Nationale', paid: true }
+    ];
+    const catLabel = { man: 'Homme', woman: 'Femme', mixt: 'Mixte' };
+    const paidOf = (t) => (s.paidOverride[t.id] === undefined ? t.paid : s.paidOverride[t.id]);
+    const sel = raw.find(t => t.id === s.selected) || null;
+    const open = !!sel;
+
+    const tabBtn = (id, label) => ({
+      label, go: () => this.setState({ tab: id, selected: null }),
+      style: 'background:' + (s.tab === id ? 'rgba(255,255,255,0.06)' : 'transparent') +
+        ';border:1px solid ' + (s.tab === id ? 'rgba(255,255,255,0.15)' : 'transparent') +
+        ';color:' + (s.tab === id ? '#fff' : 'rgba(255,255,255,0.4)') +
+        ';font-family:Cabin,sans-serif;font-size:0.85rem;padding:0.45rem 1rem;border-radius:2px;cursor:pointer'
+    });
+
+    const filterBtn = (id, label) => ({
+      label, go: () => this.setState({ filter: id }),
+      style: 'background:' + (s.filter === id ? '#ffed00' : 'transparent') + ';color:' + (s.filter === id ? '#000' : 'rgba(255,255,255,0.55)') +
+        ';border:1px solid ' + (s.filter === id ? '#ffed00' : 'rgba(255,255,255,0.12)') +
+        ';font-family:Cabin,sans-serif;font-size:0.8rem;padding:0.55rem 0.9rem;border-radius:2px;cursor:pointer;white-space:nowrap'
+    });
+
+    const players = [
+      { name: 'Marc Lefevre', team: 'Les Sangliers 54', category: 'Homme', email: 'm.lefevre@police.fr', phone: '06 12 44 87 03', vol: true },
+      { name: 'Julie Marchand', team: 'Les Sangliers 54', category: 'Femme', email: 'j.marchand@police.fr', phone: '06 71 02 55 19', vol: false },
+      { name: 'Karim Benali', team: 'Duo Choc', category: 'Homme', email: 'k.benali@gendarmerie.fr', phone: '06 22 71 08 44', vol: true },
+      { name: 'Léa Fournier', team: 'Duo Choc', category: 'Femme', email: 'l.fournier@gendarmerie.fr', phone: '06 84 19 63 27', vol: false },
+      { name: 'Claire Petit', team: 'Team Zola', category: 'Femme', email: 'c.petit@laxou.fr', phone: '06 55 40 71 12', vol: false },
+      { name: 'Anne Dubois', team: 'Team Zola', category: 'Femme', email: 'a.dubois@laxou.fr', phone: '06 09 88 33 76', vol: true },
+      { name: 'Yann Colin', team: 'Nancy Force', category: 'Homme', email: 'y.colin@sdis54.fr', phone: '06 31 27 90 05', vol: false },
+      { name: 'Hugo Meyer', team: 'Nancy Force', category: 'Homme', email: 'h.meyer@sdis54.fr', phone: '06 47 12 58 60', vol: true }
+    ];
+
+    return {
+      isTeams: s.tab === 'teams',
+      isPlayers: s.tab === 'players',
+      tabs: [tabBtn('teams', 'Équipes'), tabBtn('players', 'Joueurs')],
+      filters: [filterBtn('all', 'Tous'), filterBtn('yes', 'Bénévoles'), filterBtn('no', 'Non bénévoles')],
+      kpis: [
+        { value: '6', label: 'Équipes' },
+        { value: '12', label: 'Joueurs' },
+        { value: '4', label: 'Payées' },
+        { value: '2', label: 'En attente' }
+      ],
+      teams: raw.map((t, i) => ({
+        index: String(i + 1).padStart(2, '0'),
+        name: t.name,
+        category: catLabel[t.category],
+        version: t.version,
+        administration: t.administration,
+        catStyle: this.badge(t.category),
+        payStyle: this.badge(paidOf(t) ? 'paid' : 'unpaid'),
+        payLabel: paidOf(t) ? 'Payé' : 'Non payé',
+        open: () => this.setState({ selected: t.id }),
+        rowStyle: 'display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 1fr;gap:1rem;align-items:center;text-align:left;width:100%;box-sizing:border-box;padding:0.9rem 1.2rem;background:' +
+          (s.selected === t.id ? 'rgba(255,255,255,0.04)' : 'transparent') +
+          ';border:none;border-left:2px solid ' + (s.selected === t.id ? '#ffed00' : 'transparent') +
+          ';border-bottom:1px solid rgba(255,255,255,0.05);font-family:Cabin,sans-serif;cursor:pointer'
+      })),
+      playersRows: players.map(p => ({
+        name: p.name, team: p.team, category: p.category, email: p.email, phone: p.phone,
+        volLabel: p.vol ? 'Oui' : 'Non',
+        volStyle: this.badge(p.vol ? 'paid' : 'neutral')
+      })),
+      backdropStyle: 'position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.55);z-index:10;display:' + (open ? 'block' : 'none'),
+      panelStyle: 'position:fixed;top:0;right:0;height:100vh;width:460px;max-width:95vw;background:#0a0a0a;border-left:1px solid rgba(255,255,255,0.1);z-index:30;display:flex;flex-direction:column;transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);transform:translateX(' + (open ? '0' : '100%') + ')',
+      closePanel: () => this.setState({ selected: null }),
+      selectedName: sel ? sel.name : '',
+      selectedInfo: sel ? [
+        { k: 'Catégorie', v: catLabel[sel.category] },
+        { k: 'Version', v: sel.version },
+        { k: 'Administration', v: sel.administration },
+        { k: 'Joueurs', v: '2' },
+        { k: 'Compte', v: paidOf(sel) ? 'Activé' : "En attente d'activation" }
+      ] : [],
+      togglePaid: () => sel && this.setState({ paidOverride: Object.assign({}, s.paidOverride, { [sel.id]: !paidOf(sel) }) }),
+      togglePaidLabel: sel && paidOf(sel) ? 'Marquer comme non payé' : 'Marquer comme payé',
+      togglePaidStyle: 'background:' + (sel && paidOf(sel) ? 'transparent' : '#ffed00') + ';color:' + (sel && paidOf(sel) ? 'rgba(255,255,255,0.7)' : '#000') +
+        ';border:1px solid ' + (sel && paidOf(sel) ? 'rgba(255,255,255,0.18)' : '#ffed00') +
+        ';font-family:Cabin,sans-serif;font-weight:600;font-size:0.82rem;padding:0.6rem 1rem;border-radius:2px;cursor:pointer',
+      selectedPlayers: sel ? players.filter(p => p.team === sel.name).map(p => ({
+        name: p.name, category: p.category, email: p.email, phone: p.phone,
+        tags: [p.vol ? { label: 'Bénévole', style: this.badge('neutral') } : null, { label: 'Tenue : oui', style: this.badge('yellow') }].filter(Boolean)
+      })) : []
+    };
+  }
+}
+</script>
+</body>
+</html>

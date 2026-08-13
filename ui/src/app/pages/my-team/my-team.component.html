@@ -1,246 +1,368 @@
 <div class="page">
 
-    <header class="top-bar">
-        <div class="brand">
-            <span class="logo-mark">SR</span>
-            <span class="brand-name">Mon équipe</span>
-        </div>
-        <div class="user-area">
-            <span class="username">{{ authService.getCurrentUser()?.username }}</span>
-            <button class="logout-btn" (click)="authService.logout()">Se déconnecter</button>
-        </div>
+    <header class="header">
+        <a href="#top" class="header__brand">
+            <span class="header__mark">54</span>
+            <span class="header__wordmark">Hyrox Police 54</span>
+        </a>
+        <span class="header__user">{{ authService.getCurrentUser()?.username }}</span>
+        <button type="button" class="header__logout" (click)="authService.logout()">Se déconnecter</button>
     </header>
 
-    <div class="loading-state" *ngIf="isLoading">Chargement...</div>
-    <div class="error-state" *ngIf="loadError">
-        <p>{{ loadError }}</p>
-        <button class="retry-btn" type="button" (click)="loadTeam()">Réessayer</button>
+    <div class="layout">
+
+        <div class="loading-state" *ngIf="isLoading">Chargement...</div>
+        <div class="error-state" *ngIf="loadError">
+            <p>{{ loadError }}</p>
+            <button class="retry-btn" type="button" (click)="loadTeam()">Réessayer</button>
+        </div>
+
+        <form [formGroup]="form" *ngIf="!isLoading && !loadError && team">
+
+            <div class="page-head">
+                <div>
+                    <div class="page-head__eyebrow">Mon équipe</div>
+                    <h1 class="page-head__title">{{ team.name }}</h1>
+                </div>
+                <div class="page-head__pills">
+                    <span class="pill">{{ team.version === 'short' ? 'Version courte' : 'Version longue' }}</span>
+                    <span class="pill">{{ getAdminLabel(team.administration) }}</span>
+                </div>
+            </div>
+
+            <div class="status-band">
+                <div class="status-tile" [class.status-tile--good]="team.isPaid"
+                    [class.status-tile--bad]="!team.isPaid">
+                    <div class="status-tile__label">Paiement</div>
+                    <div class="status-tile__value" [class.status-tile__value--good]="team.isPaid"
+                        [class.status-tile__value--bad]="!team.isPaid">
+                        {{ team.isPaid ? 'Payé' : 'Non payé' }}
+                    </div>
+                    <div class="status-tile__hint" *ngIf="team.isPaid">60 € reçus pour ton équipe. Rien d'autre à
+                        faire.</div>
+                    <div class="status-tile__hint" *ngIf="!team.isPaid">
+                        Le paiement peut mettre 48 h à s'actualiser. Passé ce délai, contacte un organisateur :
+                        <a [href]="'tel:' + organizerPhone.replace(' ', '')">{{ organizerPhone }}</a>
+                        ou
+                        <a [href]="'mailto:' + organizerEmail">{{ organizerEmail }}</a>.
+                    </div>
+                </div>
+                <div class="status-tile">
+                    <div class="status-tile__label">Compte</div>
+                    <div class="status-tile__value" [class.status-tile__value--good]="team.accountVerified">
+                        {{ team.accountVerified ? 'Activé' : 'En attente' }}
+                    </div>
+                    <div class="status-tile__hint">Tu peux modifier ton équipe jusqu'au jour de l'événement.</div>
+                </div>
+                <div class="status-tile">
+                    <div class="status-tile__label">Événement</div>
+                    <div class="status-tile__value">Septembre 2026</div>
+                    <div class="status-tile__hint">Well &amp; Fit — 113 Bd Emile Zola, Laxou</div>
+                </div>
+            </div>
+
+            <div class="save-banner save-banner--success" *ngIf="saveSuccess">Modifications enregistrées.</div>
+            <div class="save-banner save-banner--error" *ngIf="saveError">{{ saveError }}</div>
+
+            <!-- Team info -->
+            <section class="card" formGroupName="team">
+                <div class="card__head">
+                    <h2>Équipe</h2>
+                </div>
+                <div class="card__body">
+                    <div class="field-grid">
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Nom d'équipe <span class="required">*</span></span>
+                                <input class="field__input" id="team_name" formControlName="team_name" required
+                                    [class.field__input--invalid]="errorMessage('team.team_name')"
+                                    [attr.aria-invalid]="errorMessage('team.team_name') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('team.team_name') ? 'team_name-error' : null">
+                            </label>
+                            @if (errorMessage('team.team_name'); as msg) {
+                            <p class="field-error" id="team_name-error">{{ msg }}</p>
+                            }
+                        </div>
+
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Administration <span class="required">*</span></span>
+                                <select class="field__input" id="administration" formControlName="administration"
+                                    [class.field__input--invalid]="errorMessage('team.administration')"
+                                    [attr.aria-invalid]="errorMessage('team.administration') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('team.administration') ? 'administration-error' : null">
+                                    <option value="">-- Choisir son administration --</option>
+                                    <option value="none">Autre</option>
+                                    <option value="gendarmerie">Gendarmerie</option>
+                                    <option value="militaire">Militaire</option>
+                                    <option value="penitancier">Pénitancier</option>
+                                    <option value="municipale">Police Municipale</option>
+                                    <option value="nationale">Police Nationale</option>
+                                    <option value="pompier">Pompier</option>
+                                </select>
+                            </label>
+                            @if (errorMessage('team.administration'); as msg) {
+                            <p class="field-error" id="administration-error">{{ msg }}</p>
+                            }
+                        </div>
+
+                        <div>
+                            <p class="chip-caption">Version <span class="required">*</span></p>
+                            <div class="chip-group" role="radiogroup" aria-label="Version">
+                                <label class="chip"
+                                    [class.chip--active]="form.get('team.version')?.value === 'short'">
+                                    <input class="chip__input" type="radio" value="short" formControlName="version">
+                                    Courte
+                                </label>
+                                <label class="chip" [class.chip--active]="form.get('team.version')?.value === 'long'">
+                                    <input class="chip__input" type="radio" value="long" formControlName="version">
+                                    Longue
+                                </label>
+                            </div>
+                            @if (errorMessage('team.version'); as msg) {
+                            <p class="field-error">{{ msg }}</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Player 1 -->
+            <section class="card" formGroupName="player1">
+                <div class="card__head">
+                    <span class="card__number">01</span>
+                    <h2>Participant 1</h2>
+                </div>
+                <div class="card__body">
+                    <div class="field-grid">
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Nom <span class="required">*</span></span>
+                                <input class="field__input" id="name_1" formControlName="name" required
+                                    autocomplete="family-name"
+                                    [class.field__input--invalid]="errorMessage('player1.name')"
+                                    [attr.aria-invalid]="errorMessage('player1.name') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('player1.name') ? 'name_1-error' : null">
+                            </label>
+                            @if (errorMessage('player1.name'); as msg) {
+                            <p class="field-error" id="name_1-error">{{ msg }}</p>
+                            }
+                        </div>
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Prénom <span class="required">*</span></span>
+                                <input class="field__input" id="firstname_1" formControlName="firstname" required
+                                    autocomplete="given-name"
+                                    [class.field__input--invalid]="errorMessage('player1.firstname')"
+                                    [attr.aria-invalid]="errorMessage('player1.firstname') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('player1.firstname') ? 'firstname_1-error' : null">
+                            </label>
+                            @if (errorMessage('player1.firstname'); as msg) {
+                            <p class="field-error" id="firstname_1-error">{{ msg }}</p>
+                            }
+                        </div>
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Mail <span class="required">*</span></span>
+                                <input class="field__input field__input--locked" id="email_1" type="email"
+                                    formControlName="email" required readonly aria-describedby="email_1-hint">
+                            </label>
+                            <p class="field-hint" id="email_1-hint">Cet email est ton identifiant de connexion et ne
+                                peut pas être modifié ici. Contacte un organisateur pour le changer.</p>
+                        </div>
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Téléphone <span class="required">*</span></span>
+                                <input class="field__input" id="phone_1" type="tel" formControlName="phone" required
+                                    autocomplete="tel" [class.field__input--invalid]="errorMessage('player1.phone')"
+                                    [attr.aria-invalid]="errorMessage('player1.phone') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('player1.phone') ? 'phone_1-error' : null">
+                            </label>
+                            @if (errorMessage('player1.phone'); as msg) {
+                            <p class="field-error" id="phone_1-error">{{ msg }}</p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="choice-grid">
+                        <div>
+                            <p class="chip-caption">Catégorie <span class="required">*</span></p>
+                            <div class="chip-group" role="radiogroup" aria-label="Catégorie">
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player1.category')?.value === 'man'">
+                                    <input class="chip__input" type="radio" value="man" formControlName="category">
+                                    Homme
+                                </label>
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player1.category')?.value === 'woman'">
+                                    <input class="chip__input" type="radio" value="woman" formControlName="category">
+                                    Femme
+                                </label>
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player1.category')?.value === 'mixt'">
+                                    <input class="chip__input" type="radio" value="mixt" formControlName="category">
+                                    Mixte
+                                </label>
+                            </div>
+                            @if (errorMessage('player1.category'); as msg) {
+                            <p class="field-error">{{ msg }}</p>
+                            }
+                        </div>
+                        <div>
+                            <p class="chip-caption">Tenue d'intervention <span class="required">*</span></p>
+                            <div class="chip-group" role="radiogroup" aria-label="Tenue d'intervention">
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player1.outfit')?.value === 'yes'">
+                                    <input class="chip__input" type="radio" value="yes" formControlName="outfit">
+                                    Oui, j'ai ma tenue.
+                                </label>
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player1.outfit')?.value === 'lend'">
+                                    <input class="chip__input" type="radio" value="lend" formControlName="outfit">
+                                    Oui, j'ai besoin qu'on m'en prête une.
+                                </label>
+                                <label class="chip" [class.chip--active]="form.get('player1.outfit')?.value === 'no'">
+                                    <input class="chip__input" type="radio" value="no" formControlName="outfit"> Non.
+                                </label>
+                            </div>
+                            @if (errorMessage('player1.outfit'); as msg) {
+                            <p class="field-error">{{ msg }}</p>
+                            }
+                        </div>
+                    </div>
+
+                    <label class="checkbox-row"
+                        [class.checkbox-row--checked]="!!form.get('player1.volunteer')?.value">
+                        <input type="checkbox" formControlName="volunteer">
+                        <span>Je voudrais être bénévole.</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Player 2 -->
+            <section class="card" formGroupName="player2">
+                <div class="card__head">
+                    <span class="card__number">02</span>
+                    <h2>Participant 2</h2>
+                </div>
+                <div class="card__body">
+                    <div class="field-grid">
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Nom <span class="required">*</span></span>
+                                <input class="field__input" id="name_2" formControlName="name" required
+                                    autocomplete="family-name"
+                                    [class.field__input--invalid]="errorMessage('player2.name')"
+                                    [attr.aria-invalid]="errorMessage('player2.name') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('player2.name') ? 'name_2-error' : null">
+                            </label>
+                            @if (errorMessage('player2.name'); as msg) {
+                            <p class="field-error" id="name_2-error">{{ msg }}</p>
+                            }
+                        </div>
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Prénom <span class="required">*</span></span>
+                                <input class="field__input" id="firstname_2" formControlName="firstname" required
+                                    autocomplete="given-name"
+                                    [class.field__input--invalid]="errorMessage('player2.firstname')"
+                                    [attr.aria-invalid]="errorMessage('player2.firstname') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('player2.firstname') ? 'firstname_2-error' : null">
+                            </label>
+                            @if (errorMessage('player2.firstname'); as msg) {
+                            <p class="field-error" id="firstname_2-error">{{ msg }}</p>
+                            }
+                        </div>
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Mail <span class="required">*</span></span>
+                                <input class="field__input" id="email_2" type="email" formControlName="email"
+                                    required autocomplete="email"
+                                    [class.field__input--invalid]="errorMessage('player2.email')"
+                                    [attr.aria-invalid]="errorMessage('player2.email') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('player2.email') ? 'email_2-error' : null">
+                            </label>
+                            @if (errorMessage('player2.email'); as msg) {
+                            <p class="field-error" id="email_2-error">{{ msg }}</p>
+                            }
+                        </div>
+                        <div class="field">
+                            <label>
+                                <span class="field__caption">Téléphone <span class="required">*</span></span>
+                                <input class="field__input" id="phone_2" type="tel" formControlName="phone" required
+                                    autocomplete="tel" [class.field__input--invalid]="errorMessage('player2.phone')"
+                                    [attr.aria-invalid]="errorMessage('player2.phone') ? true : null"
+                                    [attr.aria-describedby]="errorMessage('player2.phone') ? 'phone_2-error' : null">
+                            </label>
+                            @if (errorMessage('player2.phone'); as msg) {
+                            <p class="field-error" id="phone_2-error">{{ msg }}</p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="choice-grid">
+                        <div>
+                            <p class="chip-caption">Catégorie <span class="required">*</span></p>
+                            <div class="chip-group" role="radiogroup" aria-label="Catégorie">
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player2.category')?.value === 'man'">
+                                    <input class="chip__input" type="radio" value="man" formControlName="category">
+                                    Homme
+                                </label>
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player2.category')?.value === 'woman'">
+                                    <input class="chip__input" type="radio" value="woman" formControlName="category">
+                                    Femme
+                                </label>
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player2.category')?.value === 'mixt'">
+                                    <input class="chip__input" type="radio" value="mixt" formControlName="category">
+                                    Mixte
+                                </label>
+                            </div>
+                            @if (errorMessage('player2.category'); as msg) {
+                            <p class="field-error">{{ msg }}</p>
+                            }
+                        </div>
+                        <div>
+                            <p class="chip-caption">Tenue d'intervention <span class="required">*</span></p>
+                            <div class="chip-group" role="radiogroup" aria-label="Tenue d'intervention">
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player2.outfit')?.value === 'yes'">
+                                    <input class="chip__input" type="radio" value="yes" formControlName="outfit">
+                                    Oui, j'ai ma tenue.
+                                </label>
+                                <label class="chip"
+                                    [class.chip--active]="form.get('player2.outfit')?.value === 'lend'">
+                                    <input class="chip__input" type="radio" value="lend" formControlName="outfit">
+                                    Oui, j'ai besoin qu'on m'en prête une.
+                                </label>
+                                <label class="chip" [class.chip--active]="form.get('player2.outfit')?.value === 'no'">
+                                    <input class="chip__input" type="radio" value="no" formControlName="outfit"> Non.
+                                </label>
+                            </div>
+                            @if (errorMessage('player2.outfit'); as msg) {
+                            <p class="field-error">{{ msg }}</p>
+                            }
+                        </div>
+                    </div>
+
+                    <label class="checkbox-row"
+                        [class.checkbox-row--checked]="!!form.get('player2.volunteer')?.value">
+                        <input type="checkbox" formControlName="volunteer">
+                        <span>Je voudrais être bénévole.</span>
+                    </label>
+                </div>
+            </section>
+
+            <div class="save-bar">
+                <button class="btn-primary" type="button" (click)="save()" [disabled]="isSaving || form.invalid">
+                    {{ isSaving ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+                </button>
+            </div>
+
+        </form>
+
     </div>
-
-    <form class="form" [formGroup]="form" *ngIf="!isLoading && !loadError && team">
-
-        <h1 class="row title">{{ team.name }}</h1>
-
-        <div class="row">
-            <span class="label">Statut de paiement</span>
-            <span class="team-badge paid" *ngIf="team.isPaid">✓ Payé</span>
-            <ng-container *ngIf="!team.isPaid">
-                <span class="team-badge unpaid">✗ Non payé — le paiement peut mettre 48h à s'actualiser</span>
-                <p class="payment-note">Si ce statut ne s'actualise pas après 48h, contacte un organisateur :
-                    <a [href]="'tel:' + organizerPhone.replace(' ', '')">{{ organizerPhone }}</a>
-                    ou
-                    <a [href]="'mailto:' + organizerEmail">{{ organizerEmail }}</a>.
-                </p>
-            </ng-container>
-        </div>
-
-        <div class="save-banner success" *ngIf="saveSuccess">Modifications enregistrées.</div>
-        <div class="save-banner error" *ngIf="saveError">{{ saveError }}</div>
-
-        <!-- Team info -->
-        <div formGroupName="team">
-            <h2 class="row title2">Équipe</h2>
-
-            <div class="row">
-                <label class="label" for="team_name">Nom d'équipe : <span class="required">*</span></label>
-                <input class="input" id="team_name" formControlName="team_name" required
-                    [class.input--invalid]="errorMessage('team.team_name')"
-                    [attr.aria-invalid]="errorMessage('team.team_name') ? true : null"
-                    [attr.aria-describedby]="errorMessage('team.team_name') ? 'team_name-error' : null">
-                @if (errorMessage('team.team_name'); as msg) {
-                <p class="field-error" id="team_name-error">{{ msg }}</p>
-                }
-            </div>
-
-            <fieldset>
-                <legend>Version <span class="required">*</span></legend>
-                <div class="radio-group">
-                    <label><input type="radio" value="short" formControlName="version"> Courte</label>
-                    <label><input type="radio" value="long" formControlName="version"> Longue</label>
-                </div>
-                @if (errorMessage('team.version'); as msg) {
-                <p class="field-error">{{ msg }}</p>
-                }
-            </fieldset>
-
-            <div class="form-group">
-                <label class="label" for="administration">Administration : <span class="required">*</span></label>
-                <select id="administration" formControlName="administration"
-                    [class.input--invalid]="errorMessage('team.administration')"
-                    [attr.aria-invalid]="errorMessage('team.administration') ? true : null"
-                    [attr.aria-describedby]="errorMessage('team.administration') ? 'administration-error' : null">
-                    <option value="">-- Choisir son administration --</option>
-                    <option value="none">Autre</option>
-                    <option value="gendarmerie">Gendarmerie</option>
-                    <option value="militaire">Militaire</option>
-                    <option value="penitancier">Pénitancier</option>
-                    <option value="municipale">Police Municipale</option>
-                    <option value="nationale">Police Nationale</option>
-                    <option value="pompier">Pompier</option>
-                </select>
-                @if (errorMessage('team.administration'); as msg) {
-                <p class="field-error" id="administration-error">{{ msg }}</p>
-                }
-            </div>
-        </div>
-
-        <!-- Player 1 -->
-        <div formGroupName="player1">
-            <h2 class="row title2">Participant 1</h2>
-
-            <div class="row">
-                <label class="label" for="name_1">Nom : <span class="required">*</span></label>
-                <input class="input" id="name_1" formControlName="name" required autocomplete="family-name"
-                    [class.input--invalid]="errorMessage('player1.name')"
-                    [attr.aria-invalid]="errorMessage('player1.name') ? true : null"
-                    [attr.aria-describedby]="errorMessage('player1.name') ? 'name_1-error' : null">
-                @if (errorMessage('player1.name'); as msg) {
-                <p class="field-error" id="name_1-error">{{ msg }}</p>
-                }
-            </div>
-            <div class="row">
-                <label class="label" for="firstname_1">Prénom : <span class="required">*</span></label>
-                <input class="input" id="firstname_1" formControlName="firstname" required autocomplete="given-name"
-                    [class.input--invalid]="errorMessage('player1.firstname')"
-                    [attr.aria-invalid]="errorMessage('player1.firstname') ? true : null"
-                    [attr.aria-describedby]="errorMessage('player1.firstname') ? 'firstname_1-error' : null">
-                @if (errorMessage('player1.firstname'); as msg) {
-                <p class="field-error" id="firstname_1-error">{{ msg }}</p>
-                }
-            </div>
-            <div class="row">
-                <label class="label" for="email_1">Mail : <span class="required">*</span></label>
-                <input class="input input--locked" id="email_1" type="email" formControlName="email" required
-                    readonly aria-describedby="email_1-hint">
-                <p class="field-hint" id="email_1-hint">Cet email est ton identifiant de connexion et ne peut pas
-                    être modifié ici. Contacte un organisateur pour le changer.</p>
-            </div>
-            <div class="row">
-                <label class="label" for="phone_1">Téléphone : <span class="required">*</span></label>
-                <input class="input" id="phone_1" type="tel" formControlName="phone" required autocomplete="tel"
-                    [class.input--invalid]="errorMessage('player1.phone')"
-                    [attr.aria-invalid]="errorMessage('player1.phone') ? true : null"
-                    [attr.aria-describedby]="errorMessage('player1.phone') ? 'phone_1-error' : null">
-                @if (errorMessage('player1.phone'); as msg) {
-                <p class="field-error" id="phone_1-error">{{ msg }}</p>
-                }
-            </div>
-
-            <fieldset>
-                <legend>Catégorie <span class="required">*</span></legend>
-                <div class="radio-group">
-                    <label><input type="radio" value="man" formControlName="category"> Homme</label>
-                    <label><input type="radio" value="woman" formControlName="category"> Femme</label>
-                    <label><input type="radio" value="mixt" formControlName="category"> Mixte</label>
-                </div>
-                @if (errorMessage('player1.category'); as msg) {
-                <p class="field-error">{{ msg }}</p>
-                }
-            </fieldset>
-
-            <fieldset>
-                <legend>Tenue d'intervention <span class="required">*</span></legend>
-                <div class="radio-group">
-                    <label><input type="radio" value="yes" formControlName="outfit"> Oui, j'ai ma tenue.</label>
-                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête
-                        une.</label>
-                    <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
-                </div>
-                @if (errorMessage('player1.outfit'); as msg) {
-                <p class="field-error">{{ msg }}</p>
-                }
-            </fieldset>
-
-            <div>
-                <label class="infoline">
-                    <input type="checkbox" formControlName="volunteer">
-                    Je voudrais être bénévole.
-                </label>
-            </div>
-        </div>
-
-        <!-- Player 2 -->
-        <div formGroupName="player2">
-            <h2 class="row title2">Participant 2</h2>
-
-            <div class="row">
-                <label class="label" for="name_2">Nom : <span class="required">*</span></label>
-                <input class="input" id="name_2" formControlName="name" required autocomplete="family-name"
-                    [class.input--invalid]="errorMessage('player2.name')"
-                    [attr.aria-invalid]="errorMessage('player2.name') ? true : null"
-                    [attr.aria-describedby]="errorMessage('player2.name') ? 'name_2-error' : null">
-                @if (errorMessage('player2.name'); as msg) {
-                <p class="field-error" id="name_2-error">{{ msg }}</p>
-                }
-            </div>
-            <div class="row">
-                <label class="label" for="firstname_2">Prénom : <span class="required">*</span></label>
-                <input class="input" id="firstname_2" formControlName="firstname" required autocomplete="given-name"
-                    [class.input--invalid]="errorMessage('player2.firstname')"
-                    [attr.aria-invalid]="errorMessage('player2.firstname') ? true : null"
-                    [attr.aria-describedby]="errorMessage('player2.firstname') ? 'firstname_2-error' : null">
-                @if (errorMessage('player2.firstname'); as msg) {
-                <p class="field-error" id="firstname_2-error">{{ msg }}</p>
-                }
-            </div>
-            <div class="row">
-                <label class="label" for="email_2">Mail : <span class="required">*</span></label>
-                <input class="input" id="email_2" type="email" formControlName="email" required autocomplete="email"
-                    [class.input--invalid]="errorMessage('player2.email')"
-                    [attr.aria-invalid]="errorMessage('player2.email') ? true : null"
-                    [attr.aria-describedby]="errorMessage('player2.email') ? 'email_2-error' : null">
-                @if (errorMessage('player2.email'); as msg) {
-                <p class="field-error" id="email_2-error">{{ msg }}</p>
-                }
-            </div>
-            <div class="row">
-                <label class="label" for="phone_2">Téléphone : <span class="required">*</span></label>
-                <input class="input" id="phone_2" type="tel" formControlName="phone" required autocomplete="tel"
-                    [class.input--invalid]="errorMessage('player2.phone')"
-                    [attr.aria-invalid]="errorMessage('player2.phone') ? true : null"
-                    [attr.aria-describedby]="errorMessage('player2.phone') ? 'phone_2-error' : null">
-                @if (errorMessage('player2.phone'); as msg) {
-                <p class="field-error" id="phone_2-error">{{ msg }}</p>
-                }
-            </div>
-
-            <fieldset>
-                <legend>Catégorie <span class="required">*</span></legend>
-                <div class="radio-group">
-                    <label><input type="radio" value="man" formControlName="category"> Homme</label>
-                    <label><input type="radio" value="woman" formControlName="category"> Femme</label>
-                    <label><input type="radio" value="mixt" formControlName="category"> Mixte</label>
-                </div>
-                @if (errorMessage('player2.category'); as msg) {
-                <p class="field-error">{{ msg }}</p>
-                }
-            </fieldset>
-
-            <fieldset>
-                <legend>Tenue d'intervention <span class="required">*</span></legend>
-                <div class="radio-group">
-                    <label><input type="radio" value="yes" formControlName="outfit"> Oui, j'ai ma tenue.</label>
-                    <label><input type="radio" value="lend" formControlName="outfit"> Oui, j'ai besoin qu'on m'en prête
-                        une.</label>
-                    <label><input type="radio" value="no" formControlName="outfit"> Non.</label>
-                </div>
-                @if (errorMessage('player2.outfit'); as msg) {
-                <p class="field-error">{{ msg }}</p>
-                }
-            </fieldset>
-
-            <div>
-                <label class="infoline">
-                    <input type="checkbox" formControlName="volunteer">
-                    Je voudrais être bénévole.
-                </label>
-            </div>
-        </div>
-
-        <button class="button" type="button" (click)="save()" [disabled]="isSaving || form.invalid">
-            {{ isSaving ? 'Enregistrement...' : 'Enregistrer les modifications' }}
-        </button>
-
-    </form>
 
 </div>

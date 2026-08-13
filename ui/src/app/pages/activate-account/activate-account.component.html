@@ -2,7 +2,7 @@
 
     <div class="login-card" *ngIf="!missingToken; else noToken">
         <div class="card-header">
-            <a class="logo-mark" routerLink="/" aria-label="Retour à l'accueil">SR</a>
+            <a class="logo-mark" routerLink="/" aria-label="Retour à l'accueil">54</a>
             <h1>Activer mon compte</h1>
             <p>Choisissez votre mot de passe pour accéder à votre équipe</p>
         </div>
@@ -50,7 +50,7 @@
     <ng-template #noToken>
         <div class="login-card">
             <div class="card-header">
-                <a class="logo-mark" routerLink="/" aria-label="Retour à l'accueil">SR</a>
+                <a class="logo-mark" routerLink="/" aria-label="Retour à l'accueil">54</a>
                 <h1>Lien invalide</h1>
                 <p>Ce lien d'activation est incomplet. Utilisez celui reçu par email, ou contactez un organisateur au
                     <a [href]="'tel:' + organizerPhone.replace(' ', '')">{{ organizerPhone }}</a>

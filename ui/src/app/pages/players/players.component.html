@@ -2,46 +2,46 @@
 
     <header class="top-bar">
         <div class="brand">
-            <span class="logo-mark">SR</span>
-            <span class="brand-name">Sports Reservation</span>
+            <span class="logo-mark">54</span>
+            <span class="brand-name">Administration</span>
         </div>
         <nav class="nav-links">
-            <button class="nav-btn" (click)="goToTeams()">Teams</button>
-            <button class="nav-btn active">Players</button>
+            <button class="nav-btn" (click)="goToTeams()">Équipes</button>
+            <button class="nav-btn active">Joueurs</button>
         </nav>
         <div class="user-area">
             <span class="username">{{ currentUser?.username }}</span>
-            <button class="logout-btn" (click)="authService.logout()">Sign out</button>
+            <button class="logout-btn" (click)="authService.logout()">Déconnexion</button>
         </div>
     </header>
 
     <main class="content">
         <div class="page-title">
-            <h1>Players</h1>
+            <h1>Joueurs</h1>
             <span class="count" *ngIf="!isLoading && !error">
                 {{ filtered.length }}<ng-container *ngIf="filtered.length !== players.length"> / {{ players.length
-                    }}</ng-container> players
+                    }}</ng-container> joueurs
             </span>
         </div>
 
         <!-- Toolbar -->
         <div class="toolbar" *ngIf="!isLoading && !error">
-            <input class="search-input" type="text" placeholder="Search name, team, or email…"
+            <input class="search-input" type="text" placeholder="Rechercher un nom, une équipe, un email…"
                 [ngModel]="searchQuery" (ngModelChange)="onSearchChange($event)" />
 
             <div class="filter-chips">
                 <button class="chip" [class.active]="volunteerFilter === 'all'"
-                    (click)="setVolunteerFilter('all')">All</button>
+                    (click)="setVolunteerFilter('all')">Tous</button>
                 <button class="chip" [class.active]="volunteerFilter === 'yes'"
-                    (click)="setVolunteerFilter('yes')">Volunteers</button>
+                    (click)="setVolunteerFilter('yes')">Bénévoles</button>
                 <button class="chip" [class.active]="volunteerFilter === 'no'"
-                    (click)="setVolunteerFilter('no')">Non-volunteers</button>
+                    (click)="setVolunteerFilter('no')">Non bénévoles</button>
             </div>
 
             <select class="category-select" [ngModel]="categoryFilter"
                 (ngModelChange)="setCategoryFilter($event)">
-                <option value="all">All categories</option>
-                <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+                <option value="all">Toutes les catégories</option>
+                <option *ngFor="let c of categories" [value]="c">{{ getCategoryLabel(c) }}</option>
             </select>
 
             <button class="export-btn" (click)="exportCsv()" [disabled]="filtered.length === 0"
@@ -61,7 +61,7 @@
 
         <!-- No results -->
         <div class="empty-state" *ngIf="!isLoading && !error && filtered.length === 0 && players.length > 0">
-            No players match your search or filters.
+            Aucun joueur ne correspond à votre recherche ou vos filtres.
         </div>
 
         <!-- Table -->
@@ -72,22 +72,17 @@
                         <th class="sortable" tabindex="0" role="columnheader"
                             [attr.aria-sort]="getAriaSort('lastName')" (click)="sort('lastName')"
                             (keydown)="onSortKeydown($event, 'lastName')">
-                            Name <span class="sort-icon">{{ getSortIcon('lastName') }}</span>
+                            Nom <span class="sort-icon">{{ getSortIcon('lastName') }}</span>
                         </th>
                         <th class="sortable" tabindex="0" role="columnheader"
                             [attr.aria-sort]="getAriaSort('teamName')" (click)="sort('teamName')"
                             (keydown)="onSortKeydown($event, 'teamName')">
-                            Team <span class="sort-icon">{{ getSortIcon('teamName') }}</span>
+                            Équipe <span class="sort-icon">{{ getSortIcon('teamName') }}</span>
                         </th>
                         <th class="sortable" tabindex="0" role="columnheader"
                             [attr.aria-sort]="getAriaSort('category')" (click)="sort('category')"
                             (keydown)="onSortKeydown($event, 'category')">
-                            Category <span class="sort-icon">{{ getSortIcon('category') }}</span>
-                        </th>
-                        <th class="sortable" tabindex="0" role="columnheader"
-                            [attr.aria-sort]="getAriaSort('outfit')" (click)="sort('outfit')"
-                            (keydown)="onSortKeydown($event, 'outfit')">
-                            Outfit <span class="sort-icon">{{ getSortIcon('outfit') }}</span>
+                            Catégorie <span class="sort-icon">{{ getSortIcon('category') }}</span>
                         </th>
                         <th class="sortable" tabindex="0" role="columnheader"
                             [attr.aria-sort]="getAriaSort('email')" (click)="sort('email')"
@@ -97,12 +92,12 @@
                         <th class="sortable" tabindex="0" role="columnheader"
                             [attr.aria-sort]="getAriaSort('phoneNumber')" (click)="sort('phoneNumber')"
                             (keydown)="onSortKeydown($event, 'phoneNumber')">
-                            Phone <span class="sort-icon">{{ getSortIcon('phoneNumber') }}</span>
+                            Téléphone <span class="sort-icon">{{ getSortIcon('phoneNumber') }}</span>
                         </th>
                         <th class="sortable" tabindex="0" role="columnheader"
                             [attr.aria-sort]="getAriaSort('volunteer')" (click)="sort('volunteer')"
                             (keydown)="onSortKeydown($event, 'volunteer')">
-                            Volunteer <span class="sort-icon">{{ getSortIcon('volunteer') }}</span>
+                            Bénévole <span class="sort-icon">{{ getSortIcon('volunteer') }}</span>
                         </th>
                     </tr>
                 </thead>
@@ -116,14 +111,13 @@
                                 [queryParams]="{ teamId: player.teamId }">{{ player.teamName }}</a>
                         </td>
                         <td>
-                            <span class="category-tag">{{ player.category }}</span>
+                            <span class="category-tag">{{ getCategoryLabel(player.category) }}</span>
                         </td>
-                        <td class="muted">{{ player.outfit }}</td>
                         <td class="muted">{{ player.email }}</td>
                         <td class="muted">{{ player.phoneNumber }}</td>
                         <td>
-                            <span class="volunteer-badge yes" *ngIf="player.volunteer">Yes</span>
-                            <span class="volunteer-badge no" *ngIf="!player.volunteer">No</span>
+                            <span class="volunteer-badge yes" *ngIf="player.volunteer">Oui</span>
+                            <span class="volunteer-badge no" *ngIf="!player.volunteer">Non</span>
                         </td>
                     </tr>
                 </tbody>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: "Lemon"; src: url("ui/public/fonts/Lemon/LEMONMILK-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+body { margin: 0; padding: 0; background-color: #000000; }
+a { color: #ffed00; }
+a:hover { color: #ffffff; }
+</style>
+</helmet>
+<section style="display:flex;flex-direction:column;justify-content:center;margin:auto;max-width:1440px;background-color:#000000">
+  <div style="position:relative;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-sizing:border-box;padding-top:1em;padding-bottom:1.5em;gap:1em;background-image:url('ui/public/images/gym-competitors-large.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;height:100%;width:100%">
+    <div style="text-align:center;background-color:#ffed00;color:#000000;border-radius:0.5rem;width:90%;max-width:900px;padding:1.5rem 1.25rem;box-sizing:border-box">
+      <h1 style="font-family:Lemon,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(2.25rem,6vw,4rem);line-height:1.05;letter-spacing:-0.02em;margin:0">Hyrox Police 54</h1>
+      <p style="font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1rem,2.5vw,1.25rem);font-weight:600;margin:0.5rem 0 0">Rendez-vous en Septembre</p>
+    </div>
+    <div style="margin:auto;box-sizing:border-box;min-width:clamp(300px,65vw,900px)">
+      <iframe src="https://www.youtube.com/embed/iu4gl2vs--s?si=6mpAoWmavWTZYGDb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen" style="width:100%;max-width:900px;aspect-ratio:16/9;border-radius:0.5em;border:0"></iframe>
+    </div>
+    <div style="margin:auto;margin-bottom:2rem;width:auto;justify-content:center">
+      <a href="#inscription" style="background-color:#ffed00;color:#000000;padding:20px 30px;border-radius:4rem;border:none;width:100%;font-size:clamp(1.25rem,3.5vw,2rem);font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">S'INSCRIRE EN DUO - 60€</a>
+    </div>
+    <div style="margin:auto;margin-bottom:2rem;margin-top:-1.5rem;width:auto;justify-content:center">
+      <a href="#login" style="background-color:#ffed00;color:#000000;padding:10px 20px;border-radius:4rem;border:none;width:100%;font-size:clamp(1rem,2.5vw,1.25rem);font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">Déjà inscrit ? Se connecter</a>
+    </div>
+    <button type="button" aria-label="Voir le format de la course" style="background:transparent;border:none;padding:8px;color:#ffed00;cursor:pointer;display:inline-flex;align-items:center;justify-content:center">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+  </div>
+
+  <div style="display:flex;flex-direction:column;background-color:#000000;padding:clamp(0.5rem,4vw,1rem)">
+    <div style="background-color:#000000;box-sizing:border-box;padding:0.5rem;margin:0.5rem 0;border-radius:0.5rem;color:whitesmoke;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;width:100%">
+      <p style="margin:0">Cette compétition est l'enchainement d'épreuves combinant course à pied et ateliers fonctionnels pour tester l'endurance, la force et la polyvalence des participants.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;background-color:#262626;border-radius:0.5rem">
+      <h2 style="font-family:Lemon,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);margin:0.5rem 0;width:90%;box-sizing:border-box;background-color:#ffed00;color:#000000;padding:0.5rem;border-radius:0.5rem;display:flex;justify-content:center">Format de la course</h2>
+      <p style="color:white;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1.125rem,3vw,1.5rem);padding:0.5rem;margin:0;display:flex;justify-content:center"><strong style="font-weight:bold">1 km RUN&nbsp;</strong>avant chaque épreuve</p>
+      <div style="box-sizing:border-box;background-color:#262626;width:100%;height:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));grid-template-rows:auto;gap:clamp(0.5rem,4vw,2rem);padding:clamp(0.5rem,4vw,2rem)">
+        <sc-for list="{{ stations }}" as="s" hint-placeholder-count="8">
+          <div style="position:relative;background:#262626;border-radius:0.5rem;padding:0.5rem;box-shadow:0 4px 10px rgba(0,0,0,0.3);width:100%;height:auto;box-sizing:border-box">
+            <p style="position:absolute;padding:0.5rem;background-color:#ffed00;color:#000000;font-family:Lemon,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1rem,2.5vw,1.25rem);z-index:2;margin:0">{{ s.number }}</p>
+            <img src="{{ s.image }}" alt="card image" style="width:100%;aspect-ratio:16/9;object-fit:cover;object-position:center;border-radius:0.5rem;box-shadow:0 4px 10px rgba(0,0,0,0.3);filter:grayscale(90%)" />
+            <p style="color:white;margin-top:12px;margin-bottom:0;font-size:clamp(1rem,2.5vw,1.25rem);font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif">{{ s.description }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;background-color:#262626;color:white;padding:1rem;margin:1rem;border-radius:0.5rem;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1rem,2.5vw,1.25rem)">
+    <h2 style="font-family:Lemon,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);margin:0.5rem 0">Partenaires</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;box-shadow:0 4px 10px rgba(0,0,0,0.3);align-items:center">
+      <sc-for list="{{ sponsors }}" as="p" hint-placeholder-count="12">
+        <img src="{{ p.src }}" alt="{{ p.alt }}" width="200" height="200" style="width:100%;height:auto;max-width:400px;max-height:400px;border-radius:0.5rem;object-fit:cover;object-position:center" />
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto;gap:1rem;background-color:#262626;color:white;padding:1rem;padding-bottom:5rem;margin:1rem;border-radius:0.5rem;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1rem,2.5vw,1.25rem)">
+    <h2 style="font-family:Lemon,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);margin:0.5rem 0;grid-column:span 2">Localisation</h2>
+    <div style="grid-column:span 2">
+      <div style="display:grid;grid-template-columns:1fr;grid-template-rows:auto;gap:1rem">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2634.3182811443658!2d6.15653287591105!3d48.68027911322506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4794a286a33495e1%3A0x8a255355455498eb!2sWell%20and%20Fit!5e0!3m2!1sfr!2sfr!4v1766829210050!5m2!1sfr!2sfr" title="Localisation Well &amp; Fit, 113 Bd Emile Zola, Laxou" style="border:0;min-width:100px;min-height:200px;width:100%;border-radius:0.5rem" allowfullscreen="allowfullscreen" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <p style="margin:0"><strong style="font-weight:bold">Well &amp; Fit</strong><br />113 Bd Emile Zola, 54520 Laxou</p>
+      </div>
+    </div>
+    <h2 style="font-family:Lemon,'Segoe UI',Roboto,Arial,sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);margin:0.5rem 0;grid-column:span 2">Contact</h2>
+    <p style="margin:0.5rem 0">Tel : 06 48 73 50 15</p>
+    <p style="margin:0.5rem 0">Mail: svenbarberat&#64;orange.fr</p>
+  </div>
+</section>
+
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;padding:0.6rem 1rem;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);border-top:1px solid rgba(255,237,0,0.2)">
+  <a href="#inscription" style="background-color:#ffed00;color:#000000;padding:10px 20px;border-radius:4rem;font-size:clamp(1rem,2.5vw,1.25rem);font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;font-weight:600;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">S'inscrire en duo - 60€</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      stations: [
+        { number: '01', image: 'ui/public/images/ski-erg.webp', description: '1000m SKI ERG' },
+        { number: '02', image: 'ui/public/images/sled-push.webp', description: '50m SLED PUSH' },
+        { number: '03', image: 'ui/public/images/sled-pull.webp', description: '50m SLED PULL' },
+        { number: '04', image: 'ui/public/images/burpees.webp', description: '80m BURPEES BROAD JUMP' },
+        { number: '05', image: 'ui/public/images/rameur.webp', description: '1000m ROWING' },
+        { number: '06', image: 'ui/public/images/farmeur.webp', description: '200m FARMERS CARRY' },
+        { number: '07', image: 'ui/public/images/fente.webp', description: '100m FENTES' },
+        { number: '08', image: 'ui/public/images/wall-ball.webp', description: '100x WALL BALLS' }
+      ],
+      sponsors: [
+        { src: 'ui/public/images/sponso-bfm.JPG', alt: 'sponso-bfm' },
+        { src: 'ui/public/images/sponso-cops13.JPEG', alt: 'sponso-cops13' },
+        { src: 'ui/public/images/sponso-crossfitlaxou.PNG', alt: 'sponso-crossfitlaxou' },
+        { src: 'ui/public/images/sponso-fitnesspark.JPG', alt: 'sponso-fitnesspark' },
+        { src: 'ui/public/images/sponso-fitnrack.JPEG', alt: 'sponso-fitnrack' },
+        { src: 'ui/public/images/sponso-intersport.PNG', alt: 'sponso-intersport' },
+        { src: 'ui/public/images/sponso-mgp.JPEG', alt: 'sponso-mgp' },
+        { src: 'ui/public/images/sponso-orpheopolis.JPEG', alt: 'sponso-orpheopolis' },
+        { src: 'ui/public/images/sponso-rw.PNG', alt: 'sponso-rw' },
+        { src: 'ui/public/images/sponso-wellfit.JPG', alt: 'sponso-wellfit' },
+        { src: 'ui/public/images/sponso-fspn.JPG', alt: 'sponso-fspn' },
+        { src: 'ui/public/images/sponso-policenationale.JPEG', alt: 'sponso-policenationale' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,5 +1,10 @@
-<div class="card">
-    <p class="number">{{number}}</p>
-    <img [src]="image" alt="card image">
-    <p class="description">{{ description }}</p>
-</div>
+<article class="card">
+    <div class="card__media">
+        <img [src]="image" [alt]="alt">
+        <span class="card__number">{{ number }}</span>
+    </div>
+    <div class="card__body">
+        <div class="card__name">{{ name }}</div>
+        <div class="card__metric">{{ metric }}</div>
+    </div>
+</article>

@@ -95,10 +95,26 @@ export class TeamsComponent implements OnInit {
         }
       },
       error: () => {
-        this.error = 'Failed to load teams.';
+        this.error = 'Impossible de charger les équipes.';
         this.isLoading = false;
       }
     });
+  }
+
+  get totalPlayers(): number {
+    return this.teams.reduce((sum, t) => sum + t.players.length, 0);
+  }
+
+  get paidCount(): number {
+    return this.teams.filter(t => t.isPaid).length;
+  }
+
+  getOutfitTagLabel(value: string): string | null {
+    const labels: Record<string, string> = {
+      yes: 'Tenue : oui',
+      lend: 'Tenue : à prêter',
+    };
+    return labels[value] ?? null;
   }
 
   openPanel(teamId: number): void {
@@ -119,7 +135,7 @@ export class TeamsComponent implements OnInit {
         this.isPanelLoading = false;
       },
       error: () => {
-        this.panelError = 'Failed to load team details.';
+        this.panelError = 'Impossible de charger les détails de l\'équipe.';
         this.isPanelLoading = false;
       }
     });
@@ -157,7 +173,7 @@ export class TeamsComponent implements OnInit {
         this.isDeleting = false;
       },
       error: () => {
-        this.deleteError = 'Failed to delete team. Please try again.';
+        this.deleteError = 'Échec de la suppression de l\'équipe. Réessayez.';
         this.isDeleting = false;
       }
     });

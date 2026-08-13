@@ -111,6 +111,19 @@ export class MyTeamComponent implements OnInit {
       next: () => {
         this.isSaving = false;
         this.saveSuccess = true;
+        // The PUT response doesn't echo back the updated team, and re-running
+        // loadTeam() would flip isLoading and hide the just-shown success
+        // banner — patch the fields this form actually owns instead, so the
+        // header title and version/administration pills stop showing stale
+        // pre-save values.
+        if (this.team) {
+          this.team = {
+            ...this.team,
+            name: teamVal.team_name!,
+            version: teamVal.version!,
+            administration: teamVal.administration!,
+          };
+        }
       },
       error: (err) => {
         this.isSaving = false;

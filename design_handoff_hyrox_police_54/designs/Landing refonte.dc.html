@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: "Lemon"; src: url("ui/public/fonts/Lemon/LEMONMILK-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Cabin"; src: url("ui/public/fonts/Cabin/Cabin-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+body { margin: 0; padding: 0; background-color: #000000; }
+a { color: #ffed00; }
+a:hover { color: #ffffff; }
+</style>
+</helmet>
+<div style="background:#000;color:#fff;font-family:Cabin,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:hidden">
+
+  <header style="position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem 2rem;padding:0.9rem clamp(1rem,4vw,3rem);background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.08)">
+    <a href="#top" style="display:flex;align-items:center;gap:0.7rem;text-decoration:none;margin-right:auto">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:#ffed00;color:#000;font-family:Lemon,sans-serif;font-size:0.95rem;border-radius:3px">54</span>
+      <span style="font-family:Lemon,sans-serif;font-size:0.8rem;letter-spacing:0.14em;color:#fff">HYROX POLICE 54</span>
+    </a>
+    <nav style="display:none;gap:1.6rem;align-items:center">
+      <a href="#format" style="font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none">Format</a>
+      <a href="#partenaires" style="font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none">Partenaires</a>
+      <a href="#infos" style="font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none">Infos</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:0.6rem">
+      <a href="#login" style="font-size:0.82rem;letter-spacing:0.08em;color:rgba(255,255,255,0.6);text-decoration:none;padding:0.55rem 0.9rem;border:1px solid rgba(255,255,255,0.15);border-radius:2px">Se connecter</a>
+      <a href="#inscription" style="font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#000;background:#ffed00;text-decoration:none;padding:0.6rem 1.1rem;border-radius:2px">S'inscrire — 60 €</a>
+    </div>
+  </header>
+
+  <section id="top" style="position:relative;min-height:min(88vh,860px);display:flex;flex-direction:column;justify-content:flex-end;background-image:linear-gradient(to bottom,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.35) 35%,rgba(0,0,0,0.92) 88%,#000 100%),url('ui/public/images/gym-competitors-large.jpg');background-size:cover;background-position:center 30%;padding:clamp(3rem,8vw,6rem) clamp(1rem,4vw,3rem) 0">
+    <div style="max-width:1240px;margin:0 auto;width:100%">
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.4rem">
+        <span style="width:34px;height:3px;background:#ffed00;display:block"></span>
+        <span style="font-size:0.8rem;letter-spacing:0.24em;text-transform:uppercase;color:#ffed00;font-weight:600">Septembre 2026 · Laxou (54)</span>
+      </div>
+      <h1 style="font-family:Lemon,sans-serif;font-size:clamp(2.8rem,9vw,7rem);line-height:0.92;letter-spacing:-0.02em;margin:0;text-transform:uppercase">Hyrox<br /><span style="color:#ffed00">Police 54</span></h1>
+      <p style="max-width:44ch;margin:1.4rem 0 0;font-size:clamp(1rem,1.6vw,1.2rem);line-height:1.55;color:rgba(255,255,255,0.72);text-wrap:pretty">Course à pied et ateliers fonctionnels, en duo. 8 épreuves, 8 kilomètres, une seule équipe. Réservé aux forces de l'ordre et personnels assimilés.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.9rem;margin:2.2rem 0 0">
+        <a href="#inscription" style="background:#ffed00;color:#000;font-weight:700;font-size:clamp(1rem,1.5vw,1.15rem);letter-spacing:0.04em;text-transform:uppercase;padding:1.05rem 2.2rem;border-radius:2px;text-decoration:none;display:inline-block">S'inscrire en duo — 60 €</a>
+        <a href="#format" style="border:1px solid rgba(255,255,255,0.25);color:#fff;font-weight:600;font-size:clamp(1rem,1.5vw,1.15rem);letter-spacing:0.04em;text-transform:uppercase;padding:1.05rem 2rem;border-radius:2px;text-decoration:none;display:inline-block">Voir le format</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:rgba(255,255,255,0.12);margin-top:clamp(2.5rem,6vw,4.5rem);border-top:1px solid rgba(255,255,255,0.12);border-bottom:1px solid rgba(255,255,255,0.12)">
+        <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+          <div style="background:#000;padding:1.3rem 1rem">
+            <div style="font-family:Lemon,sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);color:#ffed00;line-height:1">{{ st.value }}</div>
+            <div style="font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:0.5rem">{{ st.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1240px;margin:0 auto;padding:clamp(3rem,7vw,5.5rem) clamp(1rem,4vw,3rem)">
+    <div style="display:flex;align-items:baseline;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.6rem">
+      <h2 style="font-family:Lemon,sans-serif;font-size:clamp(1.5rem,3.5vw,2.4rem);margin:0;text-transform:uppercase;letter-spacing:-0.01em">L'événement en vidéo</h2>
+      <p style="margin:0;color:rgba(255,255,255,0.55);font-size:1rem;max-width:52ch;text-wrap:pretty">Le format, les épreuves et le déroulé de l'inscription, expliqués en quelques minutes.</p>
+    </div>
+    <div style="position:relative">
+      <div style="position:absolute;inset:14px -14px -14px 14px;border:2px solid #ffed00;border-radius:2px"></div>
+      <iframe src="https://www.youtube.com/embed/iu4gl2vs--s?si=6mpAoWmavWTZYGDb" title="Vidéo de présentation Hyrox Police 54" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen" style="position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:2px;background:#111"></iframe>
+    </div>
+  </section>
+
+  <div style="background:#ffed00;color:#000;padding:0.85rem 1rem;overflow:hidden;white-space:nowrap;text-align:center;font-family:Lemon,sans-serif;font-size:clamp(0.85rem,1.6vw,1.05rem);letter-spacing:0.18em;text-transform:uppercase">1 KM RUN · AVANT CHAQUE ÉPREUVE · 1 KM RUN · AVANT CHAQUE ÉPREUVE · 1 KM RUN</div>
+
+  <section id="format" style="max-width:1240px;margin:0 auto;padding:clamp(3rem,7vw,5.5rem) clamp(1rem,4vw,3rem)">
+    <div style="display:flex;align-items:baseline;gap:1.2rem;flex-wrap:wrap;margin-bottom:2.5rem">
+      <h2 style="font-family:Lemon,sans-serif;font-size:clamp(1.9rem,4.5vw,3.2rem);margin:0;text-transform:uppercase;letter-spacing:-0.01em">Format de la course</h2>
+      <span style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4)">8 ateliers · 8 km</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem">
+      <sc-for list="{{ stations }}" as="s" hint-placeholder-count="8">
+        <article style="position:relative;background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:2px;overflow:hidden">
+          <div style="position:relative">
+            <img src="{{ s.image }}" alt="{{ s.description }}" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center;filter:grayscale(100%) contrast(1.1) brightness(0.85)" />
+            <span style="position:absolute;top:0;left:0;background:#ffed00;color:#000;font-family:Lemon,sans-serif;font-size:1.05rem;padding:0.45rem 0.7rem;line-height:1">{{ s.number }}</span>
+          </div>
+          <div style="padding:1rem 1.1rem 1.2rem">
+            <div style="font-family:Lemon,sans-serif;font-size:1.05rem;letter-spacing:0.02em;text-transform:uppercase;line-height:1.25">{{ s.name }}</div>
+            <div style="font-size:0.8rem;letter-spacing:0.16em;text-transform:uppercase;color:#ffed00;margin-top:0.5rem">{{ s.metric }}</div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="partenaires" style="max-width:1240px;margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1rem,4vw,3rem)">
+    <div style="display:flex;align-items:baseline;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem">
+      <h2 style="font-family:Lemon,sans-serif;font-size:clamp(1.9rem,4.5vw,3.2rem);margin:0;text-transform:uppercase">Partenaires</h2>
+      <span style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Ils soutiennent l'événement</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1)">
+      <sc-for list="{{ sponsors }}" as="p" hint-placeholder-count="12">
+        <div style="background:#0a0a0a;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;padding:1rem">
+          <img src="{{ p.src }}" alt="{{ p.alt }}" style="max-width:100%;max-height:100%;object-fit:contain" />
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="infos" style="max-width:1240px;margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1rem,4vw,3rem) clamp(3rem,7vw,5rem)">
+    <h2 style="font-family:Lemon,sans-serif;font-size:clamp(1.9rem,4.5vw,3.2rem);margin:0 0 2rem;text-transform:uppercase">Infos pratiques</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem;align-items:stretch">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2634.3182811443658!2d6.15653287591105!3d48.68027911322506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4794a286a33495e1%3A0x8a255355455498eb!2sWell%20and%20Fit!5e0!3m2!1sfr!2sfr!4v1766829210050!5m2!1sfr!2sfr" title="Localisation Well &amp; Fit, 113 Bd Emile Zola, Laxou" allowfullscreen="allowfullscreen" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0;width:100%;min-height:340px;height:100%;border-radius:2px"></iframe>
+      <div style="display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1)">
+        <div style="background:#0a0a0a;padding:1.5rem">
+          <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Lieu</div>
+          <div style="font-family:Lemon,sans-serif;font-size:1.15rem;margin-top:0.6rem">Well &amp; Fit</div>
+          <div style="color:rgba(255,255,255,0.65);margin-top:0.3rem">113 Bd Emile Zola, 54520 Laxou</div>
+        </div>
+        <div style="background:#0a0a0a;padding:1.5rem">
+          <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Contact organisateur</div>
+          <div style="font-family:Lemon,sans-serif;font-size:1.15rem;margin-top:0.6rem">Sven Barberat</div>
+          <div style="display:flex;flex-direction:column;gap:0.3rem;margin-top:0.5rem">
+            <a href="tel:0648735015" style="color:#ffed00;text-decoration:none">06 48 73 50 15</a>
+            <a href="mailto:svenbarberat@orange.fr" style="color:#ffed00;text-decoration:none">svenbarberat&#64;orange.fr</a>
+          </div>
+        </div>
+        <div style="background:#0a0a0a;padding:1.5rem;flex:1">
+          <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Inscription</div>
+          <div style="color:rgba(255,255,255,0.65);margin-top:0.6rem;line-height:1.55">60 € par équipe de 2. Paiement en ligne à la fin du formulaire, puis activation du compte par email.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="inscription" style="background:#ffed00;color:#000;padding:clamp(3rem,7vw,5rem) clamp(1rem,4vw,3rem)">
+    <div style="max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2rem">
+      <div>
+        <h2 style="font-family:Lemon,sans-serif;font-size:clamp(2rem,5vw,3.6rem);margin:0;text-transform:uppercase;line-height:1">Trouve ton binôme.<br />Inscris ton équipe.</h2>
+        <p style="margin:1rem 0 0;font-weight:600;font-size:1.05rem">Places limitées · 60 € par duo · Septembre 2026</p>
+      </div>
+      <a href="#form" style="background:#000;color:#ffed00;font-weight:700;font-size:clamp(1rem,1.6vw,1.2rem);letter-spacing:0.06em;text-transform:uppercase;padding:1.2rem 2.4rem;border-radius:2px;text-decoration:none;white-space:nowrap">S'inscrire en duo</a>
+    </div>
+  </section>
+
+  <footer style="padding:2rem clamp(1rem,4vw,3rem);border-top:1px solid rgba(255,255,255,0.08)">
+    <div style="max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+      <span>Hyrox Police 54 — organisé au profit d'Orphéopolis</span>
+      <span>Well &amp; Fit, Laxou · 06 48 73 50 15</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;price&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;60 €&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    return {
+      stats: [
+        { value: '8', label: 'Ateliers' },
+        { value: '8 km', label: 'De course' },
+        { value: '2', label: 'Équipiers' },
+        { value: p.price ?? '60 €', label: 'Par duo' }
+      ],
+      stations: [
+        { number: '01', image: 'ui/public/images/ski-erg.webp', name: 'Ski Erg', metric: '1000 m', description: 'Ski Erg' },
+        { number: '02', image: 'ui/public/images/sled-push.webp', name: 'Sled Push', metric: '50 m', description: 'Sled Push' },
+        { number: '03', image: 'ui/public/images/sled-pull.webp', name: 'Sled Pull', metric: '50 m', description: 'Sled Pull' },
+        { number: '04', image: 'ui/public/images/burpees.webp', name: 'Burpees Broad Jump', metric: '80 m', description: 'Burpees Broad Jump' },
+        { number: '05', image: 'ui/public/images/rameur.webp', name: 'Rowing', metric: '1000 m', description: 'Rowing' },
+        { number: '06', image: 'ui/public/images/farmeur.webp', name: 'Farmers Carry', metric: '200 m', description: 'Farmers Carry' },
+        { number: '07', image: 'ui/public/images/fente.webp', name: 'Fentes', metric: '100 m', description: 'Fentes' },
+        { number: '08', image: 'ui/public/images/wall-ball.webp', name: 'Wall Balls', metric: '100 x', description: 'Wall Balls' }
+      ],
+      sponsors: [
+        { src: 'ui/public/images/sponso-policenationale.JPEG', alt: 'Police Nationale' },
+        { src: 'ui/public/images/sponso-orpheopolis.JPEG', alt: 'Orphéopolis' },
+        { src: 'ui/public/images/sponso-fspn.JPG', alt: 'FSPN' },
+        { src: 'ui/public/images/sponso-wellfit.JPG', alt: 'Well & Fit' },
+        { src: 'ui/public/images/sponso-crossfitlaxou.PNG', alt: 'CrossFit Laxou' },
+        { src: 'ui/public/images/sponso-fitnesspark.JPG', alt: 'Fitness Park' },
+        { src: 'ui/public/images/sponso-fitnrack.JPEG', alt: 'Fitnrack' },
+        { src: 'ui/public/images/sponso-intersport.PNG', alt: 'Intersport' },
+        { src: 'ui/public/images/sponso-mgp.JPEG', alt: 'MGP' },
+        { src: 'ui/public/images/sponso-bfm.JPG', alt: 'BFM' },
+        { src: 'ui/public/images/sponso-cops13.JPEG', alt: 'Cops13' },
+        { src: 'ui/public/images/sponso-rw.PNG', alt: 'RW' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -19,7 +19,7 @@ interface Player {
   teamName: string;
 }
 
-type SortField = 'lastName' | 'email' | 'phoneNumber' | 'category' | 'outfit' | 'volunteer' | 'teamName';
+type SortField = 'lastName' | 'email' | 'phoneNumber' | 'category' | 'volunteer' | 'teamName';
 type SortDir = 'asc' | 'desc';
 type VolunteerFilter = 'all' | 'yes' | 'no';
 
@@ -61,7 +61,7 @@ export class PlayersComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        this.error = 'Failed to load players.';
+        this.error = 'Impossible de charger les joueurs.';
         this.isLoading = false;
       }
     });
@@ -69,6 +69,15 @@ export class PlayersComponent implements OnInit {
 
   get categories(): string[] {
     return Array.from(new Set(this.players.map(p => p.category))).sort();
+  }
+
+  getCategoryLabel(value: string): string {
+    const labels: Record<string, string> = {
+      man: 'Homme',
+      woman: 'Femme',
+      mixt: 'Mixte'
+    };
+    return labels[value] ?? value;
   }
 
   onSearchChange(value: string): void {
