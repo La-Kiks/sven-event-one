@@ -30,8 +30,9 @@ $top-bar-height: 4.5rem;
   position: relative;
   z-index: 40; // stays above the slide-in panel/backdrop as a safety margin
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 2rem;
+  gap: 0.8rem 2rem;
   min-height: $top-bar-height;
   box-sizing: border-box;
   padding: 1.2rem 2.5rem;
