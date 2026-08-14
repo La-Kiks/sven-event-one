@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-14T13:15:00Z",
+  "title": "Design System: Hyrox Police 54",
+  "extensions": {
+    "colorMeta": {
+      "hazard-yellow": {
+        "role": "primary",
+        "displayName": "Hazard Yellow",
+        "canonical": "#ffed00",
+        "tonalRamp": ["#332f00", "#4d4700", "#665f00", "#998f00", "#ccbe00", "#ffed00", "#fff466", "#fffab3"]
+      },
+      "void-black": {
+        "role": "neutral",
+        "displayName": "Void Black",
+        "canonical": "#000000",
+        "tonalRamp": ["#000000", "#0a0a0a", "#141414", "#1f1f1f", "#404040", "#737373", "#a6a6a6", "#e6e6e6"]
+      },
+      "surface-raised": { "role": "neutral", "displayName": "Raised Surface", "canonical": "#0a0a0a" },
+      "surface-card": { "role": "neutral", "displayName": "Card Surface", "canonical": "#111111" },
+      "field-bg": { "role": "neutral", "displayName": "Field Surface", "canonical": "#141414" },
+      "field-bg-locked": { "role": "neutral", "displayName": "Locked Field Surface", "canonical": "#1c1c1c" },
+      "border-hairline": { "role": "neutral", "displayName": "Hairline Border", "canonical": "rgba(255, 255, 255, 0.1)" },
+      "border-field": { "role": "neutral", "displayName": "Field Border", "canonical": "rgba(255, 255, 255, 0.14)" },
+      "text-primary": { "role": "neutral", "displayName": "Primary Text", "canonical": "#ffffff" },
+      "text-secondary": { "role": "neutral", "displayName": "Secondary Text", "canonical": "rgba(255, 255, 255, 0.55)" },
+      "text-tertiary": { "role": "neutral", "displayName": "Tertiary Text", "canonical": "rgba(255, 255, 255, 0.4)" },
+      "success": { "role": "tertiary", "displayName": "Success Green", "canonical": "#4ade80" },
+      "error": { "role": "tertiary", "displayName": "Alert Red", "canonical": "#ff6b6b" },
+      "danger": { "role": "tertiary", "displayName": "Danger Red", "canonical": "#f87171" },
+      "category-man": { "role": "secondary", "displayName": "Category Blue", "canonical": "#93c5fd" },
+      "category-woman": { "role": "secondary", "displayName": "Category Pink", "canonical": "#f9a8d4" },
+      "category-mixed": { "role": "secondary", "displayName": "Category Purple", "canonical": "#d8b4fe" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Landing hero H1 only." },
+      "headline": { "displayName": "Headline", "purpose": "Page-level H1 on form/admin/mon-équipe screens." },
+      "label": { "displayName": "Label", "purpose": "Eyebrows, field captions, table headers, badge text — always uppercase." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs and field values, Cabin only." },
+      "caption": { "displayName": "Caption", "purpose": "Small tracked meta text (dates, phone/email footers)." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-standard", "value": "0.15s ease", "purpose": "Default state transition (hover/focus/active color and border shifts)." },
+      { "name": "ease-panel", "value": "0.3s cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Admin detail panel slide-in — the one place the system uses transform." }
+    ],
+    "breakpoints": [
+      { "name": "mobile-wrap", "value": "860px" },
+      { "name": "landing-nav", "value": "900px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main CTA — yellow fill, black uppercase bold text.",
+      "html": "<button class=\"ds-btn-primary\">S'INSCRIRE EN DUO</button>",
+      "css": ".ds-btn-primary { background-color: #ffed00; color: #000; padding: 1.05rem 2.2rem; border-radius: 2px; border: none; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: filter 0.15s ease; } .ds-btn-primary:hover { filter: brightness(1.1); } .ds-btn-primary:focus-visible { outline: 2px solid #ffed00; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action — transparent, bordered, sentence case.",
+      "html": "<button class=\"ds-btn-ghost\">Retour</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); padding: 0.55rem 0.9rem; border-radius: 2px; font-size: 0.82rem; letter-spacing: 0.08em; cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease; } .ds-btn-ghost:hover { border-color: #ffed00; color: #fff; } .ds-btn-ghost:focus-visible { outline: 2px solid #ffed00; outline-offset: 2px; }"
+    },
+    {
+      "name": "Chip (active/inactive toggle)",
+      "kind": "chip",
+      "refersTo": "chip-active",
+      "description": "Replaces native radio buttons for category/tenue/version selection.",
+      "html": "<div class=\"ds-chip-group\"><button class=\"ds-chip ds-chip--active\">Homme</button><button class=\"ds-chip\">Femme</button><button class=\"ds-chip\">Mixte</button></div>",
+      "css": ".ds-chip-group { display: flex; flex-wrap: wrap; gap: 0.6rem; } .ds-chip { background: transparent; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.18); font-weight: 500; font-size: 0.92rem; padding: 0.7rem 1.1rem; border-radius: 2px; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease; } .ds-chip--active, .ds-chip:active { background: #ffed00; color: #000; font-weight: 700; border-color: #ffed00; } .ds-chip:focus-visible { outline: 2px solid #ffed00; outline-offset: 2px; }"
+    },
+    {
+      "name": "Card / Format Tile",
+      "kind": "card",
+      "refersTo": "card-primary",
+      "description": "Imagery-bearing tile with a numbered pastille, used on the landing format grid.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card__number\">01</div><div class=\"ds-card__body\"><div class=\"ds-card__name\">Ski Erg</div><div class=\"ds-card__metric\">1000 M</div></div></div>",
+      "css": ".ds-card { position: relative; background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; } .ds-card__number { position: absolute; top: 0; left: 0; background: #ffed00; color: #000; font-size: 1.05rem; padding: 0.45rem 0.7rem; line-height: 1; } .ds-card__body { padding: 1rem 1.1rem 1.2rem; } .ds-card__name { font-size: 1.05rem; letter-spacing: 0.02em; text-transform: uppercase; color: #fff; } .ds-card__metric { font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: #ffed00; margin-top: 0.5rem; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "field-bg",
+      "description": "Form field with focus/error states.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field__label\">Email <span class=\"ds-field__required\">*</span></label><input class=\"ds-field__input\" placeholder=\"Entrez votre email\"></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 0.45rem; font-family: sans-serif; } .ds-field__label { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); } .ds-field__required { color: #ffed00; } .ds-field__input { background: #141414; border: 1px solid rgba(255,255,255,0.14); border-radius: 2px; color: #fff; font-size: 1rem; padding: 0.8rem 0.9rem; } .ds-field__input:focus { outline: none; border-color: #ffed00; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "custom",
+      "refersTo": "status-badge",
+      "description": "Payment/account/category status tag — tinted background, matching border, full-strength text.",
+      "html": "<span class=\"ds-badge ds-badge--paid\">✓ Payé</span> <span class=\"ds-badge ds-badge--unpaid\">✗ Non payé</span>",
+      "css": ".ds-badge { display: inline-block; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; } .ds-badge--paid { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); } .ds-badge--unpaid { background: rgba(255,107,107,0.1); color: #ff6b6b; border: 1px solid rgba(255,107,107,0.25); }"
+    },
+    {
+      "name": "Admin Header Nav",
+      "kind": "nav",
+      "refersTo": "admin-top-bar",
+      "description": "Wraps on mobile (flex-wrap: wrap) so the sign-out control never gets clipped off-screen.",
+      "html": "<header class=\"ds-topbar\"><div class=\"ds-topbar__brand\"><span class=\"ds-topbar__mark\">54</span><span class=\"ds-topbar__name\">ADMINISTRATION</span></div><nav class=\"ds-topbar__nav\"><button class=\"ds-topbar__tab ds-topbar__tab--active\">Équipes</button><button class=\"ds-topbar__tab\">Joueurs</button></nav><div class=\"ds-topbar__user\"><span>admin</span><button class=\"ds-btn-ghost\">Déconnexion</button></div></header>",
+      "css": ".ds-topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 2rem; padding: 1.2rem 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.07); background: #000; } .ds-topbar__brand { display: flex; align-items: center; gap: 0.75rem; margin-right: auto; } .ds-topbar__mark { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #ffed00; color: #000; border-radius: 3px; font-weight: 700; } .ds-topbar__name { font-size: 0.78rem; letter-spacing: 0.14em; color: rgba(255,255,255,0.6); text-transform: uppercase; } .ds-topbar__nav { display: flex; gap: 0.3rem; } .ds-topbar__tab { background: transparent; border: 1px solid transparent; color: rgba(255,255,255,0.4); padding: 0.4rem 1rem; border-radius: 2px; font-size: 0.85rem; cursor: pointer; } .ds-topbar__tab--active { color: #fff; border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); } .ds-topbar__user { display: flex; align-items: center; gap: 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.4); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tactical Briefing",
+    "overview": "The system reads like a mission briefing board: a void-black ground, hazard-yellow highlight ink, everything squared off and legible at a glance. Nothing floats, nothing softens the edges — surfaces are stamped, not lifted, and the yellow is rationed so that when it appears (a CTA, a key stat, an active state) it reads as a directive, not decoration.\n\nThis is a deliberate rejection of the product's previous look, which used soft ~0.5rem rounded corners throughout. The redesign squares that off to a near-universal 2px radius as a statement of precision and seriousness, fitting an event organized by and for law-enforcement personnel in support of a police-officer charity (Orphéopolis). Disciplined and angular over friendly and soft.",
+    "keyCharacteristics": [
+      "Void-black ground with hazard-yellow used sparingly, never as a background fill for large areas",
+      "Near-universal 2px corner radius — angular by design, not an oversight",
+      "Flat throughout — depth comes from hairline borders and background-tier steps, never shadows",
+      "All-caps Lemon Milk display type paired with restrained, lowercase Cabin body copy",
+      "Grids separated by 1px hairlines rather than gaps (the \"filet\" pattern): the seam is the background showing through, not a border"
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Hazard Yellow never fills a large area — no yellow section backgrounds except the two full-bleed CTA bandeaux on the landing page, which are the intentional exception that proves the rule (maximum-urgency moments only). Everywhere else it's ink on black: text, borders, small fills.", "section": "colors" },
+      { "name": "The Uppercase-Only Rule", "body": "Lemon Milk never appears in sentence case or lowercase — if it's Lemon Milk, it's uppercase with tracking. Cabin never appears in all-caps for running text.", "section": "typography" },
+      { "name": "The Filet Rule", "body": "Grids that present a set of like items (key stats, status tiles, partner logos) use gap: 1px on a hairline-colored background with opaque children — the 1px seam is the page background showing through the gap, not a drawn border.", "section": "layout" },
+      { "name": "The No-Lift Rule", "body": "Interactive elements communicate state through color and border-color shifts — never through transform, shadow, or scale. The one scripted exception is the admin detail panel's slide-in translateX, which is navigational motion, not a hover/lift effect.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the 2px radius universal; a new component that needs to feel \"part of the system\" gets 2px, not 4px or 8px, and not 0.",
+      "Do wrap every flex header (flex-wrap: wrap) — this system has no secondary breakpoint bailout, so an un-wrapped header is a broken header on mobile, not a rare edge case.",
+      "Do use the filet grid pattern for any new set of like items — stat rows, tile grids, comparison rows.",
+      "Do ration Hazard Yellow: one dominant yellow element per screen, not several competing for attention.",
+      "Do pair a Lemon Milk uppercase label with Cabin body text in every new component; never introduce a third typeface."
+    ],
+    "donts": [
+      "Don't add box-shadows, glows, or transform-scale/lift-on-hover anywhere — depth is tonal and bordered, not physical.",
+      "Don't fill a large surface area with Hazard Yellow outside the two landing CTA bandeaux.",
+      "Don't revert to rounded corners (0.5rem or larger) anywhere — that's the explicitly rejected previous identity.",
+      "Don't style a new status/category value without the badge pattern (tinted bg + matching border + full-strength text).",
+      "Don't introduce a second breakpoint below 860px as a fallback for a layout that should have wrapped or stacked instead."
+    ]
+  }
+}

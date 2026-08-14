@@ -127,7 +127,19 @@ export class InscriptionFormComponent implements OnInit, OnDestroy {
       this.goToStep(this.currentStep + 1);
     } else {
       stepGroup?.markAllAsTouched();
+      this.scrollToFirstInvalid();
     }
+  }
+
+  private scrollToFirstInvalid(): void {
+    // Wait a tick so the @if-driven error messages/invalid classes have rendered.
+    setTimeout(() => {
+      const target = document.querySelector<HTMLElement>(
+        '.form-card .field__input--invalid, .form-card .field-error'
+      );
+      target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target?.focus?.();
+    });
   }
 
   prev() {

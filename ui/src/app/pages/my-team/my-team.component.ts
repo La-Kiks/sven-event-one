@@ -78,6 +78,7 @@ export class MyTeamComponent implements OnInit {
   save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.scrollToFirstInvalid();
       return;
     }
 
@@ -129,6 +130,16 @@ export class MyTeamComponent implements OnInit {
         this.isSaving = false;
         this.saveError = err.error?.error ?? "Une erreur est survenue lors de l'enregistrement. Réessayez.";
       }
+    });
+  }
+
+  private scrollToFirstInvalid(): void {
+    setTimeout(() => {
+      const target = document.querySelector<HTMLElement>(
+        'form .field__input--invalid, form .field-error'
+      );
+      target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target?.focus?.();
     });
   }
 

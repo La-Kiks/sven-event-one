@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
 import { ButtonComponent } from '../../components/ui/button/button.component';
 import { CardComponent } from '../../components/ui/card/card.component';
-import { TeamCountService } from '../../services/team-count.service'; // ← adjust path if needed
+import { TeamCount, TeamCountService } from '../../services/team-count.service'; // ← adjust path if needed
 
 @Component({
   selector: 'app-landing',
-  imports: [ButtonComponent, CardComponent],
+  imports: [NgIf, ButtonComponent, CardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
@@ -13,6 +14,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   isRegistrationFull = false;
   countLoadError = false;
   hasScrolledPastHero = false;
+  teamCount: TeamCount | null = null;
 
   @ViewChild('hero') private heroRef?: ElementRef<HTMLElement>;
   private heroObserver?: IntersectionObserver;
@@ -21,7 +23,10 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.teamCountService.getCount().subscribe({
-      next: (data) => this.isRegistrationFull = data.isFull,
+      next: (data) => {
+        this.isRegistrationFull = data.isFull;
+        this.teamCount = data;
+      },
       // Fail closed (never oversell) on a network/API error, but track it
       // separately from a genuine sellout so the CTA copy doesn't falsely
       // tell every visitor during an outage that registration is closed.

@@ -298,6 +298,10 @@ select.field__input {
   margin: 0.35em 0 0;
 }
 
+.step-error {
+  margin-top: 1.5rem;
+}
+
 // Chips (radio groups)
 // ------------------------------------------------------------------
 
@@ -448,7 +452,7 @@ select.field__input {
 
 .review-card__body {
   display: grid;
-  grid-template-columns: minmax(110px, auto) 1fr;
+  grid-template-columns: minmax(110px, auto) minmax(0, 1fr);
   gap: 0.6rem 1.5rem;
   margin: 0;
   padding: 1.1rem;
@@ -463,6 +467,7 @@ select.field__input {
   dd {
     margin: 0;
     color: rgba(255, 255, 255, 0.85);
+    overflow-wrap: break-word;
   }
 }
 

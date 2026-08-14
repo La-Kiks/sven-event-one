@@ -30,6 +30,7 @@
                 fullLink="#infos"></app-button>
             <a href="#format" class="btn-outline">Voir le format</a>
         </div>
+        <p class="hero__trust">Organisé par des policiers · Au profit d'<strong>Orphéopolis</strong></p>
         <div class="hero__stats">
             <div class="hero__stat">
                 <div class="hero__stat-value">8</div>
@@ -46,6 +47,10 @@
             <div class="hero__stat">
                 <div class="hero__stat-value">60&nbsp;€</div>
                 <div class="hero__stat-label">Par duo</div>
+            </div>
+            <div class="hero__stat" *ngIf="teamCount && !countLoadError">
+                <div class="hero__stat-value">{{ teamCount.current }}/{{ teamCount.max }}</div>
+                <div class="hero__stat-label">Équipes inscrites</div>
             </div>
         </div>
     </div>

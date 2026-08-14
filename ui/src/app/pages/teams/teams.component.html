@@ -85,16 +85,24 @@
             <table class="teams-table">
                 <thead>
                     <tr>
-                        <th class="sortable" (click)="sort('name')">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('name')" (click)="sort('name')"
+                            (keydown)="onSortKeydown($event, 'name')">
                             Équipe <span class="sort-icon">{{ getSortIcon('name') }}</span>
                         </th>
-                        <th class="sortable" (click)="sort('category')">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('category')" (click)="sort('category')"
+                            (keydown)="onSortKeydown($event, 'category')">
                             Catégorie <span class="sort-icon">{{ getSortIcon('category') }}</span>
                         </th>
-                        <th class="sortable" (click)="sort('version')">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('version')" (click)="sort('version')"
+                            (keydown)="onSortKeydown($event, 'version')">
                             Version <span class="sort-icon">{{ getSortIcon('version') }}</span>
                         </th>
-                        <th class="sortable" (click)="sort('administration')">
+                        <th class="sortable" tabindex="0" role="columnheader"
+                            [attr.aria-sort]="getAriaSort('administration')" (click)="sort('administration')"
+                            (keydown)="onSortKeydown($event, 'administration')">
                             Administration <span class="sort-icon">{{ getSortIcon('administration') }}</span>
                         </th>
                         <th>Paiement</th>

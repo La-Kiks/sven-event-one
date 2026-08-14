@@ -153,12 +153,12 @@
                             participants le jour J.</span>
                     </label>
 
+                    @if (form.get('step1')?.touched && form.get('step1')?.invalid) {
+                    <p class="field-error step-error">Complète les champs manquants ci-dessus avant de continuer.</p>
+                    }
                     <div class="action-bar">
                         <button class="btn-primary" type="button" (click)="next()">Continuer</button>
                     </div>
-                    @if (form.get('step1')?.touched && form.get('step1')?.invalid) {
-                    <p class="field-error">Complète les champs manquants ci-dessus avant de continuer.</p>
-                    }
                 </div>
                 }
 
@@ -265,13 +265,13 @@
                             participants le jour J.</span>
                     </label>
 
+                    @if (form.get('step2')?.touched && form.get('step2')?.invalid) {
+                    <p class="field-error step-error">Complète les champs manquants ci-dessus avant de continuer.</p>
+                    }
                     <div class="action-bar">
                         <button class="btn-back" type="button" (click)="prev()">Retour</button>
                         <button class="btn-primary" type="button" (click)="next()">Continuer</button>
                     </div>
-                    @if (form.get('step2')?.touched && form.get('step2')?.invalid) {
-                    <p class="field-error">Complète les champs manquants ci-dessus avant de continuer.</p>
-                    }
                 </div>
                 }
 
@@ -340,13 +340,13 @@
                     <p class="field-error" id="subscribe-error">{{ msg }}</p>
                     }
 
+                    @if (form.get('step3')?.touched && form.get('step3')?.invalid) {
+                    <p class="field-error step-error">Complète les champs manquants ci-dessus avant de continuer.</p>
+                    }
                     <div class="action-bar">
                         <button class="btn-back" type="button" (click)="prev()">Retour</button>
                         <button class="btn-primary" type="button" (click)="next()">Continuer</button>
                     </div>
-                    @if (form.get('step3')?.touched && form.get('step3')?.invalid) {
-                    <p class="field-error">Complète les champs manquants ci-dessus avant de continuer.</p>
-                    }
                 </div>
                 }
 
@@ -408,8 +408,10 @@
                         </dl>
                     </section>
 
-                    <p class="review-warning">En confirmant, vous serez redirigé(e) vers notre billetterie partenaire
-                        pour régler les 60€ de l'inscription.</p>
+                    <p class="review-warning">En confirmant, vous serez redirigé(e) vers <strong>Yurplan</strong>,
+                        notre billetterie partenaire, pour régler les 60€ de l'inscription. Votre équipe est déjà
+                        enregistrée à cette étape : si le paiement n'aboutit pas, contactez Sven (06 48 73 50 15) et
+                        nous régulariserons ensemble.</p>
 
                     <div class="action-bar">
                         <button class="btn-back" type="button" (click)="prev()" [disabled]="isSubmitting">Retour</button>

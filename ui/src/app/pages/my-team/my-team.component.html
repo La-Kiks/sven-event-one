@@ -61,9 +61,6 @@
                 </div>
             </div>
 
-            <div class="save-banner save-banner--success" *ngIf="saveSuccess">Modifications enregistrées.</div>
-            <div class="save-banner save-banner--error" *ngIf="saveError">{{ saveError }}</div>
-
             <!-- Team info -->
             <section class="card" formGroupName="team">
                 <div class="card__head">
@@ -356,7 +353,12 @@
             </section>
 
             <div class="save-bar">
-                <button class="btn-primary" type="button" (click)="save()" [disabled]="isSaving || form.invalid">
+                <div class="save-banner save-banner--success" *ngIf="saveSuccess">Modifications enregistrées.</div>
+                <div class="save-banner save-banner--error" *ngIf="saveError">{{ saveError }}</div>
+                <div class="save-banner save-banner--error" *ngIf="form.invalid && form.touched">
+                    Des champs sont incomplets ou invalides ci-dessus.
+                </div>
+                <button class="btn-primary" type="button" (click)="save()" [disabled]="isSaving">
                     {{ isSaving ? 'Enregistrement...' : 'Enregistrer les modifications' }}
                 </button>
             </div>

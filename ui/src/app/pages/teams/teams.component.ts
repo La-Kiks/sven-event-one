@@ -223,6 +223,18 @@ export class TeamsComponent implements OnInit {
     return this.sortDir === 'asc' ? '↑' : '↓';
   }
 
+  onSortKeydown(event: KeyboardEvent, field: 'name' | 'version' | 'administration' | 'category'): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.sort(field);
+    }
+  }
+
+  getAriaSort(field: 'name' | 'version' | 'administration' | 'category'): 'ascending' | 'descending' | 'none' {
+    if (this.sortField !== field) return 'none';
+    return this.sortDir === 'asc' ? 'ascending' : 'descending';
+  }
+
   requestPaymentToggle(): void {
     this.pendingPaymentConfirm = true;
     this.paymentError = '';
