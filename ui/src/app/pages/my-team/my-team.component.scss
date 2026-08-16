@@ -375,7 +375,7 @@ select.field__input {
 .field-hint {
   margin: 0.5rem 0 0;
   font-size: 0.8rem;
-  color: $text-tertiary;
+  color: $text-secondary;
   line-height: 1.5;
 }
 
@@ -400,6 +400,8 @@ select.field__input {
   position: relative;
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
+  box-sizing: border-box;
   background: transparent;
   color: rgba(255, 255, 255, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -493,6 +495,32 @@ select.field__input {
   .save-banner {
     flex-basis: 100%;
     margin-bottom: 0;
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.6);
+  font-family: $font-body;
+  font-size: 0.85rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: $radius;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $main-color;
+    color: #fff;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
   }
 }
 

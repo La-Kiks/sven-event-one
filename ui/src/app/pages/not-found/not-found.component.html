@@ -1,11 +1,14 @@
 <div class="not-found">
-    <div class="content">
-        <span class="code">404</span>
+    <div class="content-card">
+        <a class="logo-mark" routerLink="/" aria-label="Retour à l'accueil">54</a>
+        <span class="code" aria-hidden="true">404</span>
         <h1>Page introuvable</h1>
         <p>La page que vous cherchez n'existe pas. Rendez-vous en Septembre pour Hyrox Police 54 !</p>
         <div class="actions">
             <app-button label="Retour à l'accueil" link="/"></app-button>
-            <app-button label="Inscrire mon équipe" link="/inscription" [small]="true"></app-button>
+            <app-button label="Inscrire mon équipe" link="/inscription" [small]="true" [variant]="'ghost'"
+                [isFull]="isRegistrationFull" fullLabel="Inscriptions complètes"></app-button>
         </div>
+        <p class="login-link">Déjà inscrit(e) ? <a routerLink="/login">Se connecter</a></p>
     </div>
 </div>

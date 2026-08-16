@@ -18,7 +18,7 @@
     <main class="content">
         <div class="page-title">
             <h1>Joueurs</h1>
-            <span class="count" *ngIf="!isLoading && !error">
+            <span class="count" *ngIf="!isLoading && !error" aria-live="polite">
                 {{ filtered.length }}<ng-container *ngIf="filtered.length !== players.length"> / {{ players.length
                     }}</ng-container> joueurs
             </span>
@@ -26,8 +26,12 @@
 
         <!-- Toolbar -->
         <div class="toolbar" *ngIf="!isLoading && !error">
-            <input class="search-input" type="text" placeholder="Rechercher un nom, une équipe, un email…"
-                [ngModel]="searchQuery" (ngModelChange)="onSearchChange($event)" />
+            <div class="search-wrapper">
+                <input class="search-input" type="text" placeholder="Rechercher un nom, une équipe, un email…"
+                    [ngModel]="searchQuery" (ngModelChange)="onSearchChange($event)" />
+                <button type="button" class="search-clear-btn" *ngIf="searchQuery" (click)="clearSearch()"
+                    aria-label="Effacer la recherche">✕</button>
+            </div>
 
             <div class="filter-chips">
                 <button class="chip" [class.active]="volunteerFilter === 'all'"
@@ -57,11 +61,14 @@
         </div>
 
         <!-- Error -->
-        <div class="error-state" *ngIf="error">{{ error }}</div>
+        <div class="error-state" *ngIf="error" aria-live="polite">{{ error }}</div>
 
         <!-- No results -->
-        <div class="empty-state" *ngIf="!isLoading && !error && filtered.length === 0 && players.length > 0">
-            Aucun joueur ne correspond à votre recherche ou vos filtres.
+        <div class="empty-state" *ngIf="!isLoading && !error && filtered.length === 0 && players.length > 0"
+            aria-live="polite">
+            <p>Aucun joueur ne correspond à votre recherche ou vos filtres.</p>
+            <button type="button" class="reset-filters-btn" (click)="resetFilters()">Réinitialiser les
+                filtres</button>
         </div>
 
         <!-- Table -->
@@ -99,6 +106,7 @@
                             (keydown)="onSortKeydown($event, 'volunteer')">
                             Bénévole <span class="sort-icon">{{ getSortIcon('volunteer') }}</span>
                         </th>
+                        <th>Tenue</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,13 +119,20 @@
                                 [queryParams]="{ teamId: player.teamId }">{{ player.teamName }}</a>
                         </td>
                         <td>
-                            <span class="category-tag">{{ getCategoryLabel(player.category) }}</span>
+                            <span class="category-badge" [ngClass]="player.category">
+                                {{ getCategoryLabel(player.category) }}
+                            </span>
                         </td>
                         <td class="muted">{{ player.email }}</td>
                         <td class="muted">{{ player.phoneNumber }}</td>
                         <td>
                             <span class="volunteer-badge yes" *ngIf="player.volunteer">Oui</span>
                             <span class="volunteer-badge no" *ngIf="!player.volunteer">Non</span>
+                        </td>
+                        <td>
+                            <span class="tag outfit" *ngIf="player.outfit !== 'no'">{{ getOutfitLabel(player.outfit)
+                                }}</span>
+                            <span class="tag-muted" *ngIf="player.outfit === 'no'">Non</span>
                         </td>
                     </tr>
                 </tbody>

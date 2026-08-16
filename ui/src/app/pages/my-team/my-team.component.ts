@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
 import { TeamService } from '../../services/team.service';
 import { TeamDto } from '../../models/team-dto';
@@ -42,10 +43,54 @@ export class MyTeamComponent implements OnInit {
   readonly organizerPhone = '06 48 73 50 15';
   readonly organizerEmail = 'svenbarberat@orange.fr';
 
+  readonly adminOptions: { value: string; label: string }[] = [
+    { value: 'none', label: 'Autre' },
+    { value: 'gendarmerie', label: 'Gendarmerie' },
+    { value: 'militaire', label: 'Militaire' },
+    { value: 'penitancier', label: 'Pénitancier' },
+    { value: 'municipale', label: 'Police Municipale' },
+    { value: 'nationale', label: 'Police Nationale' },
+    { value: 'pompier', label: 'Pompier' },
+  ];
+
+  // Set when the loaded team's `administration` doesn't match any option
+  // above (e.g. legacy/out-of-band data) — the <select> would otherwise
+  // render blank for a field that actually has a value, with no indication
+  // anything is wrong. See HTML: an extra <option> is rendered to hold it.
+  unknownAdministration: string | null = null;
+
+  private lastLoadedTeam: TeamDto | null = null;
+
   constructor(public authService: AuthService, private teamService: TeamService) { }
 
   ngOnInit(): void {
     this.loadTeam();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  warnOnUnsavedChanges(event: BeforeUnloadEvent): void {
+    if (this.form.dirty && !this.isSaving) {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+  }
+
+  logout(): void {
+    if (this.form.dirty && !window.confirm(
+      'Des modifications ne sont pas enregistrées. Se déconnecter quand même ?'
+    )) {
+      return;
+    }
+    this.authService.logout();
+  }
+
+  cancelChanges(): void {
+    if (this.lastLoadedTeam) {
+      this.patchForm(this.lastLoadedTeam);
+      this.form.markAsPristine();
+      this.saveError = '';
+      this.saveSuccess = false;
+    }
   }
 
   loadTeam(): void {
@@ -54,6 +99,7 @@ export class MyTeamComponent implements OnInit {
     this.teamService.getMyTeam().subscribe({
       next: (team) => {
         this.team = team;
+        this.lastLoadedTeam = team;
         this.patchForm(team);
         this.isLoading = false;
       },
@@ -112,6 +158,7 @@ export class MyTeamComponent implements OnInit {
       next: () => {
         this.isSaving = false;
         this.saveSuccess = true;
+        this.form.markAsPristine();
         // The PUT response doesn't echo back the updated team, and re-running
         // loadTeam() would flip isLoading and hide the just-shown success
         // banner — patch the fields this form actually owns instead, so the
@@ -124,13 +171,29 @@ export class MyTeamComponent implements OnInit {
             version: teamVal.version!,
             administration: teamVal.administration!,
           };
+          this.lastLoadedTeam = this.team;
         }
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.isSaving = false;
-        this.saveError = err.error?.error ?? "Une erreur est survenue lors de l'enregistrement. Réessayez.";
+        this.saveError = this.resolveSaveErrorMessage(err);
       }
     });
+  }
+
+  private resolveSaveErrorMessage(err: HttpErrorResponse): string {
+    if (err.error?.error) {
+      return err.error.error;
+    }
+    if (err.status === 0) {
+      return 'Impossible de contacter le serveur. Vérifie ta connexion et réessaie.';
+    }
+    // 401 is handled globally (AuthInterceptor force-logs-out and redirects
+    // before this branch would ever be shown) — no message needed here.
+    if (err.status >= 500) {
+      return "Le serveur a rencontré un problème. Réessaie dans quelques instants, ou contacte un organisateur si ça persiste.";
+    }
+    return "Une erreur est survenue lors de l'enregistrement. Réessaie.";
   }
 
   private scrollToFirstInvalid(): void {
@@ -144,16 +207,7 @@ export class MyTeamComponent implements OnInit {
   }
 
   getAdminLabel(value: string): string {
-    const labels: Record<string, string> = {
-      none: 'Autre',
-      gendarmerie: 'Gendarmerie',
-      militaire: 'Militaire',
-      penitancier: 'Pénitancier',
-      municipale: 'Police Municipale',
-      nationale: 'Police Nationale',
-      pompier: 'Pompier'
-    };
-    return labels[value] ?? value;
+    return this.adminOptions.find(opt => opt.value === value)?.label ?? value;
   }
 
   private buildPlayerGroup() {
@@ -172,6 +226,10 @@ export class MyTeamComponent implements OnInit {
 
   private patchForm(team: TeamDto): void {
     const [p1, p2] = team.players;
+    this.unknownAdministration = team.administration &&
+      !this.adminOptions.some(opt => opt.value === team.administration)
+      ? team.administration
+      : null;
     this.form.patchValue({
       team: {
         team_name: team.name,

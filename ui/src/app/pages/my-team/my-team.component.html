@@ -6,7 +6,7 @@
             <span class="header__wordmark">Hyrox Police 54</span>
         </a>
         <span class="header__user">{{ authService.getCurrentUser()?.username }}</span>
-        <button type="button" class="header__logout" (click)="authService.logout()">Se déconnecter</button>
+        <button type="button" class="header__logout" (click)="logout()">Se déconnecter</button>
     </header>
 
     <div class="layout">
@@ -89,17 +89,19 @@
                                     [attr.aria-invalid]="errorMessage('team.administration') ? true : null"
                                     [attr.aria-describedby]="errorMessage('team.administration') ? 'administration-error' : null">
                                     <option value="">-- Choisir son administration --</option>
-                                    <option value="none">Autre</option>
-                                    <option value="gendarmerie">Gendarmerie</option>
-                                    <option value="militaire">Militaire</option>
-                                    <option value="penitancier">Pénitancier</option>
-                                    <option value="municipale">Police Municipale</option>
-                                    <option value="nationale">Police Nationale</option>
-                                    <option value="pompier">Pompier</option>
+                                    <option *ngFor="let opt of adminOptions" [value]="opt.value">{{ opt.label }}
+                                    </option>
+                                    <option *ngIf="unknownAdministration" [value]="unknownAdministration">
+                                        {{ unknownAdministration }} (non reconnu)</option>
                                 </select>
                             </label>
                             @if (errorMessage('team.administration'); as msg) {
                             <p class="field-error" id="administration-error">{{ msg }}</p>
+                            }
+                            @if (unknownAdministration) {
+                            <p class="field-hint">Cette valeur ne correspond à aucune option de la liste. Choisis
+                                l'option la plus proche, ou contacte un organisateur si elle doit rester telle
+                                quelle.</p>
                             }
                         </div>
 
@@ -358,6 +360,10 @@
                 <div class="save-banner save-banner--error" *ngIf="form.invalid && form.touched">
                     Des champs sont incomplets ou invalides ci-dessus.
                 </div>
+                <button class="btn-ghost" type="button" (click)="cancelChanges()" *ngIf="form.dirty"
+                    [disabled]="isSaving">
+                    Annuler les modifications
+                </button>
                 <button class="btn-primary" type="button" (click)="save()" [disabled]="isSaving">
                     {{ isSaving ? 'Enregistrement...' : 'Enregistrer les modifications' }}
                 </button>

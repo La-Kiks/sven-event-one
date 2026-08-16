@@ -207,8 +207,14 @@ $top-bar-height: 4.5rem;
 .kpi-value {
   font-family: $font-title;
   font-size: 1.6rem;
-  color: $main-color;
+  color: #ffffff;
   line-height: 1;
+
+  // Only the tile that actually needs action stays hazard-yellow (DESIGN.md's
+  // One Signal Rule) — the other three are inert counts, not directives.
+  &--attention {
+    color: $main-color;
+  }
 }
 
 .kpi-label {
@@ -385,13 +391,10 @@ $top-bar-height: 4.5rem;
 
 .team-badge.clickable {
   cursor: pointer;
-  transition:
-    opacity 0.15s,
-    transform 0.15s;
+  transition: filter 0.15s;
 
   &:hover {
-    opacity: 0.75;
-    transform: scale(1.05);
+    filter: brightness(1.3);
   }
 
   &:focus-visible {
@@ -401,21 +404,42 @@ $top-bar-height: 4.5rem;
 }
 
 // ── Payment toggle confirm ────────────────────────────────────────────────────
+// Deliberately heavier than a routine confirm: this flips the real payment
+// status the organizer relies on for a police charity event, so it gets its
+// own callout (left-border + tint keyed to the resulting state) instead of
+// an inline row, and buttons that name the actual action rather than a bare
+// "Confirmer".
 .payment-row {
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.payment-confirm {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.payment-confirm-callout {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 2px solid transparent;
+  animation: fadeIn 0.15s ease;
+
+  &--to-paid {
+    background: rgba(34, 197, 94, 0.06);
+    border-left-color: #4ade80;
+  }
+
+  &--to-unpaid {
+    background: rgba(255, 107, 107, 0.06);
+    border-left-color: #ff6b6b;
+  }
 }
 
 .payment-confirm-text {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+  margin: 0 0 0.8rem;
+
+  strong {
+    color: #ffffff;
+  }
 }
 
 .payment-confirm-yes,
@@ -473,7 +497,7 @@ $top-bar-height: 4.5rem;
 // even while the panel is open, instead of a fixed-position panel overlapping it.
 .backdrop {
   position: fixed;
-  top: $top-bar-height;
+  top: var(--top-bar-height, #{$top-bar-height});
   right: 0;
   bottom: 0;
   left: 0;
@@ -497,9 +521,9 @@ $top-bar-height: 4.5rem;
 // fast click meant for Sign-out could land on the panel's Delete button instead.
 .detail-panel {
   position: fixed;
-  top: $top-bar-height;
+  top: var(--top-bar-height, #{$top-bar-height});
   right: 0;
-  height: calc(100vh - #{$top-bar-height});
+  height: calc(100vh - var(--top-bar-height, #{$top-bar-height}));
   width: 480px;
   max-width: 95vw;
   background: #141414;
@@ -694,7 +718,7 @@ $top-bar-height: 4.5rem;
 .info-section {
   margin-bottom: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 4px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
@@ -735,7 +759,7 @@ $top-bar-height: 4.5rem;
 .player-card {
   padding: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 4px;
+  border-radius: 2px;
   margin-bottom: 0.6rem;
   transition: border-color 0.15s;
 
@@ -755,13 +779,6 @@ $top-bar-height: 4.5rem;
   font-weight: 500;
   font-size: 0.95rem;
   color: #ffffff;
-}
-
-.player-category {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.35);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .player-meta {

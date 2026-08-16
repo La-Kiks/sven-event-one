@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -36,7 +36,10 @@ interface Team {
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.scss']
 })
-export class TeamsComponent implements OnInit {
+export class TeamsComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('topBar') topBarRef?: ElementRef<HTMLElement>;
+  private topBarResizeObserver?: ResizeObserver;
+
   sortField: 'name' | 'version' | 'administration' | 'category' = 'name'; // ← category added
   sortDir: 'asc' | 'desc' = 'asc';
   sortedTeams: Team[] = [];
@@ -76,9 +79,29 @@ export class TeamsComponent implements OnInit {
     private http: HttpClient,
     public authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private elementRef: ElementRef<HTMLElement>
   ) {
     this.currentUser = this.authService.getCurrentUser();
+  }
+
+  ngAfterViewInit(): void {
+    // The slide-in panel/backdrop offset needs the top bar's *actual* rendered
+    // height, not a static SCSS constant — on mobile the bar wraps to multiple
+    // lines and a fixed offset would let the panel overlap or gap from it.
+    if (!this.topBarRef) return;
+    const topBarEl = this.topBarRef.nativeElement;
+    const updateHeight = () => {
+      const height = topBarEl.getBoundingClientRect().height;
+      this.elementRef.nativeElement.style.setProperty('--top-bar-height', `${height}px`);
+    };
+    updateHeight();
+    this.topBarResizeObserver = new ResizeObserver(updateHeight);
+    this.topBarResizeObserver.observe(topBarEl);
+  }
+
+  ngOnDestroy(): void {
+    this.topBarResizeObserver?.disconnect();
   }
 
   ngOnInit(): void {

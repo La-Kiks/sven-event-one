@@ -1,7 +1,7 @@
 <div class="teams-page" [class.panel-open]="isPanelOpen">
 
     <!-- Top bar -->
-    <header class="top-bar">
+    <header class="top-bar" #topBar>
         <div class="brand">
             <span class="logo-mark">54</span>
             <span class="brand-name">Administration</span>
@@ -42,7 +42,8 @@
                 <div class="kpi-label">Payées</div>
             </div>
             <div class="kpi-tile">
-                <div class="kpi-value">{{ pendingAccountsCount }}</div>
+                <div class="kpi-value" [class.kpi-value--attention]="pendingAccountsCount > 0">
+                    {{ pendingAccountsCount }}</div>
                 <div class="kpi-label">En attente</div>
             </div>
         </div>
@@ -196,26 +197,37 @@
                 <div class="info-row payment-row">
                     <span class="info-label">Paiement</span>
                     <span class="info-value">
-                        <ng-container *ngIf="!pendingPaymentConfirm">
-                            <button type="button" class="team-badge paid clickable" *ngIf="selectedTeam.isPaid"
-                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme non payé">✓ Payé</button>
-                            <button type="button" class="team-badge unpaid clickable" *ngIf="!selectedTeam.isPaid"
-                                (click)="requestPaymentToggle()" title="Cliquer pour marquer comme payé">✗ Non payé</button>
-                        </ng-container>
-                        <span class="payment-confirm" *ngIf="pendingPaymentConfirm">
-                            <span class="payment-confirm-text">
-                                Marquer comme {{ selectedTeam.isPaid ? 'non payé' : 'payé' }} ?
-                            </span>
-                            <button class="payment-confirm-yes" (click)="togglePayment(selectedTeam)"
-                                [disabled]="isTogglingPayment">
-                                {{ isTogglingPayment ? '...' : 'Confirmer' }}
-                            </button>
-                            <button class="payment-confirm-no" (click)="cancelPaymentToggle()"
-                                [disabled]="isTogglingPayment">Annuler</button>
+                        <button type="button" class="team-badge paid clickable"
+                            *ngIf="selectedTeam.isPaid && !pendingPaymentConfirm" (click)="requestPaymentToggle()"
+                            title="Cliquer pour marquer comme non payé">✓ Payé</button>
+                        <button type="button" class="team-badge unpaid clickable"
+                            *ngIf="!selectedTeam.isPaid && !pendingPaymentConfirm" (click)="requestPaymentToggle()"
+                            title="Cliquer pour marquer comme payé">✗ Non payé</button>
+                        <span class="team-badge" *ngIf="pendingPaymentConfirm" [class.paid]="selectedTeam.isPaid"
+                            [class.unpaid]="!selectedTeam.isPaid">
+                            {{ selectedTeam.isPaid ? '✓ Payé' : '✗ Non payé' }}
                         </span>
                     </span>
                 </div>
-                <div class="payment-error" *ngIf="paymentError">{{ paymentError }}</div>
+                <div class="payment-confirm-callout" *ngIf="pendingPaymentConfirm"
+                    [class.payment-confirm-callout--to-paid]="!selectedTeam.isPaid"
+                    [class.payment-confirm-callout--to-unpaid]="selectedTeam.isPaid">
+                    <p class="payment-confirm-text">
+                        Marquer <strong>{{ selectedTeam.name }}</strong> comme
+                        <strong>{{ selectedTeam.isPaid ? 'non payée' : 'payée' }}</strong> ? Ceci modifie le statut
+                        financier réel de l'équipe.
+                    </p>
+                    <div class="payment-error" *ngIf="paymentError">{{ paymentError }}</div>
+                    <div class="confirm-actions">
+                        <button class="payment-confirm-no" (click)="cancelPaymentToggle()"
+                            [disabled]="isTogglingPayment">Annuler</button>
+                        <button class="payment-confirm-yes" (click)="togglePayment(selectedTeam)"
+                            [disabled]="isTogglingPayment">
+                            {{ isTogglingPayment ? '...' : (selectedTeam.isPaid ? 'Confirmer : marquer non payée' :
+                            'Confirmer : marquer payée') }}
+                        </button>
+                    </div>
+                </div>
                 <div class="info-row">
                     <span class="info-label">Joueurs</span>
                     <span class="info-value">{{ selectedTeam.players.length }}</span>
@@ -245,7 +257,9 @@
                 <div class="player-card" *ngFor="let player of selectedTeam.players">
                     <div class="player-main">
                         <span class="player-name">{{ player.firstName }} {{ player.lastName }}</span>
-                        <span class="player-category">{{ getCategoryLabel(player.category) }}</span>
+                        <span class="category-badge" [ngClass]="player.category">
+                            {{ getCategoryLabel(player.category) }}
+                        </span>
                     </div>
                     <div class="player-meta">
                         <span>{{ player.email }}</span>

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
 import { environment } from '../../core/runtime-env';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 interface Player {
   id: number;
@@ -48,12 +48,23 @@ export class PlayersComponent implements OnInit {
   constructor(
     private http: HttpClient,
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.currentUser = this.authService.getCurrentUser();
   }
 
   ngOnInit(): void {
+    // Restore search/filter/sort state from the URL so it survives a trip to
+    // Teams and back (mirrors the teamId round-trip Teams already does for
+    // the inbound direction from this page's team-pill links).
+    const params = this.route.snapshot.queryParamMap;
+    this.searchQuery = params.get('q') ?? '';
+    this.volunteerFilter = (params.get('benevole') as VolunteerFilter) ?? 'all';
+    this.categoryFilter = params.get('categorie') ?? 'all';
+    this.sortField = (params.get('tri') as SortField) ?? 'lastName';
+    this.sortDir = (params.get('ordre') as SortDir) ?? 'asc';
+
     this.http.get<Player[]>(`${environment.apiUrl}/api/Players`).subscribe({
       next: (data) => {
         this.players = data;
@@ -64,6 +75,20 @@ export class PlayersComponent implements OnInit {
         this.error = 'Impossible de charger les joueurs.';
         this.isLoading = false;
       }
+    });
+  }
+
+  private syncQueryParams(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        q: this.searchQuery || null,
+        benevole: this.volunteerFilter !== 'all' ? this.volunteerFilter : null,
+        categorie: this.categoryFilter !== 'all' ? this.categoryFilter : null,
+        tri: this.sortField !== 'lastName' ? this.sortField : null,
+        ordre: this.sortDir !== 'asc' ? this.sortDir : null,
+      },
+      replaceUrl: true
     });
   }
 
@@ -80,19 +105,43 @@ export class PlayersComponent implements OnInit {
     return labels[value] ?? value;
   }
 
+  getOutfitLabel(value: string): string {
+    const labels: Record<string, string> = {
+      yes: 'Oui',
+      lend: 'À prêter',
+      no: 'Non'
+    };
+    return labels[value] ?? value;
+  }
+
   onSearchChange(value: string): void {
     this.searchQuery = value;
     this.applyFilters();
+    this.syncQueryParams();
+  }
+
+  clearSearch(): void {
+    this.onSearchChange('');
   }
 
   setVolunteerFilter(filter: VolunteerFilter): void {
     this.volunteerFilter = filter;
     this.applyFilters();
+    this.syncQueryParams();
   }
 
   setCategoryFilter(category: string): void {
     this.categoryFilter = category;
     this.applyFilters();
+    this.syncQueryParams();
+  }
+
+  resetFilters(): void {
+    this.searchQuery = '';
+    this.volunteerFilter = 'all';
+    this.categoryFilter = 'all';
+    this.applyFilters();
+    this.syncQueryParams();
   }
 
   applyFilters(): void {
@@ -119,6 +168,7 @@ export class PlayersComponent implements OnInit {
       this.sortDir = 'asc';
     }
     this.applySort();
+    this.syncQueryParams();
   }
 
   onSortKeydown(event: KeyboardEvent, field: SortField): void {
