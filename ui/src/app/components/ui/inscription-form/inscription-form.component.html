@@ -333,12 +333,20 @@
                         <input type="checkbox" name="subscribe" value="yes" formControlName="subscribe" required
                             [attr.aria-invalid]="errorMessage('step3.subscribe') ? true : null"
                             [attr.aria-describedby]="errorMessage('step3.subscribe') ? 'subscribe-error' : null">
-                        <span>Les informations de contact présentes dans ce formulaire ne seront utilisées que dans
-                            le cadre de cet événement ou événement similaire. <span class="required">*</span></span>
+                        <span>J'ai pris connaissance de la
+                            <a routerLink="/politique-de-confidentialite" target="_blank">politique de
+                                confidentialité</a>. <span class="required">*</span></span>
                     </label>
                     @if (errorMessage('step3.subscribe'); as msg) {
                     <p class="field-error" id="subscribe-error">{{ msg }}</p>
                     }
+
+                    <label class="checkbox-row"
+                        [class.checkbox-row--checked]="!!form.get('step3.acceptFutureEmails')?.value">
+                        <input type="checkbox" name="acceptFutureEmails" value="yes"
+                            formControlName="acceptFutureEmails">
+                        <span>Je souhaite recevoir des emails pour les prochaines éditions.</span>
+                    </label>
 
                     @if (form.get('step3')?.touched && form.get('step3')?.invalid) {
                     <p class="field-error step-error">Complète les champs manquants ci-dessus avant de continuer.</p>

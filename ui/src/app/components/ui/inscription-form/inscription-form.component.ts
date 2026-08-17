@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ModalComponent, StatusType } from '../modal/modal.component';
 import { CreateTeamWithPlayersRequest } from '../../../models/create-team-request';
@@ -11,7 +11,7 @@ const FORM_STORAGE_KEY = 'inscription-form-draft';
 @Component({
   selector: 'app-inscription-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ModalComponent],
+  imports: [ReactiveFormsModule, ModalComponent, RouterLink],
   templateUrl: './inscription-form.component.html',
   styleUrls: ['./inscription-form.component.scss']
 })
@@ -47,6 +47,7 @@ export class InscriptionFormComponent implements OnInit, OnDestroy {
       administration: new FormControl('', Validators.required),
       team_name: new FormControl('', Validators.required),
       subscribe: new FormControl(false, Validators.requiredTrue),
+      acceptFutureEmails: new FormControl(false),
     }),
   });
 
@@ -79,7 +80,7 @@ export class InscriptionFormComponent implements OnInit, OnDestroy {
     'step2.outfit_b': 'Merci de répondre à cette question.',
     'step3.version': 'Merci de choisir une version.',
     'step3.administration': 'Merci de sélectionner ton administration.',
-    'step3.subscribe': "Merci d'accepter cette condition pour continuer.",
+    'step3.subscribe': "Merci d'accepter la politique de confidentialité pour continuer.",
   };
 
   private querySub?: Subscription;
@@ -195,7 +196,7 @@ export class InscriptionFormComponent implements OnInit, OnDestroy {
           category: step1.category_a!,
           outfit: step1.outfit_a!,
           volunteer: !!step1.volounteer_a,
-          acceptMails: !!step3.subscribe,
+          acceptMails: !!step3.acceptFutureEmails,
         },
         {
           firstName: step2.firstname_b!,
@@ -205,7 +206,7 @@ export class InscriptionFormComponent implements OnInit, OnDestroy {
           category: step2.category_b!,
           outfit: step2.outfit_b!,
           volunteer: !!step2.volounteer_b,
-          acceptMails: !!step3.subscribe
+          acceptMails: !!step3.acceptFutureEmails
         }
       ]
     };
