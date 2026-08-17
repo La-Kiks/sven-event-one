@@ -345,7 +345,8 @@
                         [class.checkbox-row--checked]="!!form.get('step3.acceptFutureEmails')?.value">
                         <input type="checkbox" name="acceptFutureEmails" value="yes"
                             formControlName="acceptFutureEmails">
-                        <span>Je souhaite recevoir des emails pour les prochaines éditions.</span>
+                        <span>Nous souhaitons (les deux participants) recevoir des emails pour les prochaines
+                            éditions.</span>
                     </label>
 
                     @if (form.get('step3')?.touched && form.get('step3')?.invalid) {

@@ -401,6 +401,16 @@ select.field__input {
       border-color: $main-color;
     }
   }
+
+  a {
+    color: $main-color;
+    text-decoration: underline;
+
+    &:focus-visible {
+      outline: 2px solid $main-color;
+      outline-offset: 2px;
+    }
+  }
 }
 
 // Step 4 — review
