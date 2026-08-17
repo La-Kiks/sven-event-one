@@ -1,0 +1,96 @@
+@use "variables" as *;
+
+$text-secondary: rgba(255, 255, 255, 0.75);
+$border: rgba(255, 255, 255, 0.1);
+$gutter: clamp(1rem, 4vw, 3rem);
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: $background-color;
+}
+
+.legal {
+  min-height: 100vh;
+  padding: 3rem $gutter 4rem;
+  font-family: $font-body;
+  color: $text-secondary;
+  box-sizing: border-box;
+}
+
+.legal__container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.legal__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+  font-family: $font-title;
+  font-size: 0.95rem;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 3px;
+  }
+}
+
+.legal__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: $main-color;
+  color: #000;
+  border-radius: 0.25em;
+  font-size: 0.85rem;
+}
+
+h1 {
+  font-family: $font-title;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: #ffffff;
+  margin: 0 0 2.5rem;
+}
+
+h2 {
+  font-family: $font-title;
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin: 0 0 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid $border;
+}
+
+#mentions-legales h2 {
+  padding-top: 0;
+  border-top: none;
+}
+
+h3 {
+  font-family: $font-body;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #ffffff;
+  margin: 1.5rem 0 0.5rem;
+}
+
+p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+
+a {
+  color: $main-color;
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
+}

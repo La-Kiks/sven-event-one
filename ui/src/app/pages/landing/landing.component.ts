@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../components/ui/button/button.component';
 import { CardComponent } from '../../components/ui/card/card.component';
 import { TeamCount, TeamCountService } from '../../services/team-count.service'; // ← adjust path if needed
 
 @Component({
   selector: 'app-landing',
-  imports: [NgIf, ButtonComponent, CardComponent],
+  imports: [NgIf, RouterLink, ButtonComponent, CardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })

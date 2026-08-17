@@ -516,3 +516,17 @@ h2 {
   font-size: 0.8rem;
   color: $text-tertiary;
 }
+
+.footer a {
+  color: $text-tertiary;
+  text-decoration: underline;
+
+  &:hover {
+    color: $main-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $main-color;
+    outline-offset: 2px;
+  }
+}
