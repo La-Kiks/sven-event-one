@@ -5,7 +5,7 @@ Walks through the full participant lifecycle against the running dev stack (`doc
 ## 1. Register a team
 
 1. Open `http://localhost:<UI_PORT>/inscription` and fill in the 3-step form for two players.
-2. On step 3, confirm there are two separate consent checkboxes: "J'ai pris connaissance de la politique de confidentialité" (required — the form won't advance without it; its link opens `/politique-de-confidentialite` in a new tab) and "Je souhaite recevoir des emails pour les prochaines éditions" (optional, unchecked by default). Leave the optional one unchecked.
+2. On step 3, confirm there are two separate consent checkboxes: "J'ai pris connaissance de la politique de confidentialité" (required — the form won't advance without it; its link opens `/politique-de-confidentialite` in a new tab) and "Nous souhaitons (les deux participants) recevoir des emails pour les prochaines éditions" (optional, unchecked by default). Leave the optional one unchecked.
 3. Submit. Expect a success modal mentioning an activation email.
 
 ## 2. Check the privacy policy page and the consent split
@@ -19,7 +19,7 @@ MSYS_NO_PATHCONV=1 docker exec sports-reservation-db /opt/mssql-tools18/bin/sqlc
   -Q "SELECT FirstName, LastName, AcceptMails FROM Players ORDER BY Id DESC"
 ```
 
-3. Register a second team, this time checking "Je souhaite recevoir des emails pour les prochaines éditions". Re-run the query above and confirm `AcceptMails` is `1`/`true` for both of that team's players.
+3. Register a second team, this time checking "Nous souhaitons (les deux participants) recevoir des emails pour les prochaines éditions". Re-run the query above and confirm `AcceptMails` is `1`/`true` for both of that team's players.
 
 ## 3. Find the activation link
 
