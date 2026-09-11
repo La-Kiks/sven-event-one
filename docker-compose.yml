@@ -54,8 +54,8 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sports-reservation-db
     restart: unless-stopped
-    ports:
-      - "${DB_PORT}:1433"
+#    ports:
+#      - "${DB_PORT}:1433"
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "${DB_PASSWORD}"
