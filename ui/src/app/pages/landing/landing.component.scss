@@ -283,14 +283,27 @@ h2 {
   border-radius: $radius;
 }
 
-.video__iframe {
+.video__player {
   position: relative;
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 9;
+  object-fit: contain;
   border: 0;
   border-radius: $radius;
   background: #111;
+
+  // Phones: taller, zoomed-in crop so the video isn't a thin strip.
+  @media (max-width: 599px) {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  // Fullscreen always shows the whole frame, uncropped.
+  &:fullscreen {
+    object-fit: contain;
+  }
 }
 
 // Marquee
