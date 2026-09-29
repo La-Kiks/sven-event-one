@@ -16,12 +16,19 @@ Both are wired together via the root `docker-compose.yml` plus a SQL Server cont
 **This project is only ever run via Docker Compose — in local dev and in prod.** The user does not run `ng`, `npm`, or `dotnet` commands directly; don't suggest them as the way to run/build/test the app, and don't run them yourself (e.g. to "verify a build") without checking first.
 
 ```bash
-docker compose up --build      # build + run frontend, backend, and SQL Server
+docker compose up --build              # build + run frontend, backend, and SQL Server
+docker compose run --rm --build tests  # build + run the backend test suite
 ```
 
 Builds `ui` (Angular, built inside the image and served via nginx — see `ui/Dockerfile` + `ui/nginx.conf`) and `backend/SportsReservationAPI` (see its `Dockerfile`), plus a `mssql/server:2022-latest` container. Ports/credentials come from `.env` (`UI_PORT`, `API_PORT`, `DB_PORT`, etc. — see `.env.sample`). EF Core migrations are applied automatically on backend startup (see Program.cs), there's no separate migrate step.
 
-There is no test project/suite in this repo currently.
+## Tests
+
+- **Backend:** xUnit integration tests in `backend/SportsReservationAPI.Tests`, run against a dedicated, ephemeral SQL Server container (`test-database`), never the dev database. All test classes share one `[Collection("Api")]` fixture (`ApiTestFixture`): the test database is dropped once at startup, then shared by every test. Tests don't reset data between them, so don't assume empty tables or exact counts (see `SmokeTests`). The password-reset rate limiter is also shared: keep total calls to `/api/auth/forgot-password` across the suite at 5 or fewer (see the comment in `PasswordResetTests.cs`).
+- **Claude may run the suite** with `docker compose run --rm --build tests`. It's the exception to the no-`dotnet` rule above: it runs `dotnet test` inside the `tests` container. Keep `--build`: the test image copies the source at build time, so without it the tests run against stale code.
+- To run one test class, append a filter: `docker compose run --rm --build tests --filter "FullyQualifiedName~PasswordResetTests"`.
+- **Test-first for backend changes:** write the failing test, run it and see it fail for the expected reason, then implement until it passes, then run the full suite.
+- **Frontend:** no runnable tests yet. The `*.spec.ts` files are Angular CLI "should create" boilerplate and there is no Docker service for them, so frontend changes are checked manually with `docs/manual-testing-guide.md`.
 
 ## Backend architecture
 
