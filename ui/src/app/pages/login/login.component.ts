@@ -37,9 +37,13 @@ export class LoginComponent {
       next: (response) => this.router.navigate([this.homeRouteFor(response.role)]),
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.status === 401
-          ? 'Email ou mot de passe incorrect.'
-          : 'Erreur serveur, veuillez réessayer.';
+        if (err.status === 401) {
+          this.errorMessage = 'Email ou mot de passe incorrect.';
+        } else if (err.status === 429) {
+          this.errorMessage = err.error?.message ?? 'Trop de tentatives de connexion. Réessayez dans 15 minutes.';
+        } else {
+          this.errorMessage = 'Erreur serveur, veuillez réessayer.';
+        }
       }
     });
   }

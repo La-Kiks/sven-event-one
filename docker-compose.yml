@@ -6,7 +6,7 @@ services:
     container_name: sports-reservation-ui
     restart: unless-stopped
     ports:
-      - "${UI_PORT}:80"
+      - "127.0.0.1:${UI_PORT}:80"
     environment:
       API_BASE_URL: ${API_BASE_URL}
       STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
@@ -19,8 +19,11 @@ services:
       dockerfile: Dockerfile
     container_name: sports-reservation-api
     restart: unless-stopped
+    # Localhost only: the API must be reachable solely through the reverse proxy
+    # (Caddy, on the host), otherwise X-Forwarded-For can be forged to bypass the
+    # per-IP password-reset limit. See the ForwardedHeaders comment in Program.cs.
     ports:
-      - "${API_PORT}:8080"
+      - "127.0.0.1:${API_PORT}:8080"
     environment:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
