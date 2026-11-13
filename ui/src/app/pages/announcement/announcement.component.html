@@ -1,0 +1,90 @@
+<div class="announcement-page">
+
+    <header class="top-bar">
+        <div class="brand">
+            <span class="logo-mark">54</span>
+            <span class="brand-name">Administration</span>
+        </div>
+        <nav class="nav-links">
+            <button class="nav-btn" routerLink="/teams">Équipes</button>
+            <button class="nav-btn" routerLink="/players">Joueurs</button>
+            <button class="nav-btn active">Annonce</button>
+        </nav>
+        <div class="user-area">
+            <span class="username">{{ currentUser?.username }}</span>
+            <button class="logout-btn" (click)="authService.logout()">Déconnexion</button>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="page-title">
+            <h1>Annonce</h1>
+            <span class="count">Email à tous les participants inscrits</span>
+        </div>
+
+        <section class="panel">
+            <label class="field">
+                <span class="field__label">Objet</span>
+                <input class="field__input" type="text" [(ngModel)]="subject" [maxlength]="maxSubjectLength"
+                    placeholder="Hyrox Police 54 : nouvelle date de l'événement" />
+            </label>
+
+            <label class="field">
+                <span class="field__label">Message</span>
+                <textarea class="field__input field__textarea" rows="12" [(ngModel)]="message"
+                    [maxlength]="maxMessageLength"></textarea>
+                <span class="field__hint">
+                    Le message commence automatiquement par « Bonjour &#123;prénom&#125;, ».
+                    Laissez une ligne vide entre deux paragraphes.
+                    {{ message.length }} / {{ maxMessageLength }}
+                </span>
+            </label>
+        </section>
+
+        <section class="panel">
+            <h2 class="panel__title">1. Envoyer un test</h2>
+            <div class="test-row">
+                <input class="field__input" type="email" [(ngModel)]="testEmail" placeholder="votre.email@exemple.fr" />
+                <button class="secondary-btn" (click)="sendTest()"
+                    [disabled]="!canSend || !testEmail.trim() || isSendingTest">
+                    {{ isSendingTest ? 'Envoi...' : 'Envoyer un test' }}
+                </button>
+            </div>
+            <p class="feedback feedback--ok" *ngIf="testSuccess">{{ testSuccess }}</p>
+            <p class="feedback feedback--error" *ngIf="testError">{{ testError }}</p>
+        </section>
+
+        <section class="panel">
+            <h2 class="panel__title">2. Envoyer à tous les participants</h2>
+            <button class="primary-btn" (click)="openConfirm()"
+                [disabled]="!canSend || isLoadingCount || isSending || showConfirm">
+                {{ isLoadingCount ? 'Chargement...' : 'Envoyer à tous les participants' }}
+            </button>
+            <p class="feedback feedback--error" *ngIf="sendError && !showConfirm">{{ sendError }}</p>
+
+            <div class="delete-confirm" *ngIf="showConfirm">
+                <p class="confirm-text">
+                    <strong>{{ recipientCount }}</strong> participant(s) vont recevoir cet email.
+                    Cet envoi est définitif. Continuer ?
+                </p>
+                <div class="confirm-error" *ngIf="sendError">{{ sendError }}</div>
+                <div class="confirm-actions">
+                    <button class="confirm-cancel-btn" (click)="cancelConfirm()" [disabled]="isSending">Annuler</button>
+                    <button class="confirm-delete-btn" (click)="sendToAll()" [disabled]="isSending">
+                        {{ isSending ? "Envoi en cours (jusqu'à 1 minute)..." : "Confirmer l'envoi" }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="result" *ngIf="result">
+                <p class="confirm-text">
+                    <strong>{{ result.sent }}</strong> envoyé(s), <strong>{{ result.failed }}</strong> échec(s)
+                    sur {{ result.total }}.
+                </p>
+                <ul class="failures" *ngIf="result.failed > 0">
+                    <li *ngFor="let f of result.failures">{{ f.email }} : {{ f.error }}</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</div>

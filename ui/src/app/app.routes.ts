@@ -12,6 +12,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ActivateAccountComponent } from './pages/activate-account/activate-account.component';
 import { MyTeamComponent } from './pages/my-team/my-team.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { AnnouncementComponent } from './pages/announcement/announcement.component';
 
 export const routes: Routes = [
     { path: "", component: LandingComponent },
@@ -25,5 +26,6 @@ export const routes: Routes = [
     { path: "mon-equipe", component: MyTeamComponent, canActivate: [AuthGuard], data: { role: 'User' } },
     { path: "teams", component: TeamsComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
     { path: "players", component: PlayersComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
+    { path: "annonce", component: AnnouncementComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
     { path: '**', component: NotFoundComponent },
 ];
