@@ -10,6 +10,7 @@ services:
     environment:
       API_BASE_URL: ${API_BASE_URL}
       STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
+      EVENT_DATE_LABEL: ${EVENT_DATE_LABEL}
     depends_on:
       - backend
 

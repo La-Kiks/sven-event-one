@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../components/ui/button/button.component';
 import { CardComponent } from '../../components/ui/card/card.component';
 import { TeamCount, TeamCountService } from '../../services/team-count.service'; // ← adjust path if needed
+import { environment } from '../../core/runtime-env';
 
 @Component({
   selector: 'app-landing',
@@ -12,6 +13,8 @@ import { TeamCount, TeamCountService } from '../../services/team-count.service';
   styleUrl: './landing.component.scss'
 })
 export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
+  readonly eventDateLabel = environment.eventDateLabel;
+
   isRegistrationFull = false;
   countLoadError = false;
   hasScrolledPastHero = false;

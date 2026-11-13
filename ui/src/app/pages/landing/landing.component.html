@@ -19,7 +19,7 @@
     <div class="hero__inner">
         <div class="hero__eyebrow">
             <span class="hero__eyebrow-bar"></span>
-            <span>Septembre 2026 · Laxou (54)</span>
+            <span>{{ eventDateLabel }} · Laxou (54)</span>
         </div>
         <h1 class="hero__title">Hyrox<br /><span>Police 54</span></h1>
         <p class="hero__lead">Course à pied et ateliers fonctionnels, en duo. 8 épreuves, 8 kilomètres, une seule
@@ -146,7 +146,7 @@
     <div class="cta-banner__inner">
         <div>
             <h2>Trouve ton binôme.<br />Inscris ton équipe.</h2>
-            <p>Places limitées · 60 € par duo · Septembre 2026</p>
+            <p>Places limitées · 60 € par duo · {{ eventDateLabel }}</p>
         </div>
         <app-button label="S'inscrire en duo" link="/inscription" [variant]="'dark'" [isFull]="isRegistrationFull"
             [fullLabel]="countLoadError ? 'Erreur de chargement — contactez-nous' : 'Inscriptions complètes — voir les infos'"

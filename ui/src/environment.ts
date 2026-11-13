@@ -4,5 +4,6 @@
 // (see ui/docker-entrypoint.d/40-generate-runtime-env.sh). See app/core/runtime-env.ts.
 export const environment = {
     apiUrl: 'http://localhost:7163',
-    stripePublishableKey: ''
+    stripePublishableKey: '',
+    eventDateLabel: 'Date à confirmer'
 };

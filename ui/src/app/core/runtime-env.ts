@@ -5,6 +5,7 @@ declare global {
         __env?: {
             apiUrl?: string;
             stripePublishableKey?: string;
+            eventDateLabel?: string;
         };
     }
 }
@@ -22,5 +23,6 @@ const runtime = typeof window !== 'undefined' ? window.__env : undefined;
 
 export const environment = {
     apiUrl: pick(runtime?.apiUrl, buildEnvironment.apiUrl),
-    stripePublishableKey: pick(runtime?.stripePublishableKey, buildEnvironment.stripePublishableKey)
+    stripePublishableKey: pick(runtime?.stripePublishableKey, buildEnvironment.stripePublishableKey),
+    eventDateLabel: pick(runtime?.eventDateLabel, buildEnvironment.eventDateLabel)
 };

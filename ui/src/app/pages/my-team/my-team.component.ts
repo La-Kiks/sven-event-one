@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
 import { TeamService } from '../../services/team.service';
 import { TeamDto } from '../../models/team-dto';
+import { environment } from '../../core/runtime-env';
 
 @Component({
   selector: 'app-my-team',
@@ -14,6 +15,8 @@ import { TeamDto } from '../../models/team-dto';
   styleUrls: ['./my-team.component.scss']
 })
 export class MyTeamComponent implements OnInit {
+  readonly eventDateLabel = environment.eventDateLabel;
+
   isLoading = true;
   loadError = '';
   isSaving = false;

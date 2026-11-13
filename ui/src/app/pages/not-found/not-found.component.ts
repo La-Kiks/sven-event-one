@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../components/ui/button/button.component';
 import { TeamCountService } from '../../services/team-count.service';
+import { environment } from '../../core/runtime-env';
 
 @Component({
   selector: 'app-not-found',
@@ -10,6 +11,8 @@ import { TeamCountService } from '../../services/team-count.service';
   styleUrl: './not-found.component.scss'
 })
 export class NotFoundComponent implements OnInit {
+  readonly eventDateLabel = environment.eventDateLabel;
+
   isRegistrationFull = false;
 
   constructor(private teamCountService: TeamCountService) { }
