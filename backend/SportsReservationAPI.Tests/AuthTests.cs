@@ -199,4 +199,33 @@ public class AuthTests
 
         Assert.Equal(HttpStatusCode.TooManyRequests, response.StatusCode);
     }
+
+    [Fact]
+    public async Task Activate_ClearsLoginLockout()
+    {
+        var email = ApiTestFixture.UniqueEmail("lockactivate");
+        await _fixture.RegisterAndActivateTeamAsync("LockActivateTeam", email, ApiTestFixture.UniqueEmail("lockactivate2"), "CorrectPassword123");
+
+        for (var i = 0; i < 10; i++)
+            await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "wrong-password" });
+        var locked = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "CorrectPassword123" });
+        Assert.Equal(HttpStatusCode.TooManyRequests, locked.StatusCode);
+
+        // Simulates the token a forgot-password email would carry (the endpoint
+        // itself is budget-limited across the suite, so it isn't called here).
+        var token = Guid.NewGuid().ToString("N");
+        using (var context = _fixture.CreateDbContext())
+        {
+            var user = await context.Users.FirstAsync(u => u.Username == email);
+            user.VerificationToken = token;
+            user.VerificationTokenExpiresAt = DateTime.UtcNow.AddDays(1);
+            await context.SaveChangesAsync();
+        }
+
+        var activate = await _fixture.Client.PostAsJsonAsync("/api/auth/activate", new { token, password = "NewPassword456" });
+        Assert.Equal(HttpStatusCode.OK, activate.StatusCode);
+
+        var login = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "NewPassword456" });
+        Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+    }
 }

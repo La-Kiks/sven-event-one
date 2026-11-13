@@ -37,8 +37,9 @@ namespace SportsReservationAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            // Checked before the password so a locked-out username can't keep guessing.
-            if (_loginRateLimiter.IsLockedOut(request.Username))
+            // Counted atomically before the password check so neither a locked-out
+            // username nor a parallel burst can get extra guesses.
+            if (!_loginRateLimiter.TryBeginAttempt(request.Username))
                 return StatusCode(StatusCodes.Status429TooManyRequests,
                     new { message = "Trop de tentatives de connexion. Réessayez dans 15 minutes." });
 
@@ -46,7 +47,6 @@ namespace SportsReservationAPI.Controllers
 
             if (user == null)
             {
-                _loginRateLimiter.RecordFailure(request.Username);
                 return Unauthorized(new { message = "Invalid credentials" });
             }
 
@@ -73,6 +73,9 @@ namespace SportsReservationAPI.Controllers
             {
                 var user = await _userService.VerifyAndSetPasswordAsync(dto.Token, dto.Password);
                 var token = _authService.GenerateToken(user);
+
+                // Activation logs the user in, so (e.g. after forgot-password) clear any /login lockout.
+                _loginRateLimiter.Reset(user.Username);
 
                 return Ok(new LoginResponse
                 {
