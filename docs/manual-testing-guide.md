@@ -80,3 +80,4 @@ Build the URL yourself: `http://localhost:<UI_PORT>/activer-compte?token=<Verifi
 
 1. Log in 10 times with a wrong password for one participant account, then with the right one: the banner says "Trop de tentatives de connexion. Réessayez dans 15 minutes."
 2. With `EVENT_DATE_LABEL` unset, the landing hero, landing sign-up section, `/mon-equipe` and the 404 page show "Date à confirmer". Set it in `.env`, run `docker compose up -d frontend`, reload: the new text shows in all four places.
+3. If the admin is locked out, run `docker compose restart backend` to clear the in-memory counter.
