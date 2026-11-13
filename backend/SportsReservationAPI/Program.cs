@@ -88,6 +88,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddHttpClient<MailService>();
 builder.Services.AddSingleton<PasswordResetRateLimiter>();
+builder.Services.AddSingleton<LoginRateLimiter>();
 
 // JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -147,4 +147,56 @@ public class AuthTests
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
+
+    [Fact]
+    public async Task Login_AfterTenFailures_ReturnsTooManyRequestsEvenWithCorrectPassword()
+    {
+        var email = ApiTestFixture.UniqueEmail("lockout");
+        await _fixture.RegisterAndActivateTeamAsync("LockoutTeam", email, ApiTestFixture.UniqueEmail("lockout2"), "CorrectPassword123");
+
+        for (var i = 0; i < 10; i++)
+        {
+            var bad = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "wrong-password" });
+            Assert.Equal(HttpStatusCode.Unauthorized, bad.StatusCode);
+        }
+
+        var response = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "CorrectPassword123" });
+
+        Assert.Equal(HttpStatusCode.TooManyRequests, response.StatusCode);
+        var body = await response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>();
+        Assert.Equal("Trop de tentatives de connexion. Réessayez dans 15 minutes.", body.GetProperty("message").GetString());
+    }
+
+    [Fact]
+    public async Task Login_SuccessResetsFailureCounter()
+    {
+        var email = ApiTestFixture.UniqueEmail("lockreset");
+        await _fixture.RegisterAndActivateTeamAsync("LockResetTeam", email, ApiTestFixture.UniqueEmail("lockreset2"), "CorrectPassword123");
+
+        for (var i = 0; i < 9; i++)
+            await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "wrong-password" });
+
+        var ok = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "CorrectPassword123" });
+        Assert.Equal(HttpStatusCode.OK, ok.StatusCode);
+
+        for (var i = 0; i < 9; i++)
+            await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "wrong-password" });
+
+        var stillOk = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "CorrectPassword123" });
+        Assert.Equal(HttpStatusCode.OK, stillOk.StatusCode);
+    }
+
+    [Fact]
+    public async Task Login_LockoutIsCaseInsensitive()
+    {
+        var email = ApiTestFixture.UniqueEmail("lockcase");
+        await _fixture.RegisterAndActivateTeamAsync("LockCaseTeam", email, ApiTestFixture.UniqueEmail("lockcase2"), "CorrectPassword123");
+
+        for (var i = 0; i < 10; i++)
+            await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email.ToUpperInvariant(), password = "wrong-password" });
+
+        var response = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = email, password = "CorrectPassword123" });
+
+        Assert.Equal(HttpStatusCode.TooManyRequests, response.StatusCode);
+    }
 }

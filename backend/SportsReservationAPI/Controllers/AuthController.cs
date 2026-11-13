@@ -25,20 +25,32 @@ namespace SportsReservationAPI.Controllers
     {
         private readonly AuthService _authService;
         private readonly UserService _userService;
+        private readonly LoginRateLimiter _loginRateLimiter;
 
-        public AuthController(AuthService authService, UserService userService)
+        public AuthController(AuthService authService, UserService userService, LoginRateLimiter loginRateLimiter)
         {
             _authService = authService;
             _userService = userService;
+            _loginRateLimiter = loginRateLimiter;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
+            // Checked before the password so a locked-out username can't keep guessing.
+            if (_loginRateLimiter.IsLockedOut(request.Username))
+                return StatusCode(StatusCodes.Status429TooManyRequests,
+                    new { message = "Trop de tentatives de connexion. Réessayez dans 15 minutes." });
+
             var user = _authService.Authenticate(request.Username, request.Password);
 
             if (user == null)
+            {
+                _loginRateLimiter.RecordFailure(request.Username);
                 return Unauthorized(new { message = "Invalid credentials" });
+            }
+
+            _loginRateLimiter.Reset(request.Username);
 
             var token = _authService.GenerateToken(user);
 
