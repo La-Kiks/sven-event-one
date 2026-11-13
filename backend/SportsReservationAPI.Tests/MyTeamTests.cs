@@ -114,7 +114,7 @@ public class MyTeamTests
     }
 
     [Fact]
-    public async Task UpdateMyTeam_ChangingParticipant1Email_UpdatesLoginUsername()
+    public async Task UpdateMyTeam_ChangingParticipant1Email_ReturnsBadRequestAndKeepsLogin()
     {
         var oldEmail = ApiTestFixture.UniqueEmail("emailsync-old");
         var newEmail = ApiTestFixture.UniqueEmail("emailsync-new");
@@ -134,13 +134,14 @@ public class MyTeamTests
                 new { id = players[1].GetProperty("id").GetInt32(), firstName = "Bob", lastName = "Test", email = players[1].GetProperty("email").GetString(), phoneNumber = "+33612345679", category = "man", outfit = "no", volunteer = false, acceptMails = true }
             }
         });
-        (await _fixture.Client.SendAsync(updateRequest)).EnsureSuccessStatusCode();
+        var updateResponse = await _fixture.Client.SendAsync(updateRequest);
 
         var oldLoginResponse = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = oldEmail, password = "TestPassword123" });
         var newLoginResponse = await _fixture.Client.PostAsJsonAsync("/api/auth/login", new { username = newEmail, password = "TestPassword123" });
 
-        Assert.Equal(HttpStatusCode.Unauthorized, oldLoginResponse.StatusCode);
-        Assert.Equal(HttpStatusCode.OK, newLoginResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, updateResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, oldLoginResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, newLoginResponse.StatusCode);
     }
 
     [Fact]
