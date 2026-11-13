@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using SportsReservationAPI.Models;
 
@@ -55,6 +56,53 @@ public class MailService
             "<p>À bientôt,<br>Sport Challenge Police 54</p>";
 
         return SendEmailAsync(toEmail, toName, "Réinitialisation de votre mot de passe - Sport Challenge Police 54", text, html);
+    }
+
+    private const string AnnouncementFooter = "Vous recevez cet email car vous êtes inscrit(e) à Hyrox Police 54.";
+    private const string Signature = "Sport Challenge Police 54";
+    private static readonly Regex UrlPattern = new(@"https?://[^\s<]+", RegexOptions.Compiled);
+
+    // Admin-written announcement (AnnouncementService). Same never-throw contract as
+    // the other senders: false on any failure or missing Mailgun config.
+    public Task<bool> SendAnnouncementEmailAsync(string toEmail, string? toName, string subject, string message)
+    {
+        return SendEmailAsync(
+            toEmail,
+            toName ?? "",
+            subject,
+            BuildAnnouncementText(toName, message),
+            BuildAnnouncementHtml(toName, message));
+    }
+
+    public static string BuildAnnouncementText(string? toName, string message)
+    {
+        var greeting = string.IsNullOrWhiteSpace(toName) ? "Bonjour," : $"Bonjour {toName},";
+        var body = message.Replace("\r\n", "\n").Trim();
+        return $"{greeting}\n\n{body}\n\n{AnnouncementFooter}\n\n{Signature}";
+    }
+
+    // Everything the admin typed is HTML-encoded FIRST; only then are paragraphs,
+    // line breaks and links added, so the message can never inject markup.
+    public static string BuildAnnouncementHtml(string? toName, string message)
+    {
+        var greeting = string.IsNullOrWhiteSpace(toName)
+            ? "Bonjour,"
+            : $"Bonjour {WebUtility.HtmlEncode(toName)},";
+
+        var paragraphs = Regex.Split(message.Replace("\r\n", "\n").Trim(), @"\n\s*\n")
+            .Where(p => !string.IsNullOrWhiteSpace(p))
+            .Select(p =>
+            {
+                var encoded = WebUtility.HtmlEncode(p.Trim());
+                var linked = UrlPattern.Replace(encoded, m => $"<a href=\"{m.Value}\">{m.Value}</a>");
+                return $"<p>{linked.Replace("\n", "<br>")}</p>";
+            });
+
+        return $"<p>{greeting}</p>{string.Concat(paragraphs)}" +
+               // Footer and signature are our own constants, not user input: inserted as-is
+               // so "é"/"à" stay readable (WebUtility.HtmlEncode would turn them into &#233;).
+               $"<p style=\"color:#666;font-size:12px\">{AnnouncementFooter}</p>" +
+               $"<p>{Signature}</p>";
     }
 
     private async Task<bool> SendEmailAsync(string toEmail, string toName, string subject, string text, string html)
