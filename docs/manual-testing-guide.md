@@ -67,3 +67,16 @@ Build the URL yourself: `http://localhost:<UI_PORT>/activer-compte?token=<Verifi
 1. While still logged in as admin, navigate directly to `/mon-equipe`. Expect a redirect back to `/teams` (not `/login` — wrong role, not logged out).
 2. Log out, log back in with the participant credentials from step 4.
 3. Navigate directly to `/teams`. Expect a redirect back to `/mon-equipe`.
+
+## 9. Send an announcement
+
+1. Log in as admin, click **Annonce** in the top bar.
+2. Fill **Objet** and **Message** (two paragraphs separated by a blank line, plus a `https://` link).
+3. **Envoyer un test** to your own address. Check the email: "Bonjour," greeting, two paragraphs, a clickable link, the "Vous recevez cet email…" footer. With Mailgun unconfigured, a red error shows instead.
+4. **Envoyer à tous les participants**: the confirm dialog shows a count. In dev only (seeded `@example.com` players), confirm and check the "envoyé(s) / échec(s)" summary.
+5. As a participant, open `/annonce`: you're sent to `/mon-equipe`.
+
+## 10. Login lockout and event date
+
+1. Log in 10 times with a wrong password for one participant account, then with the right one: the banner says "Trop de tentatives de connexion. Réessayez dans 15 minutes."
+2. With `EVENT_DATE_LABEL` unset, the landing hero, landing sign-up section, `/mon-equipe` and the 404 page show "Date à confirmer". Set it in `.env`, run `docker compose up -d frontend`, reload: the new text shows in all four places.
