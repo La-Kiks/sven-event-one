@@ -81,6 +81,10 @@ export class AnnouncementComponent {
     this.http.get<{ count: number }>(`${this.baseUrl}/recipients`).subscribe({
       next: (res) => {
         this.isLoadingCount = false;
+        if (res.count === 0) {
+          this.sendError = 'Aucun participant inscrit : rien à envoyer.';
+          return;
+        }
         this.recipientCount = res.count;
         this.showConfirm = true;
       },

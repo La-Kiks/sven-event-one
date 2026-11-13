@@ -46,12 +46,12 @@
             <div class="test-row">
                 <input class="field__input" type="email" [(ngModel)]="testEmail" placeholder="votre.email@exemple.fr" aria-label="Adresse email pour le test" />
                 <button class="secondary-btn" (click)="sendTest()"
-                    [disabled]="!canSend || !testEmail.trim() || isSendingTest">
+                    [disabled]="!canSend || !testEmail.trim() || isSendingTest || isSending">
                     {{ isSendingTest ? 'Envoi...' : 'Envoyer un test' }}
                 </button>
             </div>
-            <p class="feedback feedback--ok" *ngIf="testSuccess">{{ testSuccess }}</p>
-            <p class="feedback feedback--error" *ngIf="testError">{{ testError }}</p>
+            <p class="feedback feedback--ok" role="status" *ngIf="testSuccess">{{ testSuccess }}</p>
+            <p class="feedback feedback--error" role="alert" *ngIf="testError">{{ testError }}</p>
         </section>
 
         <section class="panel">
@@ -60,14 +60,14 @@
                 [disabled]="!canSend || isLoadingCount || isSending || showConfirm">
                 {{ isLoadingCount ? 'Chargement...' : 'Envoyer à tous les participants' }}
             </button>
-            <p class="feedback feedback--error" *ngIf="sendError && !showConfirm">{{ sendError }}</p>
+            <p class="feedback feedback--error" role="alert" *ngIf="sendError && !showConfirm">{{ sendError }}</p>
 
             <div class="delete-confirm" *ngIf="showConfirm">
                 <p class="confirm-text">
                     <strong>{{ recipientCount }}</strong> participant(s) vont recevoir cet email.
                     Cet envoi est définitif. Continuer ?
                 </p>
-                <div class="confirm-error" *ngIf="sendError">{{ sendError }}</div>
+                <div class="confirm-error" role="alert" *ngIf="sendError">{{ sendError }}</div>
                 <div class="confirm-actions">
                     <button class="confirm-cancel-btn" (click)="cancelConfirm()" [disabled]="isSending">Annuler</button>
                     <button class="confirm-delete-btn" (click)="sendToAll()" [disabled]="isSending">
