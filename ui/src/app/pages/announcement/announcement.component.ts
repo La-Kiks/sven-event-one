@@ -107,6 +107,7 @@ export class AnnouncementComponent {
       },
       error: () => {
         this.isSending = false;
+        this.showConfirm = false;
         this.sendError = "L'envoi a échoué. Vérifiez les logs avant de réessayer : une partie des emails a pu partir.";
       }
     });

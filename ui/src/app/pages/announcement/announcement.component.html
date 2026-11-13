@@ -44,7 +44,7 @@
         <section class="panel">
             <h2 class="panel__title">1. Envoyer un test</h2>
             <div class="test-row">
-                <input class="field__input" type="email" [(ngModel)]="testEmail" placeholder="votre.email@exemple.fr" />
+                <input class="field__input" type="email" [(ngModel)]="testEmail" placeholder="votre.email@exemple.fr" aria-label="Adresse email pour le test" />
                 <button class="secondary-btn" (click)="sendTest()"
                     [disabled]="!canSend || !testEmail.trim() || isSendingTest">
                     {{ isSendingTest ? 'Envoi...' : 'Envoyer un test' }}
