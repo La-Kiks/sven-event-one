@@ -86,6 +86,7 @@ builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<StripeService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AnnouncementService>();
 builder.Services.AddHttpClient<MailService>();
 builder.Services.AddSingleton<PasswordResetRateLimiter>();
 builder.Services.AddSingleton<LoginRateLimiter>();
