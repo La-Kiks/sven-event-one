@@ -33,3 +33,6 @@ Thumbs.db
 
 # Impeccable local session cache (machine-specific, not shared state)
 .impeccable/hook.cache.json
+
+# /brag launch video output (generated locally)
+brag-output*/
