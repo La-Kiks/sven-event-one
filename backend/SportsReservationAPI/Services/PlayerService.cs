@@ -34,6 +34,10 @@ namespace SportsReservationAPI.Services
                 .ToListAsync();
         }
 
+        // Cross-row rule: this clears AcceptMails on EVERY row with that email, but the mon-equipe
+        // checkbox only lets participant 1 re-subscribe their own row, so the same address can be
+        // false on one row and true on another. Any future "prochaines éditions" sender MUST exclude
+        // an address if ANY of its player rows has AcceptMails = false.
         // Returns the number of rows actually switched off (0 if unknown or already unsubscribed).
         public async Task<int> UnsubscribeByEmailAsync(string normalizedEmail)
         {

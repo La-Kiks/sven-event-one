@@ -16,7 +16,11 @@ namespace SportsReservationAPI.Services
 
         public UnsubscribeLinkService(IConfiguration config, IOptions<ApiSettings> apiSettings)
         {
-            _key = SHA256.HashData(Encoding.UTF8.GetBytes("unsubscribe:" + config["Jwt:Key"]));
+            var jwtKey = config["Jwt:Key"];
+            if (string.IsNullOrEmpty(jwtKey))
+                throw new InvalidOperationException("Jwt:Key must be configured to sign unsubscribe links.");
+
+            _key = SHA256.HashData(Encoding.UTF8.GetBytes("unsubscribe:" + jwtKey));
             _frontendBaseUrl = apiSettings.Value.FrontendBaseUrl.TrimEnd('/');
         }
 

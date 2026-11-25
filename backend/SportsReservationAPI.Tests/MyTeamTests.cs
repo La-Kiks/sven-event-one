@@ -224,5 +224,13 @@ public class MyTeamTests
         {
             Assert.False((await context.Players.AsNoTracking().FirstAsync(p => p.Id == p2Id)).AcceptMails);
         }
+
+        // Participant 1 can re-subscribe themselves.
+        Assert.Equal(HttpStatusCode.OK, (await PutAsync(true, false)).StatusCode);
+        using (var context = _fixture.CreateDbContext())
+        {
+            Assert.True((await context.Players.AsNoTracking().FirstAsync(p => p.Id == p1Id)).AcceptMails);
+            Assert.False((await context.Players.AsNoTracking().FirstAsync(p => p.Id == p2Id)).AcceptMails);
+        }
     }
 }

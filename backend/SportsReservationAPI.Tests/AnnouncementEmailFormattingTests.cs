@@ -98,5 +98,6 @@ public class AnnouncementEmailFormattingTests
         var html = MailService.BuildAnnouncementHtml("Alice", "Salut", "https://example.com/x?a=\"><script>");
 
         Assert.DoesNotContain("<script>", html);
+        Assert.Contains("&quot;&gt;&lt;script&gt;", html);
     }
 }

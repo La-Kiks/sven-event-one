@@ -91,6 +91,9 @@ public class UnsubscribeTests
 
         Assert.Equal(HttpStatusCode.OK, first.StatusCode);
         Assert.Equal(HttpStatusCode.OK, second.StatusCode);
+        var rows = await GetPlayersAsync(email);
+        Assert.Single(rows);
+        Assert.False(rows[0].AcceptMails);
     }
 
     [Fact]
@@ -103,25 +106,28 @@ public class UnsubscribeTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Theory]
-    [InlineData("other")]
-    [InlineData("garbage!!")]
-    [InlineData("")]
-    [InlineData(null)]
-    [InlineData("null-email")]
-    public async Task Unsubscribe_WithBadSig_ReturnsBadRequestAndChangesNothing(string? sigCase)
+    [Fact]
+    public async Task Unsubscribe_WithBadSig_ReturnsBadRequestAndChangesNothing()
     {
+        // One team for all bad inputs: the shared DB has a registration cap (see CLAUDE.md, Tests).
         var email = ApiTestFixture.UniqueEmail("unsub-bad");
-        await RegisterTeamAsync("UnsubBadTeam" + Guid.NewGuid().ToString("N")[..6], ApiTestFixture.UniqueEmail("unsub-bad1"), email);
+        await RegisterTeamAsync("UnsubBadTeam", ApiTestFixture.UniqueEmail("unsub-bad1"), email);
 
-        string? postedEmail = email;
-        string? sig = sigCase;
-        if (sigCase == "other") sig = Sign(ApiTestFixture.UniqueEmail("unsub-other"));
-        if (sigCase == "null-email") { postedEmail = null; sig = Sign(email); }
+        var badInputs = new (string Case, string? Email, string? Sig)[]
+        {
+            ("sig for another email", email, Sign(ApiTestFixture.UniqueEmail("unsub-other"))),
+            ("garbage sig", email, "garbage!!"),
+            ("empty sig", email, ""),
+            ("null sig", email, null),
+            ("null email", null, Sign(email)),
+        };
 
-        var response = await PostUnsubscribeAsync(postedEmail, sig);
+        foreach (var (name, postedEmail, sig) in badInputs)
+        {
+            var response = await PostUnsubscribeAsync(postedEmail, sig);
+            Assert.True(HttpStatusCode.BadRequest == response.StatusCode, $"{name}: expected 400, got {(int)response.StatusCode}");
+        }
 
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         var rows = await GetPlayersAsync(email);
         Assert.Single(rows);
         Assert.True(rows[0].AcceptMails);
