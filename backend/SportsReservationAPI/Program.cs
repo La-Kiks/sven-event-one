@@ -90,6 +90,7 @@ builder.Services.AddScoped<AnnouncementService>();
 builder.Services.AddHttpClient<MailService>();
 builder.Services.AddSingleton<PasswordResetRateLimiter>();
 builder.Services.AddSingleton<LoginRateLimiter>();
+builder.Services.AddSingleton<UnsubscribeLinkService>();
 
 // JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
