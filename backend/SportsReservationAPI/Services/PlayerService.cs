@@ -33,5 +33,19 @@ namespace SportsReservationAPI.Services
                 .OrderBy(p => p.LastName)
                 .ToListAsync();
         }
+
+        // Returns the number of rows actually switched off (0 if unknown or already unsubscribed).
+        public async Task<int> UnsubscribeByEmailAsync(string normalizedEmail)
+        {
+            var players = await _context.Players
+                .Where(p => p.Email.Trim().ToLower() == normalizedEmail && p.AcceptMails)
+                .ToListAsync();
+
+            foreach (var player in players)
+                player.AcceptMails = false;
+
+            await _context.SaveChangesAsync();
+            return players.Count;
+        }
     }
 }
