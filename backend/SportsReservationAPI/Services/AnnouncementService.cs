@@ -10,12 +10,14 @@ namespace SportsReservationAPI.Services
 
         private readonly ReservationContext _context;
         private readonly MailService _mailService;
+        private readonly UnsubscribeLinkService _unsubscribeLinks;
         private readonly ILogger<AnnouncementService> _logger;
 
-        public AnnouncementService(ReservationContext context, MailService mailService, ILogger<AnnouncementService> logger)
+        public AnnouncementService(ReservationContext context, MailService mailService, UnsubscribeLinkService unsubscribeLinks, ILogger<AnnouncementService> logger)
         {
             _context = context;
             _mailService = mailService;
+            _unsubscribeLinks = unsubscribeLinks;
             _logger = logger;
         }
 
@@ -38,7 +40,8 @@ namespace SportsReservationAPI.Services
 
         public Task<bool> SendTestAsync(string toEmail, string subject, string message)
         {
-            return _mailService.SendAnnouncementEmailAsync(toEmail.Trim(), null, subject, message);
+            var email = toEmail.Trim();
+            return _mailService.SendAnnouncementEmailAsync(email, null, subject, message, _unsubscribeLinks.BuildUrl(email));
         }
 
         // One Mailgun call per recipient (never several addresses in one message),
@@ -55,7 +58,7 @@ namespace SportsReservationAPI.Services
                 var batch = recipients.Skip(i).Take(BatchSize);
                 await Task.WhenAll(batch.Select(async r =>
                 {
-                    var sent = await _mailService.SendAnnouncementEmailAsync(r.Email, r.FirstName, subject, message);
+                    var sent = await _mailService.SendAnnouncementEmailAsync(r.Email, r.FirstName, subject, message, _unsubscribeLinks.BuildUrl(r.Email));
                     if (sent)
                         Interlocked.Increment(ref sentCount);
                     else

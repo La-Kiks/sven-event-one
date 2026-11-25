@@ -59,31 +59,32 @@ public class MailService
     }
 
     private const string AnnouncementFooter = "Vous recevez cet email car vous êtes inscrit(e) à Hyrox Police 54.";
+    private const string UnsubscribeSentence = "Vous ne souhaitez plus recevoir d'emails sur nos prochaines éditions ?";
     private const string Signature = "Sport Challenge Police 54";
     private static readonly Regex UrlPattern = new(@"https?://[^\s<]+", RegexOptions.Compiled);
 
     // Admin-written announcement (AnnouncementService). Same never-throw contract as
     // the other senders: false on any failure or missing Mailgun config.
-    public Task<bool> SendAnnouncementEmailAsync(string toEmail, string? toName, string subject, string message)
+    public Task<bool> SendAnnouncementEmailAsync(string toEmail, string? toName, string subject, string message, string unsubscribeUrl)
     {
         return SendEmailAsync(
             toEmail,
             toName ?? "",
             subject,
-            BuildAnnouncementText(toName, message),
-            BuildAnnouncementHtml(toName, message));
+            BuildAnnouncementText(toName, message, unsubscribeUrl),
+            BuildAnnouncementHtml(toName, message, unsubscribeUrl));
     }
 
-    public static string BuildAnnouncementText(string? toName, string message)
+    public static string BuildAnnouncementText(string? toName, string message, string unsubscribeUrl)
     {
         var greeting = string.IsNullOrWhiteSpace(toName) ? "Bonjour," : $"Bonjour {toName},";
         var body = message.Replace("\r\n", "\n").Trim();
-        return $"{greeting}\n\n{body}\n\n{AnnouncementFooter}\n\n{Signature}";
+        return $"{greeting}\n\n{body}\n\n{AnnouncementFooter}\n\n{UnsubscribeSentence} Se désabonner : {unsubscribeUrl}\n\n{Signature}";
     }
 
     // Everything the admin typed is HTML-encoded FIRST; only then are paragraphs,
     // line breaks and links added, so the message can never inject markup.
-    public static string BuildAnnouncementHtml(string? toName, string message)
+    public static string BuildAnnouncementHtml(string? toName, string message, string unsubscribeUrl)
     {
         var greeting = string.IsNullOrWhiteSpace(toName)
             ? "Bonjour,"
@@ -102,6 +103,7 @@ public class MailService
                // Footer and signature are our own constants, not user input: inserted as-is
                // so "é"/"à" stay readable (WebUtility.HtmlEncode would turn them into &#233;).
                $"<p style=\"color:#666;font-size:12px\">{AnnouncementFooter}</p>" +
+               $"<p style=\"color:#666;font-size:12px\">{UnsubscribeSentence} <a href=\"{WebUtility.HtmlEncode(unsubscribeUrl)}\">Se désabonner</a></p>" +
                $"<p>{Signature}</p>";
     }
 
