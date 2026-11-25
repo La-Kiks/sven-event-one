@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace SportsReservationAPI.Tests;
@@ -172,5 +173,56 @@ public class MyTeamTests
         var response = await _fixture.Client.SendAsync(updateRequest);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task UpdateMyTeam_AppliesAcceptMailsForParticipant1Only()
+    {
+        var (teamId, jwt) = await _fixture.RegisterAndActivateTeamAsync(
+            "AcceptMailsTeam", ApiTestFixture.UniqueEmail("acceptm1"), ApiTestFixture.UniqueEmail("acceptm2"));
+
+        var current = await (await _fixture.Client.SendAsync(AuthedRequest(HttpMethod.Get, "/api/teams/my-team", jwt)))
+            .Content.ReadFromJsonAsync<JsonElement>();
+        var players = current.GetProperty("players").EnumerateArray().ToList();
+        var p1Id = players[0].GetProperty("id").GetInt32();
+        var p2Id = players[1].GetProperty("id").GetInt32();
+
+        async Task<HttpResponseMessage> PutAsync(bool p1AcceptMails, bool p2AcceptMails)
+        {
+            var request = AuthedRequest(HttpMethod.Put, "/api/teams/my-team", jwt);
+            request.Content = JsonContent.Create(new
+            {
+                teamDto = new { teamName = "AcceptMailsTeam", version = "short", administration = "none" },
+                playerDtos = new[]
+                {
+                    new { id = p1Id, firstName = "Alice", lastName = "Test", email = players[0].GetProperty("email").GetString(), phoneNumber = "+33612345678", category = "woman", outfit = "no", volunteer = false, acceptMails = p1AcceptMails },
+                    new { id = p2Id, firstName = "Bob", lastName = "Test", email = players[1].GetProperty("email").GetString(), phoneNumber = "+33612345679", category = "man", outfit = "no", volunteer = false, acceptMails = p2AcceptMails }
+                }
+            });
+            return await _fixture.Client.SendAsync(request);
+        }
+
+        Assert.Equal(HttpStatusCode.OK, (await PutAsync(false, false)).StatusCode);
+
+        var after = await (await _fixture.Client.SendAsync(AuthedRequest(HttpMethod.Get, "/api/teams/my-team", jwt)))
+            .Content.ReadFromJsonAsync<JsonElement>();
+        var afterPlayers = after.GetProperty("players").EnumerateArray().ToList();
+        Assert.False(afterPlayers.First(p => p.GetProperty("id").GetInt32() == p1Id).GetProperty("acceptMails").GetBoolean());
+        Assert.True(afterPlayers.First(p => p.GetProperty("id").GetInt32() == p2Id).GetProperty("acceptMails").GetBoolean());
+
+        // Participant 2 withdraws via the email link; participant 1 must not be able to re-subscribe them.
+        using (var context = _fixture.CreateDbContext())
+        {
+            var p2 = await context.Players.FirstAsync(p => p.Id == p2Id);
+            p2.AcceptMails = false;
+            await context.SaveChangesAsync();
+        }
+
+        Assert.Equal(HttpStatusCode.OK, (await PutAsync(false, true)).StatusCode);
+
+        using (var context = _fixture.CreateDbContext())
+        {
+            Assert.False((await context.Players.AsNoTracking().FirstAsync(p => p.Id == p2Id)).AcceptMails);
+        }
     }
 }

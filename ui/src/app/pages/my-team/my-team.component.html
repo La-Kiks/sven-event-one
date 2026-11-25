@@ -235,6 +235,12 @@
                         <input type="checkbox" formControlName="volunteer">
                         <span>Je voudrais être bénévole.</span>
                     </label>
+
+                    <label class="checkbox-row"
+                        [class.checkbox-row--checked]="!!form.get('player1.acceptMails')?.value">
+                        <input type="checkbox" formControlName="acceptMails">
+                        <span>Je souhaite recevoir des emails pour les prochaines éditions.</span>
+                    </label>
                 </div>
             </section>
 

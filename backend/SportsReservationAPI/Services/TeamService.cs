@@ -192,7 +192,13 @@ namespace SportsReservationAPI.Services
                 player.Category = playerDto.Category;
                 player.Outfit = playerDto.Outfit;
                 player.Volunteer = playerDto.Volunteer;
-                player.AcceptMails = playerDto.AcceptMails;
+
+                // Only participant 1 controls their own opt-in: they must not be able to
+                // re-subscribe their teammate, who withdraws via the unsubscribe link in emails.
+                if (player.Id == participant1Id)
+                {
+                    player.AcceptMails = playerDto.AcceptMails;
+                }
             }
 
             team.Name = teamDto.TeamName;
