@@ -13,6 +13,7 @@ import { ActivateAccountComponent } from './pages/activate-account/activate-acco
 import { MyTeamComponent } from './pages/my-team/my-team.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { AnnouncementComponent } from './pages/announcement/announcement.component';
+import { UnsubscribeComponent } from './pages/unsubscribe/unsubscribe.component';
 
 export const routes: Routes = [
     { path: "", component: LandingComponent },
@@ -27,5 +28,6 @@ export const routes: Routes = [
     { path: "teams", component: TeamsComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
     { path: "players", component: PlayersComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
     { path: "annonce", component: AnnouncementComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
+    { path: "desabonnement", component: UnsubscribeComponent },
     { path: '**', component: NotFoundComponent },
 ];

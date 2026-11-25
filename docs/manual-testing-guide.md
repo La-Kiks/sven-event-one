@@ -81,3 +81,14 @@ Build the URL yourself: `http://localhost:<UI_PORT>/activer-compte?token=<Verifi
 1. Log in 10 times with a wrong password for one participant account, then with the right one: the banner says "Trop de tentatives de connexion. Réessayez dans 15 minutes."
 2. With `EVENT_DATE_LABEL` unset, the landing hero, landing sign-up section, `/mon-equipe` and the 404 page show "Date à confirmer". Set it in `.env`, run `docker compose up -d frontend`, reload: the new text shows in all four places.
 3. If the admin is locked out, run `docker compose restart backend` to clear the in-memory counter (and use a non-guessable `ADMIN_USERNAME` in prod).
+
+## 11. Unsubscribe link
+
+1. Send a test announcement from `/annonce` to your own address (needs Mailgun configured). Below the footer, the email contains "Vous ne souhaitez plus recevoir d'emails sur nos prochaines éditions ?" and a "Se désabonner" link.
+2. Open the link. The page shows your address under "Se désabonner". Re-run the `sqlcmd` query from section 2: `AcceptMails` is unchanged (nothing is sent before the click).
+3. Click **Confirmer le désabonnement**. The page shows "C'est noté" and the success text; re-run the query: `AcceptMails = 0` for every row with that address.
+4. Reopen the same link and confirm again: still the success page (idempotent).
+5. Change one character of `sig` in the URL and confirm: a red banner shows the invalid-link message with the organizer email link, and the button is gone.
+6. Remove `sig` (or `email`) from the URL: the "Lien invalide" card shows.
+7. Register a player with the email `a+b@example.com` (needs Mailgun to receive the link, or build it with the signature of the normalized address), open their unsubscribe link and confirm: it works and only that address's rows change.
+8. `/mon-equipe`: the email opt-in checkbox is shown for participant 1 only. Unchecking it and saving sets participant 1's `AcceptMails = 0`; participant 2's row is untouched.
